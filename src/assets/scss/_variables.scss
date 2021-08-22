@@ -1,0 +1,21 @@
+:root {
+  --ya-gray: '#999999';
+  --ya-gray-light: '#E7E7E7';
+  --ya-blue: '#030087';
+  --ya-blue-hover: '#03008780';
+  --ya-blue-active: '#020040';
+  --ya-blue-light: '#EFF8FF';
+  --ya-blue-light-hover: 'rgba(86, 129, 153, 0.29)';
+  --ya-red: '#B60000';
+  --ya-black: '#1E1E1E';
+  --ya-green: '#0B8700';
+  --ya-green-hover: '#0B870080';
+  --ya-green-active: '#064D00';
+  --ya-icon-placeholder: '#E8EDFF';
+  --ya-default-font-size: 16px;
+  --ya-default-line-height: 1.25rem;
+  --ya-default-font-family: Roboto, Arial, sans-serif;
+  font-family: var( --ya-default-font-family);
+  font-size: var(--ya-default-font-size);
+  line-height: var(--ya-default-line-height);
+}

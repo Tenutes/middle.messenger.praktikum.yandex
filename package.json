@@ -1,0 +1,21 @@
+{
+  "name": "chat",
+  "version": "0.0.1",
+  "description": "The YaChat impl",
+  "main": "index.js",
+  "scripts": {
+    "dev": "parcel index.html",
+    "build": "parcel build index.html"
+  },
+  "keywords": [
+    "chat"
+  ],
+  "author": "Mironov Roman",
+  "dependencies": {
+    "handlebars": "^4.7.7",
+    "parcel-plugin-handlebars-precompile": "^1.0.2"
+  },
+  "devDependencies": {
+    "sass": "^1.38.0"
+  }
+}
