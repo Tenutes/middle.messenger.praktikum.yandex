@@ -1,2 +1,9 @@
-.shadows {
+.shadow-sm {
+  box-shadow: 0 0 6px rgba(black, .14);
+}
+
+.hover\:shadow-sm {
+  &:hover {
+    box-shadow: 0 0 6px rgba(black, .14);
+  }
 }

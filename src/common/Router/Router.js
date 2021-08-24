@@ -44,13 +44,12 @@ export const Router = {
     this._currentPage = this._getRouteByPath(directRoute) || this._getDefaultRoute();
   },
   _getRouteByPath(route) {
-    return this._routes.find(({ path }) => path === route);
+    return this._routes.find(({ path }) => path.includes(route));
   },
   _getDefaultRoute() {
     return this._routes.find(({ path }) => DEFAULT_ROUTE_NAMES.includes(path));
   },
   _removeTrailingSlashesFromRoute() {
-    console.log(this.path.match(SLASH_REMOVAL_REG));
-    return this.path.match(SLASH_REMOVAL_REG)[0];
+    return this.path.match(SLASH_REMOVAL_REG)[1];
   },
 };

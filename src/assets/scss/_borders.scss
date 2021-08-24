@@ -1,0 +1,47 @@
+.rounded-full {
+  border-radius: 50%;
+}
+
+.rounded-6 {
+  border-radius: 6px;
+}
+
+.rounded-4 {
+  border-radius: 4px;
+}
+
+.border-b {
+  border-bottom-width: 1px;
+  border-bottom-style: solid;
+}
+
+.border-r {
+  border-right-width: 1px;
+  border-right-style: solid;
+}
+
+.last\:border-0 {
+  &:last-child {
+    border: 0;
+  }
+}
+
+.border-blue {
+  border-color: var(--ya-blue);
+}
+
+.border-gray {
+  border-color: var(--ya-gray);
+}
+
+.border-silver {
+  border-color: var(--ya-silver);
+}
+
+.border-gray-light {
+  border-color: var(--ya-gray-light);
+}
+
+.border-gray-lightest {
+  border-color: var(--ya-gray-lightest);
+}

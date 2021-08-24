@@ -6,29 +6,38 @@
   text-align: left;
 }
 
+.text-right {
+  text-align: right;
+}
+
 .text-xs {
   font-size: .75rem;
-  line-height: 1.25rem;
+  line-height: 1.25em;
 }
 
 .text-sm {
   font-size: .875rem;
-  line-height: 1.25rem;
+  line-height: 1.25em;
 }
 
 .text-base {
   font-size: 1rem;
-  line-height: 1.25rem;
+  line-height: 1.25em;
 }
 
 .text-lg {
   font-size: 1.125rem;
-  line-height: 1.25rem;
+  line-height: 1.25em;
 }
 
 .text-xl {
   font-size: 1.25rem;
-  line-height: 1.25rem;
+  line-height: 1.25em;
+}
+
+.text-4xl {
+  font-size: 2.5rem;
+  line-height: 1.25em;
 }
 
 .font-light {
@@ -53,4 +62,62 @@
 
 .font-black {
   font-weight: 800;
+}
+
+.tracking-wide {
+  letter-spacing: 0.025em;
+}
+
+.text-white {
+  color: var(--ya-white);
+}
+
+.text-black {
+  color: var(--ya-black);
+}
+
+.text-red {
+  color: var(--ya-red)
+}
+
+.text-gray {
+  color: var(--ya-gray);
+}
+
+.placeholder\:text-gray {
+  &::placeholder {
+    color: var(--ya-gray);
+  }
+}
+
+.text-blue {
+  color: var(--ya-blue);
+}
+
+.hover\:text-blue-dark {
+  &:hover {
+    color: var(--ya-blue-dark);
+  }
+}
+
+.focus\:text-blue-dark {
+  &:focus {
+    color: var(--ya-blue-dark);
+  }
+}
+
+.active\:text-blue-dark {
+  &:active {
+    color: var(--ya-blue-dark);
+  }
+}
+
+.decoration-none {
+  text-decoration: none;
+}
+
+.hover\:underline {
+  &:hover {
+    text-decoration: underline;
+  }
 }

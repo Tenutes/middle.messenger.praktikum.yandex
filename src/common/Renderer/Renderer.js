@@ -25,13 +25,15 @@ export const Renderer = {
     this._el = document.getElementById(id);
   },
   _setTemplate() {
-    this._currentTemplate = Router.currentPage.template;
+    const { template, state } = Router.currentPage;
+    this._currentTemplate = template;
+    this._ctx = state;
   },
   _insertTemplate() {
     if (this._el) {
       this._el.innerHTML = compile(this._currentTemplate, this._ctx);
     } else {
-      throw new Error(`There is no element with given id: ${this._id}`);
+      throw new Error(`There is no element with given id: ${ this._id }`);
     }
   },
 };
