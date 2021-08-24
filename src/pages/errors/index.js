@@ -1,5 +1,5 @@
-import page404 from './404.handlebars';
-import page500 from './500.handlebars';
+import page404 from './404.hbs';
+import page500 from './500.hbs';
 
 export default {
   routes: [

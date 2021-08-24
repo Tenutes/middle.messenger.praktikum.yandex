@@ -1,5 +1,5 @@
 <div class="w-full bg-white h-screen">
-  {{> back link="/chat-list/"}}
+  {{> back link="#"}}
   <div class="h-full max-h-screen py-12">
     <div class="w-full max-w-[530px] px-3 flex flex-col items-center mx-auto">
       <div class="mb-8 w-full flex flex-col items-center">
@@ -18,7 +18,7 @@
           {{> link href="/settings/update/" classes="text-blue text-sm font-medium decoration-none hover:underline" label="Изменить данные"}}
         </div>
         <div class="flex justify-between border-b border-gray-lightest py-2 last:border-0">
-          {{> link href="/settings/change-password/" extra="data-popup=\"popup-change-password\"" classes="text-blue text-sm font-medium decoration-none hover:underline" label="Изменить пароль"}}
+          {{> link href="#" extra="data-popup=\"popup-change-password\"" classes="text-blue text-sm font-medium decoration-none hover:underline" label="Изменить пароль"}}
         </div>
         <div class="flex justify-between border-b border-gray-lightest py-2 last:border-0">
           {{> link href="/" classes="text-red text-sm font-medium decoration-none hover:underline" label="Выйти"}}

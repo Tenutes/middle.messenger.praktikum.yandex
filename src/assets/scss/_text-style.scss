@@ -10,6 +10,10 @@
   text-align: right;
 }
 
+.text-\[9px\] {
+  font-size: 9px;
+}
+
 .text-xs {
   font-size: .75rem;
   line-height: 1.25em;
@@ -38,6 +42,10 @@
 .text-4xl {
   font-size: 2.5rem;
   line-height: 1.25em;
+}
+
+.leading-none {
+  line-height: 1;
 }
 
 .font-light {
@@ -92,6 +100,12 @@
 
 .text-blue {
   color: var(--ya-blue);
+}
+
+.hover\:text-blue {
+  &:hover {
+    color: var(--ya-blue);
+  }
 }
 
 .hover\:text-blue-dark {

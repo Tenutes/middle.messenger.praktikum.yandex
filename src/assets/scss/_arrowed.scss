@@ -1,0 +1,24 @@
+.arrowed {
+  position: relative;
+  padding-right: 20px;
+
+  &::after {
+    position: absolute;
+    content: '';
+    top: 50%;
+    right: 0;
+    transform: translateY(-50%);
+    width: 8px;
+    height: 14px;
+    background: url('/static/img/svg/arrow.svg') center no-repeat;
+    background-size: contain;
+    transition: .2s;
+  }
+
+  &:hover {
+    &::after {
+      right: -3px;
+      background-image: url('/static/img/svg/arrow-blue.svg')
+    }
+  }
+}

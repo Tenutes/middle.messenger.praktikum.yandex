@@ -142,9 +142,10 @@ export default class Form {
 
   generateErrorLabel(name, msg) {
     const label = document.createElement('label');
+    const labelClasses = ['error', 'absolute', 'text-[9px]', 'top-[calc(100%+2px)]', 'left-0', 'text-red', 'leading-none'];
     label.for = name;
     label.generated = true;
-    label.classList.add('error');
+    label.classList.add(...labelClasses);
     label.innerText = msg;
     return label;
   }

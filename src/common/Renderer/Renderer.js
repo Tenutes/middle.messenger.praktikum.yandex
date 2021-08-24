@@ -4,6 +4,7 @@ import compile from './compile';
 export const Renderer = {
   _currentTemplate: null,
   _ctx: null,
+  _module: null,
   _id: null,
   _el: null,
 
@@ -25,13 +26,19 @@ export const Renderer = {
     this._el = document.getElementById(id);
   },
   _setTemplate() {
-    const { template, state } = Router.currentPage;
+    const { template, state, module } = Router.currentPage;
     this._currentTemplate = template;
     this._ctx = state;
+    this._module = module;
   },
   _insertTemplate() {
     if (this._el) {
       this._el.innerHTML = compile(this._currentTemplate, this._ctx);
+      if (this._module && typeof this._module === 'function') {
+        this._module().then(({ default: fn }) => {
+          typeof fn === 'function' && fn();
+        });
+      }
     } else {
       throw new Error(`There is no element with given id: ${ this._id }`);
     }
