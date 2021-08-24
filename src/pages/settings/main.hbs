@@ -6,19 +6,21 @@
         {{> settings-profile}}
       </div>
       <div class="w-full mb-10">
-        {{#each fields}}
-          <div class="flex justify-between border-b border-gray-lightest py-2 last:border-0">
-            <p class="text-sm text-black mr-2">{{this.label}}</p>
-            <p class="text-sm text-gray">{{this.value}}</p>
-          </div>
-        {{/each}}
+        {{#with update}}
+          {{#each fields}}
+            <div class="flex justify-between border-b border-gray-lightest py-2 last:border-0">
+              <p class="text-sm text-black mr-2">{{this.label}}</p>
+              <p class="text-sm text-gray">{{this.value}}</p>
+            </div>
+          {{/each}}
+        {{/with}}
       </div>
       <div class="w-full">
         <div class="flex justify-between border-b border-gray-lightest py-2 last:border-0">
           {{> link href="/settings/update/" classes="text-blue text-sm font-medium decoration-none hover:underline" label="Изменить данные"}}
         </div>
         <div class="flex justify-between border-b border-gray-lightest py-2 last:border-0">
-          {{> link href="#" extra="data-popup=\"popup-change-password\"" classes="text-blue text-sm font-medium decoration-none hover:underline" label="Изменить пароль"}}
+          {{> link href="/settings/change-password/" extra="data-popup=\"popup-change-password\"" classes="text-blue text-sm font-medium decoration-none hover:underline" label="Изменить пароль"}}
         </div>
         <div class="flex justify-between border-b border-gray-lightest py-2 last:border-0">
           {{> link href="/" classes="text-red text-sm font-medium decoration-none hover:underline" label="Выйти"}}
