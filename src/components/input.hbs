@@ -1,0 +1,12 @@
+<input
+  class="{{classes}}"
+  type="{{type}}"
+  name="{{name}}"
+  {{#if required}}
+    required
+  {{/if}}
+  id="{{id}}"
+>
+{{#if label}}
+  <label for="{{id}}" class="absolute top-0 left-0 text-gray text-sm">{{label}}</label>
+{{/if}}
