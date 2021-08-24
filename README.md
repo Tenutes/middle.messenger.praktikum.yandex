@@ -9,6 +9,7 @@ yarn dev // запускаем watch и сервер
 yarn build // билдим проект
 yarn start // запускаем express
 ```
+Нужен npm? No problem - изайте вместо `yarn` => `npm install`. `yarn ...` => `npm run ...`
 
 ### Страницы
 
@@ -24,6 +25,6 @@ yarn start // запускаем express
 ### Ссылки
 [figma](https://www.figma.com/file/mkZSo0ewVa2xP0tSr0Z0YL/YaChat?node-id=0%3A1)
 
-[репозиторий](https://github.com/Tenutes/middle.messenger.praktikum.yandex)
+[репозиторий, ветка sprint_1](https://github.com/Tenutes/middle.messenger.praktikum.yandex/tree/sprint_1)
 
 [pull request]()
