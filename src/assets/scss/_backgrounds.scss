@@ -1,0 +1,31 @@
+.bg-white {
+  background-color: var(--ya-white);
+}
+
+.bg-blue {
+  background-color: var(--ya-blue);
+}
+
+.focus\:bg-blue-dark {
+  &:focus {
+    background-color: var(--ya-blue-dark);
+  }
+}
+
+.active\:bg-blue-dark {
+  &:active {
+    background-color: var(--ya-blue-dark);
+  }
+}
+
+.bg-blue-light {
+  background-color: var(--ya-blue-light);
+}
+
+.bg-gray-lighten {
+  background-color: var(--ya-gray-lighten);
+}
+
+.bg-icon {
+  background-color: var(--ya-icon);
+}

@@ -1,0 +1,31 @@
+{
+  "name": "chat",
+  "version": "0.0.1",
+  "description": "The YaChat impl",
+  "main": "index.js",
+  "scripts": {
+    "dev": "parcel index.html",
+    "build": "parcel build index.html",
+    "start": "node server"
+  },
+  "keywords": [
+    "chat"
+  ],
+  "author": "Mironov Roman",
+  "engines": {
+    "node": "v12.18.2"
+  },
+  "devDependencies": {
+    "handlebars": "^4.7.7",
+    "parcel-plugin-handlebars-precompile": "^1.0.2",
+    "parcel-plugin-static-files-copy": "^2.6.0"
+  },
+  "dependencies": {
+    "express": "^4.17.1",
+    "sass": "^1.38.0"
+  },
+  "staticFiles": {
+    "staticPath": "static",
+    "watcherGlob": "**"
+  }
+}

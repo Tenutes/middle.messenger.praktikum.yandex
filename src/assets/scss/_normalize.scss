@@ -1,0 +1,37 @@
+body {
+  margin: 0;
+  padding: 0;
+}
+
+p, h1, h2, h3, h4 {
+  margin: 0;
+  padding: 0;
+}
+
+button {
+  display: inline-block;
+  border: 0;
+  outline: none;
+  cursor: pointer;
+
+  &:focus,
+  &:active {
+    outline: none;
+  }
+}
+
+input {
+  background: none;
+  border: 0;
+  outline: none;
+  padding: 0;
+
+  &:hover,
+  &:focus {
+    outline: none;
+  }
+}
+
+svg {
+  color: inherit;
+}
