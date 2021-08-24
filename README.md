@@ -20,6 +20,7 @@ yarn start // запускаем express
 /любая_абракадабра - 404
 /settings - профиль/настройки
 /settings/update - редактировать настройки
+/settings/change-password - сменить пароль
 ```
 
 ### Ссылки

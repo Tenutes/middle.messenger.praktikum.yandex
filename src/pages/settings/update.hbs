@@ -6,12 +6,14 @@
         {{> settings-profile}}
       </div>
       <div class="w-full mb-11">
-        {{#each fields}}
-          <div class="flex justify-between border-b border-gray-lightest py-2 last:border-0 relative overflow-hidden">
-            <p class="text-sm text-black mr-2">{{this.label}}</p>
-            {{> input id=this.id type=this.type label=false name=this.name value=this.value required=this.required classes="text-sm text-gray border-0 w-1/2 text-right focus:text-blue-dark"}}
-          </div>
-        {{/each}}
+        {{#with update}}
+          {{#each fields}}
+            <div class="flex justify-between border-b border-gray-lightest py-2 last:border-0 relative overflow-hidden">
+              <p class="text-sm text-black mr-2">{{this.label}}</p>
+              {{> input id=this.id type=this.type label=false name=this.name value=this.value required=this.required classes="text-sm text-gray border-0 w-1/2 text-right focus:text-blue-dark"}}
+            </div>
+          {{/each}}
+        {{/with}}
       </div>
       <div class="w-full text-center">
         {{> button classes="text-white bg-blue hover:opacity-80 text-base focus:bg-blue-dark active:bg-blue-dark min-w-[280px] text-center px-4 py-2 rounded-4" label="Сохранить"}}

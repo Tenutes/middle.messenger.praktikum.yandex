@@ -1,16 +1,23 @@
 import Form from '../../common/Form/Form';
 
+const checkForm = e => {
+  e.preventDefault();
+  const formObject = new Form(e.target.id);
+  if (formObject.isValid()) {
+    console.log('form valid');
+    return;
+  }
+  console.log('form invalid');
+};
+
 export default () => {
-  const form = document.querySelector('form#form-settings');
-  if (form) {
-    form.addEventListener('submit', e => {
-      e.preventDefault();
-      const formObject = new Form(form.id);
-      if (formObject.isValid()) {
-        console.log('form valid');
-        return;
-      }
-      console.log('form invalid');
-    });
+  const updateForm = document.querySelector('form#form-settings');
+  const changePasswordForm = document.querySelector('form#form-change-password');
+
+  if (updateForm) {
+    updateForm.addEventListener('submit', checkForm);
+  }
+  if (changePasswordForm) {
+    changePasswordForm.addEventListener('submit', checkForm);
   }
 }
