@@ -29,7 +29,6 @@ export default class Form {
     inputs.forEach(input => {
       this.values[input.name] = input.value;
     });
-
     return this.values;
   }
 
@@ -63,7 +62,6 @@ export default class Form {
 
     if (email) {
       value = this.values.email;
-
       if (value.length && !Validate.email(value)) {
         msg = 'Укажите корректный Email';
         this.errors.email = msg;
@@ -120,7 +118,7 @@ export default class Form {
     const element = this.form.querySelector(`[name="${ name }"]`);
 
     if (element) {
-      element.classList.remove('error');
+      element.classList.remove('error', '!text-red');
       const label = this.form.querySelector(`label[for="${ name }"].error`);
       label && label.remove();
     }
@@ -129,7 +127,7 @@ export default class Form {
   showError(name, msg) {
     const element = this.form.querySelector(`[name="${ name }"]`);
     if (element) {
-      element.classList.add('error');
+      element.classList.add('!text-red', 'error');
       const errorLabel = element.parentElement.querySelector(`label[for="${ name }"].error`);
       if (errorLabel) {
         errorLabel.innerText = msg;
@@ -144,7 +142,7 @@ export default class Form {
     const label = document.createElement('label');
     const labelClasses = ['error', 'absolute', 'text-[9px]', 'top-[calc(100%+2px)]', 'left-0', 'text-red', 'leading-none'];
     label.for = name;
-    label.generated = true;
+    label.setAttribute('generated', true);
     label.classList.add(...labelClasses);
     label.innerText = msg;
     return label;

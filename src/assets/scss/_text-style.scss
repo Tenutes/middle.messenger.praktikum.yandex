@@ -85,7 +85,11 @@
 }
 
 .text-red {
-  color: var(--ya-red)
+  color: var(--ya-red);
+}
+
+.\!text-red {
+  color: var(--ya-red) !important;
 }
 
 .text-gray {

@@ -3,9 +3,12 @@
   type="{{type}}"
   name="{{name}}"
   {{#if required}}
-    required
+  required
   {{/if}}
   id="{{id}}"
+  {{#if value}}
+  value="{{value}}"
+  {{/if}}
 >
 {{#if label}}
   <label for="{{id}}" class="absolute top-0 left-0 text-gray text-sm">{{label}}</label>
