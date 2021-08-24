@@ -28,3 +28,5 @@ yarn start // запускаем express
 [репозиторий, ветка sprint_1](https://github.com/Tenutes/middle.messenger.praktikum.yandex/tree/sprint_1)
 
 [pull request]()
+
+[сайт в netlify](https://kind-saha-49adaf.netlify.app/)
