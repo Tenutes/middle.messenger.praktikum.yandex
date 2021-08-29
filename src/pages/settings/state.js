@@ -78,6 +78,6 @@ export default {
         placeholder: 'Введите',
         required: true,
       },
-    ]
-  }
+    ],
+  },
 };

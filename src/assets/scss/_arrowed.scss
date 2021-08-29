@@ -4,21 +4,21 @@
 
   &::after {
     position: absolute;
-    content: '';
+    content: "";
     top: 50%;
     right: 0;
-    transform: translateY(-50%);
     width: 8px;
     height: 14px;
-    background: url('/static/img/svg/arrow.svg') center no-repeat;
+    background: url("/static/img/svg/arrow.svg") center no-repeat;
     background-size: contain;
     transition: .2s;
+    transform: translateY(-50%);
   }
 
   &:hover {
     &::after {
       right: -3px;
-      background-image: url('/static/img/svg/arrow-blue.svg')
+      background-image: url("/static/img/svg/arrow-blue.svg")
     }
   }
 }

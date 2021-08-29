@@ -1,7 +1,14 @@
-import Validate from './Validate';
 import Registry from '../Registry/Registry';
+import Validate from './Validate';
 
 export default class Form {
+  constructor(id) {
+    this.id = id;
+    this.form = document.getElementById(id);
+
+    return this;
+  }
+
   static get(id) {
     let instance = Registry.get('Form', id);
     if (instance) {
@@ -13,14 +20,6 @@ export default class Form {
 
     return instance;
   }
-
-  constructor(id) {
-    this.id = id;
-    this.form = document.getElementById(id);
-
-    return this;
-  }
-
 
   getValues() {
     this.values = {};
@@ -71,7 +70,6 @@ export default class Form {
       }
     }
 
-
     for (i = 0; i < required.length; i++) {
       element = required[i];
 
@@ -101,9 +99,10 @@ export default class Form {
   }
 
   clear() {
-    const added = Array.from(this.form.querySelectorAll(
-      'input:not([type="hidden"]):not([type="submit"]), select, textarea'));
-    added.forEach(element => element.value = '');
+    const added = Array.from(
+      this.form.querySelectorAll('input:not([type="hidden"]):not([type="submit"]), select, textarea')
+    );
+    added.forEach(element => (element.value = ''));
   }
 
   hideErrors() {
@@ -115,20 +114,20 @@ export default class Form {
   }
 
   hideError(name) {
-    const element = this.form.querySelector(`[name="${ name }"]`);
+    const element = this.form.querySelector(`[name="${name}"]`);
 
     if (element) {
       element.classList.remove('error', '!text-red');
-      const label = this.form.querySelector(`label[for="${ name }"].error`);
+      const label = this.form.querySelector(`label[for="${name}"].error`);
       label && label.remove();
     }
   }
 
   showError(name, msg) {
-    const element = this.form.querySelector(`[name="${ name }"]`);
+    const element = this.form.querySelector(`[name="${name}"]`);
     if (element) {
       element.classList.add('!text-red', 'error');
-      const errorLabel = element.parentElement.querySelector(`label[for="${ name }"].error`);
+      const errorLabel = element.parentElement.querySelector(`label[for="${name}"].error`);
       if (errorLabel) {
         errorLabel.innerText = msg;
       } else {
@@ -140,7 +139,15 @@ export default class Form {
 
   generateErrorLabel(name, msg) {
     const label = document.createElement('label');
-    const labelClasses = ['error', 'absolute', 'text-[9px]', 'top-[calc(100%+2px)]', 'left-0', 'text-red', 'leading-none'];
+    const labelClasses = [
+      'error',
+      'absolute',
+      'text-[9px]',
+      'top-[calc(100%+2px)]',
+      'left-0',
+      'text-red',
+      'leading-none',
+    ];
     label.for = name;
     label.setAttribute('generated', true);
     label.classList.add(...labelClasses);

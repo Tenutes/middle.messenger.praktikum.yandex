@@ -49,5 +49,5 @@ export default {
       required: true,
       label: 'Пароль (еще раз)',
     },
-  ]
-}
+  ],
+};

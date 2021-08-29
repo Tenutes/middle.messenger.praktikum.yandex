@@ -40,7 +40,7 @@ export const Renderer = {
         });
       }
     } else {
-      throw new Error(`There is no element with given id: ${ this._id }`);
+      throw new Error(`There is no element with given id: ${this._id}`);
     }
   },
 };

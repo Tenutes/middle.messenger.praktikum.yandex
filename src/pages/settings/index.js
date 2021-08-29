@@ -1,7 +1,7 @@
-import template from './main.hbs';
-import update from './update.hbs';
 import changePassword from './change-password.hbs';
+import template from './main.hbs';
 import state from './state';
+import update from './update.hbs';
 
 const module = () => import('./module');
 

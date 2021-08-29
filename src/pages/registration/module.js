@@ -11,4 +11,4 @@ export default () => {
     }
     console.log('form invalid');
   });
-}
+};

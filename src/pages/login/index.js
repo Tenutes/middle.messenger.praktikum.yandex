@@ -1,5 +1,6 @@
 import login from './login.hbs';
 import state from './state';
+
 const module = () => import('./module');
 
 export default {

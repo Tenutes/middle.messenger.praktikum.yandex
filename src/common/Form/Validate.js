@@ -17,7 +17,6 @@ export default class Validate {
     const code = value.match(/\(\d{3}\)/gi)[0].substr(1, 3);
 
     return this.phoneCodes().indexOf(code) !== -1;
-
   }
 
   static email(value) {
@@ -26,7 +25,7 @@ export default class Validate {
     }
 
     return /[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?/i.test(
-      value);
+      value
+    );
   }
 }
-

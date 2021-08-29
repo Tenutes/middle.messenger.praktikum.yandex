@@ -20,4 +20,4 @@ export default () => {
   if (changePasswordForm) {
     changePasswordForm.addEventListener('submit', checkForm);
   }
-}
+};

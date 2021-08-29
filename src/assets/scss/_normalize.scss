@@ -21,10 +21,10 @@ button {
 }
 
 input {
-  background: none;
+  padding: 0;
   border: 0;
   outline: none;
-  padding: 0;
+  background: none;
 
   &:hover,
   &:focus {

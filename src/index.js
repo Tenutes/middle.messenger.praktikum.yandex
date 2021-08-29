@@ -2,9 +2,9 @@ import './assets/scss/app.scss';
 import { Renderer } from './common/Renderer/Renderer';
 import { Router } from './common/Router/Router';
 import { Store } from './common/Store/Store';
-import routes from './routes';
-import loadPartials from './partials';
 import loadHelpers from './helpers';
+import loadPartials from './partials';
+import routes from './routes';
 
 /** Регистрируем partial's */
 loadPartials();

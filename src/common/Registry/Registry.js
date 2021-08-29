@@ -49,4 +49,4 @@ export default class Registry {
       window.Registry = Registry;
     }
   }
-};
+}

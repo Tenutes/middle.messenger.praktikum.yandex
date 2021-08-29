@@ -1,5 +1,8 @@
 :root {
-  --ya-white: #fff;
+  font-family: var(--ya-default-font-family);
+  font-size: var(--ya-default-font-size);
+  line-height: var(--ya-default-line-height);
+  --ya-white: #FFFFFF;
   --ya-gray: #999999;
   --ya-silver: #BCBDC0;
   --ya-gray-light: #E7E7E7;
@@ -19,7 +22,4 @@
   --ya-default-font-size: 16px;
   --ya-default-line-height: 1.25rem;
   --ya-default-font-family: Roboto, Arial, sans-serif;
-  font-family: var( --ya-default-font-family);
-  font-size: var(--ya-default-font-size);
-  line-height: var(--ya-default-line-height);
 }

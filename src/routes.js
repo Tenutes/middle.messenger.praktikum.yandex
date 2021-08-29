@@ -1,4 +1,3 @@
 import app from './pages';
-export default [
-  ...app.routes,
-]
+
+export default [...app.routes];
