@@ -1,4 +1,5 @@
 import Form from '../../common/Form/Form';
+import Sender from '../../common/Form/Sender';
 
 export default () => {
   const form = document.querySelector('form#form-login');
@@ -7,7 +8,11 @@ export default () => {
       e.preventDefault();
       const formObject = new Form(form.id);
       if (formObject.isValid()) {
-        console.log('form valid');
+        const sender = new Sender(formObject.form, '/test/url');
+        console.log(formObject.getValues());
+        sender.send().then((data: unknown) => {
+          console.log(data);
+        });
         return;
       }
       console.log('form invalid');

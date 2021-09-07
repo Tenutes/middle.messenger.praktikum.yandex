@@ -20,29 +20,6 @@ interface StringRecord {
   [key: string]: string;
 }
 
-interface IForm {
-  id: string;
-  form: HTMLFormElement;
-  values: StringRecord;
-  errors: StringRecord;
-
-  getValues(id: string): Record<string, string>;
-
-  getFormData(): FormData | null;
-
-  isValid(): boolean;
-
-  clear(): void;
-
-  hideErrors(): void;
-
-  hideError(name: string): void;
-
-  showError(name: string, message: string): void;
-
-  generateErrorLabel(name: string, message: string): HTMLElement;
-}
-
 interface IRegistry {
   instances: Record<string, Record<string, unknown>>;
 

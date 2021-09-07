@@ -4,8 +4,8 @@ import Validate from './Validate';
 export default class Form implements IForm {
   id;
   form;
-  values;
-  errors;
+  values: StringRecord = {};
+  errors: StringRecord = {};
 
   constructor(id: string) {
     this.id = id;
@@ -14,8 +14,6 @@ export default class Form implements IForm {
       throw new Error('There is no Form with id:' + id);
     }
     this.form = <HTMLFormElement>form;
-    this.values = {} as StringRecord;
-    this.errors = {} as StringRecord;
 
     return this;
   }
@@ -43,13 +41,6 @@ export default class Form implements IForm {
     }
 
     return this.values;
-  }
-
-  getFormData() {
-    if (!this.form) {
-      return null;
-    }
-    return new FormData(this.form);
   }
 
   isValid() {
