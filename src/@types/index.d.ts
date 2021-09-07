@@ -45,9 +45,12 @@ interface IForm {
 
 interface IRegistry {
   instances: Record<string, Record<string, unknown>>;
-  get: (slug: string, selector: string) => unknown | null;
-  set: (slug: string, selector: string, instance: unknown) => Registry;
-  forget: (slug: string, selector: string) => Registry;
+
+  get(slug: string, selector: string): unknown | null;
+
+  set(slug: string, selector: string, instance: unknown): Registry;
+
+  forget(slug: string, selector: string): Registry;
 }
 
 interface IState {
@@ -70,15 +73,24 @@ interface Routes {
   path: string;
   route: string[];
   routes: Route[];
-  use: (routes: Route[]) => Routes;
-  install: () => void;
-  _setCurrentPage: () => void;
-  _parseAndWritePathAndRoute: () => void;
-  _getRouteByPath: (route: string) => Route | undefined;
-  _parseUrl: () => string;
-  _removeTrailingSlashesFromRoute: () => string;
-  _parsePath: () => string[];
-  _getDefaultRoute: () => Route | undefined;
+
+  use(routes: Route[]): Routes;
+
+  install(): void;
+
+  _setCurrentPage(): void;
+
+  _parseAndWritePathAndRoute(): void;
+
+  _getRouteByPath(route: string): Route | undefined;
+
+  _parseUrl(): string;
+
+  _removeTrailingSlashesFromRoute(): string;
+
+  _parsePath(): string[];
+
+  _getDefaultRoute(): Route | undefined;
 }
 
 type TemplateFn = (ctx: IState | null) => string;
