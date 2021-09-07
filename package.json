@@ -8,6 +8,7 @@
     "build": "parcel build index.html",
     "start": "node server",
     "lint": "eslint --fix",
+    "types": "tsc --noEmit",
     "test": "jest",
     "prepare": "husky install"
   },
