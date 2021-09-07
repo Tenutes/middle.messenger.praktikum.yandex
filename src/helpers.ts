@@ -8,4 +8,12 @@ export default () => {
     }
     return accum;
   });
+
+  Handlebars.registerHelper('ismorezero', function(value: number) {
+    return value > 0;
+  });
+
+  Handlebars.registerHelper('self_message', function(value: string) {
+    return value === 'self';
+  });
 };

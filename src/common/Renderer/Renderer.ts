@@ -25,12 +25,14 @@ export const Renderer: Renderer = {
     this._id = id;
     this._el = document.getElementById(id);
   },
+
   _setTemplate() {
     const { template, state, module } = Router.currentPage as ICurrentPage;
     this._currentTemplate = template;
     this._ctx = state;
     this._module = module;
   },
+
   _insertTemplate() {
     if (this._el && this._currentTemplate) {
       this._el.innerHTML = compile(this._currentTemplate, this._ctx);

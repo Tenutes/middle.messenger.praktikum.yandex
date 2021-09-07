@@ -22,6 +22,20 @@
   background-color: var(--ya-blue-light);
 }
 
+.bg-blue-light-hover {
+  background-color: var(--ya-blue-light-hover);
+}
+
+.hover\:bg-blue-light-hover {
+  &:hover {
+    background-color: var(--ya-blue-light-hover);
+  }
+}
+
+.bg-gray-light {
+  background-color: var(--ya-gray-light);
+}
+
 .bg-gray-lighten {
   background-color: var(--ya-gray-lighten);
 }

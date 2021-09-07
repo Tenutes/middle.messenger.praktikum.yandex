@@ -3,8 +3,29 @@
   margin-left: auto;
 }
 
+.mx-2 {
+  margin-right: 10px;
+  margin-left: 10px;
+}
+
+.mr-1 {
+  margin-right: 5px;
+}
+
 .mr-2 {
   margin-right: 10px;
+}
+
+.mr-\[7px\] {
+  margin-right: 7px;
+}
+
+.mb-\[2px\] {
+  margin-bottom: 2px;
+}
+
+.mb-\[4px\] {
+  margin-bottom: 4px;
 }
 
 .mb-2 {
@@ -48,6 +69,11 @@
     margin-bottom: 0;
   }
 }
+
+.mt-\[4px\] {
+  margin-top: 4px;
+}
+
 
 .mt-auto {
   margin-top: auto;

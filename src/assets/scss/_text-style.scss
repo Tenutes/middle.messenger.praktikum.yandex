@@ -14,6 +14,14 @@
   font-size: 9px;
 }
 
+.text-\[11px\] {
+  font-size: 11px;
+}
+
+.text-\[13px\] {
+  font-size: 13px;
+}
+
 .text-xs {
   font-size: .75rem;
   line-height: 1.25em;
@@ -46,6 +54,14 @@
 
 .leading-none {
   line-height: 1;
+}
+
+.leading-\[20px\] {
+  line-height: 20px;
+}
+
+.leading-\[12px\] {
+  line-height: 12px;
 }
 
 .font-light {
@@ -138,4 +154,8 @@
   &:hover {
     text-decoration: underline;
   }
+}
+
+.whitespace-nowrap {
+  white-space: nowrap;
 }

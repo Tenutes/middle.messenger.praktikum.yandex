@@ -6,12 +6,32 @@
   height: 100vh;
 }
 
+.h-2 {
+  height: 10px;
+}
+
+.h-4 {
+  height: 20px;
+}
+
+.h-10 {
+  height: 50px;
+}
+
 .h-\[130px\] {
   height: 130px;
 }
 
 .h-\[28px\] {
   height: 28px;
+}
+
+.h-\[24px\] {
+  height: 24px;
+}
+
+.h-\[1px\] {
+  height: 1px;
 }
 
 .min-h-\[450px\] {
@@ -28,6 +48,18 @@
 
 .w-1\/2 {
   width: 50%;
+}
+
+.w-2 {
+  width: 10px;
+}
+
+.w-4 {
+  width: 20px;
+}
+
+.w-10 {
+  width: 50px;
 }
 
 .w-\[340px\] {
@@ -50,10 +82,26 @@
   width: 28px;
 }
 
+.max-w-full {
+  max-width: 100%;
+}
+
 .max-w-\[530px\] {
   max-width: 530px;
 }
 
+.max-w-\[calc\(100\%-55px\)\] {
+  max-width: calc(100% - 55px);
+}
+
 .min-w-\[280px\] {
   min-width: 280px;
+}
+
+.object-cover {
+  object-fit: cover;
+}
+
+.object-contain {
+  object-fit: contain;
 }
