@@ -1,52 +1,20 @@
-export default class Registry {
-  /**
-   * @static
-   * @param {string} slug
-   * @param {string} selector
-   * @return {object}
-   */
-  static get(slug, selector) {
-    Registry.setGlobal();
-
-    return window.Registry.instances[selector] ? window.Registry.instances[selector][slug] : null;
-  }
-
-  /**
-   * @static
-   * @param {string} slug
-   * @param {string} selector
-   * @param {string|object} instance
-   * @return {Registry}
-   */
-  static set(slug, selector, instance) {
-    Registry.setGlobal();
-
-    window.Registry.instances[selector] = window.Registry.instances[selector] || {};
-    window.Registry.instances[selector][slug] = instance;
-    return window.Registry;
-  }
-
-  /**
-   * @static
-   * @param {string} slug
-   * @param {string} selector
-   * @return {Registry}
-   */
-  static forget(slug, selector) {
-    Registry.setGlobal();
-    if (typeof window.Registry.instances[selector] !== 'undefined') {
-      delete window.Registry.instances[selector][slug];
-    }
-    return window.Registry;
-  }
-
-  /**
-   * @static
-   */
-  static setGlobal() {
-    if (typeof window.Registry === 'undefined') {
-      Registry.instances = {};
-      window.Registry = Registry;
-    }
-  }
-}
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+const Registry = {
+    instances: {},
+    get(slug, selector) {
+        return Registry.instances[selector] ? Registry.instances[selector][slug] : null;
+    },
+    set(slug, selector, instance) {
+        Registry.instances[selector] = Registry.instances[selector] || {};
+        Registry.instances[selector][slug] = instance;
+        return Registry;
+    },
+    forget(slug, selector) {
+        if (typeof Registry.instances[selector] !== 'undefined') {
+            delete Registry.instances[selector][slug];
+        }
+        return Registry;
+    },
+};
+exports.default = Registry;

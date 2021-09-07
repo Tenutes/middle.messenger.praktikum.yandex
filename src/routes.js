@@ -1,3 +1,7 @@
-import app from './pages';
-
-export default [...app.routes];
+"use strict";
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
+Object.defineProperty(exports, "__esModule", { value: true });
+const pages_1 = __importDefault(require("./pages"));
+exports.default = [...pages_1.default.routes];

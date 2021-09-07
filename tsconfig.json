@@ -1,9 +1,14 @@
 {
   "compilerOptions": {
-    "baseUrl": "./src",
-    "paths": {
-      "~*": ["./*"]
-    },
+    "target": "ES2015",
+    "module": "commonjs",
+    "strict": true,
+    "esModuleInterop": true,
+    "skipLibCheck": true,
+    "forceConsistentCasingInFileNames": true
   },
-  "include": ["src/**/*"]
+  "$schema": "https://json.schemastore.org/tsconfig",
+  "display": "Recommended",
+  "exclude": ["dist", "**/*.spec.ts", "node_modules"],
+  "include": ["src/**/*.ts"]
 }
