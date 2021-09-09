@@ -26,8 +26,15 @@
   height: 28px;
 }
 
+.h-\[34px\] {
+  height: 34px;
+}
+
 .h-\[24px\] {
   height: 24px;
+}
+.h-\[16px\] {
+  height: 16px;
 }
 
 .h-\[1px\] {
@@ -40,6 +47,10 @@
 
 .max-h-screen {
   max-height: 100vh;
+}
+
+.max-h-full {
+  max-height: 100%;
 }
 
 .w-full {
@@ -78,12 +89,24 @@
   width: 64px;
 }
 
+.w-\[34px\] {
+  width: 34px;
+}
+
 .w-\[28px\] {
   width: 28px;
 }
 
+.w-\[3px\] {
+  width: 3px;
+}
+
 .max-w-full {
   max-width: 100%;
+}
+
+.max-w-\[45\%\] {
+  max-width: 45%;
 }
 
 .max-w-\[530px\] {

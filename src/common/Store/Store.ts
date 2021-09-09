@@ -1,10 +1,6 @@
 import { Router } from '../Router/Router';
 
-interface State {
-  [key: string]: unknown;
-}
-
-export const Store = {
+export const Store: StateManager = {
   _state: {},
   get state() {
     return this._state;
@@ -15,6 +11,14 @@ export const Store = {
     if (currentPageState) {
       this._setState(currentPageState);
     }
+  },
+
+  setState(state: State) {
+    this._setState(state);
+  },
+
+  update(partialState: State) {
+    this._setState({ ...this.state, ...partialState });
   },
 
   _setState(state: State) {

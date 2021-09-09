@@ -1,0 +1,44 @@
+<div class="px-4 flex flex-col h-full">
+  <div class="py-2 flex justify-between items-center border-b border-gray-light">
+    <div class="flex items-center mr-2">
+      <div class="w-[34px] h-[34px] flex-shrink-0 mr-2 rounded-full overflow-hidden">
+        <img class="block w-full h-full bg-icon object-cover" src="{{user.profile_image}}" alt="{{user.name}}">
+      </div>
+      <p class="text-[13px] font-semibold leading-none">{{user.name}}</p>
+    </div>
+    <div>
+      <a href="#" class="flex w-4 h-4 items-center justify-center text-black hover:text-blue duration-200">
+        <svg class="block w-[3px] h-[16px]">
+          <use href="/img/svg/sprite.svg#dots"></use>
+        </svg>
+      </a>
+    </div>
+  </div>
+  <div data-chat-inner class="py-6 flex-1-1-auto overflow-hidden">
+    <div class="flex flex-col justify-end h-full">
+      {{#each messages}}
+        <div class="flex flex-col items-start max-h-full overflow-y-auto">
+          <p class="sticky mx-auto top-2 px-2 py-1 bg-white-80 text-center text-gray text-xs mb-3">{{this.date}}</p>
+          {{#each this.messages}}
+            <div class="max-w-[45%] p-2 rounded-12 text-sm {{#if (self_message this.type)}}align-self-end bg-icon rounded-b-r-0{{else}}bg-silver-light{{/if}}">
+              {{this.message}}
+            </div>
+          {{/each}}
+        </div>
+      {{/each}}
+    </div>
+  </div>
+  <div class="py-2 flex justify-between items-center border-t border-gray-light">
+    <button>
+      <svg>
+        <use href="/img/sprite.svg#append"></use>
+      </svg>
+    </button>
+    <input type="text">
+    <button>
+      <svg>
+        <use href="/img/sprite.svg#send"></use>
+      </svg>
+    </button>
+  </div>
+</div>

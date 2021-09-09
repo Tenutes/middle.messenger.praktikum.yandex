@@ -32,4 +32,20 @@ export default class Validate {
       value
     );
   }
+
+  static validateName(name: string): boolean {
+    const reg: RegExp = new RegExp(/^[А-ЯЁA-Z][А-ЯЁA-Zа-яёa-z-]+$/);
+    return reg.test(name);
+  }
+
+  static login(login: string): boolean {
+    const reg: RegExp = new RegExp(/^[A-Z0-9-_]{3,20}$/gim);
+    const isNaN: boolean = Number.isNaN(Number(login));
+    return reg.test(login) && isNaN;
+  }
+
+  static password(password: string): boolean {
+    const reg: RegExp = new RegExp(/^(?=.*\d)(?=.*[A-Z]).{8,40}$/gm);
+    return reg.test(password);
+  }
 }

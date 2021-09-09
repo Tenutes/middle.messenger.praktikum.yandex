@@ -2,8 +2,16 @@
   background-color: var(--ya-white);
 }
 
+.bg-white-80 {
+  background-color: rgba(var(--ya-white), .8);
+}
+
 .bg-blue {
   background-color: var(--ya-blue);
+}
+
+.bg-silver-light {
+  background-color: var(--ya-silver-light);
 }
 
 .focus\:bg-blue-dark {

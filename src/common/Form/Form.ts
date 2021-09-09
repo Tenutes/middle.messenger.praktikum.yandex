@@ -47,9 +47,14 @@ export default class Form implements IForm {
     this.errors = {};
     this.values = this.getValues();
 
-    const phone = this.form.querySelector('[name="phone"]');
-    const email = this.form.querySelector('[name="email"]');
-    const required = this.form.querySelectorAll('[required]');
+    const phone: HTMLInputElement | null = this.form.querySelector('[name="phone"]');
+    const login: HTMLInputElement | null = this.form.querySelector('[name="login"]');
+    const names: HTMLInputElement[] = Array.from(
+      this.form.querySelectorAll('[name="first_name"], [name="second_name"]')
+    );
+    const passwords: HTMLInputElement[] = Array.from(this.form.querySelectorAll('input[type="password"]'));
+    const email: HTMLInputElement | null = this.form.querySelector('[name="email"]');
+    const required: HTMLInputElement[] = Array.from(this.form.querySelectorAll('[required]'));
 
     if (phone) {
       const value = this.values.phone;
@@ -71,6 +76,46 @@ export default class Form implements IForm {
       } else {
         this.hideError('email');
       }
+    }
+
+    if (login) {
+      const value = this.values.login;
+
+      if (!Validate.login(value)) {
+        const message = 'Логин не соответствует условиям';
+        this.errors.login = message;
+        this.showError(login.name, message);
+      } else {
+        this.hideError(login.name);
+      }
+    }
+
+    if (names.length) {
+      names.forEach(name => {
+        const value = this.values[name.name];
+
+        if (!Validate.validateName(value)) {
+          const message = 'Пароль не соответствует условиям';
+          this.errors[name.name] = message;
+          this.showError(name.name, message);
+        } else {
+          this.hideError(name.name);
+        }
+      });
+    }
+
+    if (passwords.length) {
+      passwords.forEach(password => {
+        const value = this.values[password.name];
+
+        if (!Validate.password(value)) {
+          const message = 'Пароль не соответствует условиям';
+          this.errors[password.name] = message;
+          this.showError(password.name, message);
+        } else {
+          this.hideError(password.name);
+        }
+      });
     }
 
     for (let i = 0; i < required.length; i++) {

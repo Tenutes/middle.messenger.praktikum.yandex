@@ -1,21 +1,3 @@
-interface Renderer {
-  _currentTemplate: TemplateFn | null;
-  _ctx: IState | null;
-  _module: unknown | null;
-  _id: string | null;
-  _el: HTMLElement | null;
-  template: unknown | null;
-  ctx: IState | null;
-
-  renderTo(id: string): void;
-
-  _setEl(id: string): void;
-
-  _setTemplate(): void;
-
-  _insertTemplate(): void;
-}
-
 interface StringRecord {
   [key: string]: string;
 }
