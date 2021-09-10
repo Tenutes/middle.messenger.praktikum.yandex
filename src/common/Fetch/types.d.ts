@@ -27,10 +27,3 @@ interface IHTTPTransport {
 
   request(url: string, options: HTTPRequestOptions, timeout: number = 5000);
 }
-
-enum METHODS {
-  GET = 'GET',
-  POST = 'POST',
-  PUT = 'PUT',
-  DELETE = 'DELETE',
-}

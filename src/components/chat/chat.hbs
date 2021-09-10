@@ -6,12 +6,38 @@
       </div>
       <p class="text-[13px] font-semibold leading-none">{{user.name}}</p>
     </div>
-    <div>
-      <a href="#" class="flex w-4 h-4 items-center justify-center text-black hover:text-blue duration-200">
+    <div class="relative">
+      <button
+        data-chat-user-settings-button
+        class="flex w-4 h-4 items-center justify-center text-black hover:text-blue duration-200"
+      >
         <svg class="block w-[3px] h-[16px]">
           <use href="/img/svg/sprite.svg#dots"></use>
         </svg>
-      </a>
+      </button>
+      <div
+        class="absolute w-[210px] top-[calc(100%+25px)] -right-2 rounded-12 shadow-sm bg-white py-2 px-1 opacity-0 invisible duration-200"
+        data-chat-user-settings
+      >
+        <button
+          data-chat-form-append="photo"
+          class="p-1 rounded-6 duration-200 flex items-center text-blue font-medium text-xs cursor-pointer w-full hover:bg-blue-light-hover mb-1 last:mb-0"
+        >
+          <svg class="w-[22px] h-[22px] block mr-3">
+            <use href="/img/svg/sprite.svg#chat-plus"></use>
+          </svg>
+          <span>Добавить пользователя</span>
+        </button>
+        <button
+          data-chat-form-append="photo"
+          class="p-1 rounded-6 duration-200 flex items-center text-blue font-medium text-xs cursor-pointer w-full hover:bg-blue-light-hover mb-1 last:mb-0"
+        >
+          <svg class="w-[22px] h-[22px] block mr-3 transform-rotate-45">
+            <use href="/img/svg/sprite.svg#chat-plus"></use>
+          </svg>
+          <span>Удалить пользователя</span>
+        </button>
+      </div>
     </div>
   </div>
   <div data-chat-inner class="py-6 flex-1-1-auto overflow-hidden">
@@ -20,25 +46,11 @@
         <div class="flex flex-col items-start max-h-full overflow-y-auto">
           <p class="sticky mx-auto top-2 px-2 py-1 bg-white-80 text-center text-gray text-xs mb-3">{{this.date}}</p>
           {{#each this.messages}}
-            <div class="max-w-[45%] p-2 rounded-12 text-sm {{#if (self_message this.type)}}align-self-end bg-icon rounded-b-r-0{{else}}bg-silver-light{{/if}}">
-              {{this.message}}
-            </div>
+            {{> chat-message }}
           {{/each}}
         </div>
       {{/each}}
     </div>
   </div>
-  <div class="py-2 flex justify-between items-center border-t border-gray-light">
-    <button>
-      <svg>
-        <use href="/img/sprite.svg#append"></use>
-      </svg>
-    </button>
-    <input type="text">
-    <button>
-      <svg>
-        <use href="/img/sprite.svg#send"></use>
-      </svg>
-    </button>
-  </div>
+  {{> chat-form }}
 </div>

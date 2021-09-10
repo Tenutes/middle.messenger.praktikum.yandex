@@ -6,6 +6,10 @@
   border-radius: 12px;
 }
 
+.rounded-10 {
+  border-radius: 10px;
+}
+
 .rounded-6 {
   border-radius: 6px;
 }
@@ -16,6 +20,11 @@
 
 .rounded-b-r-0 {
   border-bottom-right-radius: 0;
+}
+
+.border-t {
+  border-top-width: 1px;
+  border-top-style: solid;
 }
 
 .border-b {

@@ -96,6 +96,12 @@
   color: var(--ya-white);
 }
 
+.hover\:text-white {
+  &:hover {
+    color: var(--ya-white);
+  }
+}
+
 .text-black {
   color: var(--ya-black);
 }
@@ -158,4 +164,8 @@
 
 .whitespace-nowrap {
   white-space: nowrap;
+}
+
+.vertical-middle {
+  vertical-align: middle;
 }

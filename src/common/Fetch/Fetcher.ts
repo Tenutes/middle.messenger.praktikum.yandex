@@ -1,4 +1,5 @@
 import { queryStringify } from './helpers';
+import { METHODS } from './constants';
 
 const HTTPTransport: IHTTPTransport = {
   get(url, options) {

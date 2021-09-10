@@ -27,6 +27,7 @@ const handleChatClick = (e: Event) => {
     if (chat) {
       Store.update({ currentChat: chat });
       renderChat(chat);
+      addChatEvents();
     }
   }
 };
@@ -36,6 +37,66 @@ const renderChat = (chat: State) => {
   if (chatContainer) {
     chatContainer.innerHTML = template;
   }
+};
+
+const handleChatDelete = (e: Event) => {
+  e.stopImmediatePropagation();
+  const target: HTMLButtonElement | null = <HTMLButtonElement>e.currentTarget;
+  const chatId = target?.dataset?.chatDelete;
+  if (chatId) {
+    console.log('Удаляем чат c id:', chatId);
+  }
+};
+
+const addChatEvents = () => {
+  addChatFormEvents();
+  addUserEvents();
+};
+
+const addChatFormEvents = () => {
+  const chatForm: HTMLFormElement | null = document.querySelector('form#chat-form');
+  if (chatForm) {
+    const appendButtons: HTMLButtonElement[] = Array.from(chatForm.querySelectorAll('[data-chat-form-append]'));
+
+    appendButtons.forEach(button => {
+      button.addEventListener('click', handleAppendButtonClick);
+    });
+  }
+};
+
+const addUserEvents = () => {
+  const getUserSettingsButton: HTMLButtonElement | null = document.querySelector('[data-chat-user-settings-button]');
+  const userSettings: HTMLElement | null = document.querySelector('[data-chat-user-settings]');
+
+  const onDocumentClick = (e: Event) => {
+    const closestSettings = (<Element>e?.target).closest('[data-chat-user-settings]');
+
+    if (!closestSettings) {
+      getUserSettingsButton?.click();
+      document.removeEventListener('click', onDocumentClick);
+    }
+  };
+
+  if (getUserSettingsButton) {
+    getUserSettingsButton.addEventListener('click', e => {
+      e.preventDefault();
+      e.stopImmediatePropagation();
+      getUserSettingsButton.classList.toggle('active');
+      userSettings?.classList.toggle('opacity-0');
+      userSettings?.classList.toggle('invisible');
+
+      if (getUserSettingsButton.classList.contains('active')) {
+        document.addEventListener('click', onDocumentClick);
+      }
+    });
+  }
+};
+
+const handleAppendButtonClick = (e: Event) => {
+  e.stopImmediatePropagation();
+  e.preventDefault();
+  const button = <HTMLButtonElement>e.currentTarget;
+  console.log('Прикрепляем: ', button?.dataset?.chatFormAppend);
 };
 
 export default () => {
@@ -61,5 +122,9 @@ export default () => {
 
   chats.forEach(chat => {
     chat.addEventListener('click', handleChatClick);
+    const deleteChatButton: HTMLButtonElement | null = chat.querySelector('[data-chat-delete]');
+    if (deleteChatButton) {
+      deleteChatButton.addEventListener('click', handleChatDelete);
+    }
   });
 };

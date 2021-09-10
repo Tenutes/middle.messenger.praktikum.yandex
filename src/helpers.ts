@@ -16,4 +16,16 @@ export default () => {
   Handlebars.registerHelper('self_message', function(value: string) {
     return value === 'self';
   });
+
+  Handlebars.registerHelper('message_sended', function(value: string) {
+    return value === 'sended';
+  });
+
+  Handlebars.registerHelper('message_recieved', function(value: string) {
+    return value === 'recieved';
+  });
+
+  Handlebars.registerHelper('message_readed', function(value: string) {
+    return value === 'readed';
+  });
 };

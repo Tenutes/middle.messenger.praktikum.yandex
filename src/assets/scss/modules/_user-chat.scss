@@ -25,6 +25,10 @@
 
   &__inner {
     &:hover {
+      [data-chat-delete] {
+        opacity: 1;
+      }
+
       #{$root} {
         &__decoration-top,
         &__decoration-bottom {

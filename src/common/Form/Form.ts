@@ -18,8 +18,8 @@ export default class Form implements IForm {
     return this;
   }
 
-  static get(id: string) {
-    let instance = Registry.get('Form', id);
+  static get(id: string): IForm {
+    let instance = <IForm>Registry.get('Form', id);
     if (instance) {
       return instance;
     }
@@ -52,10 +52,13 @@ export default class Form implements IForm {
     const names: HTMLInputElement[] = Array.from(
       this.form.querySelectorAll('[name="first_name"], [name="second_name"]')
     );
-    const passwords: HTMLInputElement[] = Array.from(this.form.querySelectorAll('input[type="password"]'));
+    const passwords: HTMLInputElement[] = Array.from(
+      this.form.querySelectorAll(
+        'input[type="password"], input[type="password_new"], input[type="password_new_repeat"]'
+      )
+    );
     const email: HTMLInputElement | null = this.form.querySelector('[name="email"]');
     const required: HTMLInputElement[] = Array.from(this.form.querySelectorAll('[required]'));
-
     if (phone) {
       const value = this.values.phone;
       if (value.length && !Validate.phone(value)) {

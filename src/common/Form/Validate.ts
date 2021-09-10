@@ -14,13 +14,10 @@ export default class Validate {
       return false;
     }
 
-    const match = value.match(/\(\d{3}\)/gi);
-    if (match) {
-      const code = match[0].substr(1, 3);
+    // Не проверяю длину просто потому, что люди пишут по-разному: с пробелами, с скобками.
+    const regExp = new RegExp(/^(\+7|7|8)?[\s\-]?\(?[489][0-9]{2}\)?[\s\-]?[0-9]{3}[\s\-]?[0-9]{2}[\s\-]?[0-9]{2}$/gi);
 
-      return this.phoneCodes().indexOf(code) !== -1;
-    }
-    return false;
+    return regExp.test(value);
   }
 
   static email(value: string | null): boolean {
@@ -39,6 +36,7 @@ export default class Validate {
   }
 
   static login(login: string): boolean {
+    // try this ^(?=[a-zA-Z\-_\d]+[a-zA-Z\-_]+|[a-zA-Z\-_]+[a-zA-Z\-_\d]+)[a-zA-Z\-_\d]{3,20}$
     const reg: RegExp = new RegExp(/^[A-Z0-9-_]{3,20}$/gim);
     const isNaN: boolean = Number.isNaN(Number(login));
     return reg.test(login) && isNaN;
