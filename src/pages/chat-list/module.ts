@@ -38,6 +38,12 @@ const renderChat = (chat: State) => {
   const template = Renderer.prerender(ChatPartial, chat);
   if (chatContainer) {
     chatContainer.innerHTML = template;
+
+    const chatMessages = chatContainer.querySelector('[data-chat-inner-list]');
+    const chatMessagesContainer = chatContainer.querySelector('[data-chat-inner-list-container]');
+    if (chatMessages && chatMessagesContainer) {
+      chatMessages.scrollTop = chatMessagesContainer.scrollHeight;
+    }
   }
 };
 

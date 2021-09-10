@@ -1,5 +1,5 @@
-<div class="px-4 flex flex-col h-full">
-  <div class="py-2 flex justify-between items-center border-b border-gray-light">
+<div class="flex flex-col h-full">
+  <div class="px-4 py-2 flex justify-between items-center border-b border-gray-light">
     <div class="flex items-center mr-2">
       <div class="w-[34px] h-[34px] flex-shrink-0 mr-2 rounded-full overflow-hidden">
         <img class="block w-full h-full bg-icon object-cover" src="{{user.profile_image}}" alt="{{user.name}}">
@@ -40,16 +40,19 @@
       </div>
     </div>
   </div>
-  <div data-chat-inner class="py-6 flex-1-1-auto overflow-hidden">
-    <div class="flex flex-col justify-end h-full">
-      {{#each messages}}
-        <div class="flex flex-col items-start max-h-full overflow-y-auto">
-          <p class="sticky mx-auto top-2 px-2 py-1 bg-white-80 text-center text-gray text-xs mb-3">{{this.date}}</p>
-          {{#each this.messages}}
-            {{> chat-message }}
-          {{/each}}
-        </div>
-      {{/each}}
+  <div data-chat-inner class="flex-1-1-auto overflow-hidden">
+    <div class="w-full h-full overflow-y-auto no-scrollbar" data-chat-inner-list>
+      <div class="flex flex-col justify-end min-h-full" data-chat-inner-list-container>
+        <div class="flex-1-1-auto min-h-[50px]"></div>
+        {{#each messages}}
+          <div class="px-4 flex flex-col items-start">
+            <p class="sticky mx-auto top-2 px-2 py-1 bg-white-80 text-center text-gray text-xs mb-3">{{this.date}}</p>
+            {{#each this.messages}}
+              {{> chat-message }}
+            {{/each}}
+          </div>
+        {{/each}}
+      </div>
     </div>
   </div>
   {{> chat-form }}
