@@ -25,9 +25,13 @@ yarn start // запускаем express
 
 ### Ссылки
 [figma](https://www.figma.com/file/mkZSo0ewVa2xP0tSr0Z0YL/YaChat?node-id=0%3A1)
-
+____
 [репозиторий, ветка sprint_1](https://github.com/Tenutes/middle.messenger.praktikum.yandex/tree/sprint_1)
 
-[pull request](https://github.com/Tenutes/middle.messenger.praktikum.yandex/pull/1)
+[репозиторий, ветка sprint_2](https://github.com/Tenutes/middle.messenger.praktikum.yandex/tree/sprint_2)
+____
+[pull request sprint_1](https://github.com/Tenutes/middle.messenger.praktikum.yandex/pull/1)
 
+[pull request sprint_2](https://github.com/Tenutes/middle.messenger.praktikum.yandex/pull/2)
+____
 [сайт в netlify](https://kind-saha-49adaf.netlify.app/)
