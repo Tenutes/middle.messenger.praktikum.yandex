@@ -1,4 +1,4 @@
-import { sendForm, validateFormOnSubmit } from '../../common/Form/helpers';
+import { sendForm, validateFormOnFieldFocusBlur, validateFormOnSubmit } from '../../common/Form/helpers';
 import { METHODS } from '../../common/Fetch/constants';
 
 export default async () => {
@@ -6,6 +6,7 @@ export default async () => {
   const changePasswordForm: HTMLFormElement | null = document.querySelector('form#form-change-password');
 
   if (updateForm) {
+    validateFormOnFieldFocusBlur(updateForm);
     const formData = await validateFormOnSubmit(updateForm).catch(() => {});
     if (formData) {
       const options = {
@@ -19,6 +20,7 @@ export default async () => {
     }
   }
   if (changePasswordForm) {
+    validateFormOnFieldFocusBlur(changePasswordForm);
     const formData = await validateFormOnSubmit(changePasswordForm).catch(() => {});
     if (formData) {
       const options = {

@@ -1,5 +1,6 @@
 import Registry from '../Registry/Registry';
 import Validate from './Validate';
+import { VALIDATOR_ERROR_CODES, VALIDATOR_ERROR_CODES_NAMES } from './constants';
 
 export default class Form implements IForm {
   id;
@@ -47,100 +48,48 @@ export default class Form implements IForm {
     this.errors = {};
     this.values = this.getValues();
 
-    const phone: HTMLInputElement | null = this.form.querySelector('[name="phone"]');
-    const login: HTMLInputElement | null = this.form.querySelector('[name="login"]');
-    const names: HTMLInputElement[] = Array.from(
-      this.form.querySelectorAll('[name="first_name"], [name="second_name"]')
-    );
-    const passwords: HTMLInputElement[] = Array.from(
-      this.form.querySelectorAll(
-        'input[type="password"], input[type="password_new"], input[type="password_new_repeat"]'
-      )
-    );
-    const email: HTMLInputElement | null = this.form.querySelector('[name="email"]');
-    const required: HTMLInputElement[] = Array.from(this.form.querySelectorAll('[required]'));
-    if (phone) {
-      const value = this.values.phone;
-      if (value.length && !Validate.phone(value)) {
-        const message = 'Укажите корректный телефон';
-        this.errors.phone = message;
-        this.showError('phone', message);
-      } else {
-        this.hideError('phone');
-      }
+    const fields: FormElement[] = Array.from(this.form.querySelectorAll('input:not([type=hidden]), textarea, select'));
+    fields.forEach(this.validateField.bind(this));
+
+    const passwords: FormElement[] = fields.filter(field => field.name.startsWith('password'));
+    if (passwords.length > 1) {
+      this.validatePasswords(<HTMLInputElement[]>passwords);
     }
-
-    if (email) {
-      const value = this.values.email;
-      if (value.length && !Validate.email(value)) {
-        const message = 'Укажите корректный Email';
-        this.errors.email = message;
-        this.showError('email', message);
-      } else {
-        this.hideError('email');
-      }
-    }
-
-    if (login) {
-      const value = this.values.login;
-
-      if (!Validate.login(value)) {
-        const message = 'Логин не соответствует условиям';
-        this.errors.login = message;
-        this.showError(login.name, message);
-      } else {
-        this.hideError(login.name);
-      }
-    }
-
-    if (names.length) {
-      names.forEach(name => {
-        const value = this.values[name.name];
-
-        if (!Validate.validateName(value)) {
-          const message = 'Пароль не соответствует условиям';
-          this.errors[name.name] = message;
-          this.showError(name.name, message);
-        } else {
-          this.hideError(name.name);
-        }
-      });
-    }
-
-    if (passwords.length) {
-      passwords.forEach(password => {
-        const value = this.values[password.name];
-
-        if (!Validate.password(value)) {
-          const message = 'Пароль не соответствует условиям';
-          this.errors[password.name] = message;
-          this.showError(password.name, message);
-        } else {
-          this.hideError(password.name);
-        }
-      });
-    }
-
-    for (let i = 0; i < required.length; i++) {
-      const element = <HTMLInputElement>required[i];
-
-      if (element.value === '') {
-        const message = 'Поле обязательно для заполнения';
-        element.classList.add('error');
-        this.errors[element.name] = message;
-        this.showError(element.name, message);
-      } else {
-        if (!this.errors[element.name]) {
-          this.hideError(element.name);
-        }
-      }
-    }
-
     return Object.keys(this.errors).length === 0;
   }
 
+  validateField(field: FormElement) {
+    const { success, error }: ValidationResult = Validate.isFieldValid(field);
+    if (success) {
+      this.hideError(field.name);
+    } else {
+      this.showError(field.name, error.messageTemplate);
+    }
+  }
+
+  validatePasswords(passwords: HTMLInputElement[]) {
+    const mainPasswordField = passwords.find(({ name }: HTMLInputElement) => name === 'password');
+    const mainNewPasswordField = passwords.find(({ name }: HTMLInputElement) => name === 'password_new');
+    if (mainNewPasswordField) {
+      const repeater = passwords.find(({ name }: HTMLInputElement) => name === 'password_new_repeat');
+      this.validatePasswordMatch(mainNewPasswordField, repeater);
+    }
+
+    if (mainPasswordField) {
+      const repeater = passwords.find(({ name }: HTMLInputElement) => name === 'password_repeat');
+      this.validatePasswordMatch(mainPasswordField, repeater);
+    }
+  }
+
+  validatePasswordMatch(password: HTMLInputElement, password_repeater: HTMLInputElement | undefined) {
+    if (password_repeater && password_repeater.value !== password.value) {
+      this.showError(password.name, VALIDATOR_ERROR_CODES_NAMES[VALIDATOR_ERROR_CODES.FIELDS_NO_MATCH]);
+      this.showError(password_repeater.name, VALIDATOR_ERROR_CODES_NAMES[VALIDATOR_ERROR_CODES.FIELDS_NO_MATCH]);
+    }
+  }
+
   clear() {
-    const added = <HTMLInputElement[]>(
+    const added = <FormElement[]>(
       Array.from(this.form.querySelectorAll('input:not([type="hidden"]):not([type="submit"]), select, textarea'))
     );
     added.forEach(element => (element.value = ''));
@@ -164,9 +113,11 @@ export default class Form implements IForm {
     }
   }
 
-  showError(name: string, message: string) {
+  showError(name: string, messageTemplate: string) {
     const element = this.form.querySelector(`[name="${name}"]`);
+    const message = this.generateMessageFromTemplate(name, messageTemplate);
     if (element) {
+      this.errors[name] = message;
       element.classList.add('!text-red', 'error');
       if (element.parentElement) {
         const errorLabel = <HTMLLabelElement>element.parentElement.querySelector(`label[for="${name}"].error`);
@@ -176,6 +127,41 @@ export default class Form implements IForm {
           const errorChild = this.generateErrorLabel(name, message);
           element.parentElement.appendChild(errorChild);
         }
+      }
+    }
+  }
+
+  generateMessageFromTemplate(fieldName: string, messageTemplate: string) {
+    const replacer = this.getReplacerByFieldName(fieldName);
+
+    return messageTemplate.replace('{{field}}', replacer);
+  }
+
+  getReplacerByFieldName(fieldName: string) {
+    switch (fieldName) {
+      case 'login': {
+        return 'Логин';
+      }
+      case 'password':
+      case 'password_new':
+      case 'password_repeat':
+      case 'password_new_repeat': {
+        return 'Пароль';
+      }
+      case 'first_name': {
+        return 'Имя';
+      }
+      case 'second_name': {
+        return 'Фамилия';
+      }
+      case 'email': {
+        return 'Почта';
+      }
+      case 'phone': {
+        return 'Телефон';
+      }
+      default: {
+        return 'Поле';
       }
     }
   }
