@@ -1,3 +1,4 @@
+require('babel-polyfill');
 import './assets/scss/app.scss';
 import { Renderer } from './common/Renderer/Renderer';
 import { Router } from './common/Router/Router';

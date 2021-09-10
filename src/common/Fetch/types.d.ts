@@ -1,14 +1,14 @@
 interface HTTPOptions {
   timeout?: number | null;
   headers?: StringRecord;
-  data: Record<string, unknown> | null;
+  data?: Record<string, unknown> | null;
 }
 
 interface HTTPRequestOptions {
   method: METHODS;
   timeout?: number | null;
   headers?: StringRecord;
-  data: string | null;
+  data?: string | null;
 }
 
 interface IHTTPTransport {

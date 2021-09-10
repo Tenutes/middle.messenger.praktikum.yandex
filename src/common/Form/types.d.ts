@@ -22,11 +22,17 @@ interface IForm {
 interface ISender {
   readonly form;
   readonly formData: Record<string, unknown>;
-  uri: string;
+  url: string;
   headers: Record<string, string>;
   type: string;
+  options: HTTPOptions;
 
   send(): Promise;
 
   _getDataFromForm(): Record<string, unknown>;
+}
+
+interface ISenderOptions {
+  url: string;
+  options: HTTPRequestOptions;
 }

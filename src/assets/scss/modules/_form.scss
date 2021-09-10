@@ -1,0 +1,8 @@
+input,
+textarea {
+  &.error {
+    &::placeholder {
+      color: var(--ya-red);
+    }
+  }
+}

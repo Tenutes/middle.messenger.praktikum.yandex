@@ -1,4 +1,4 @@
-<form id="chat-form" class="chat-form py-2 flex justify-between items-center border-t border-gray-light">
+<form id="chat-form" novalidate class="chat-form py-2 flex justify-between items-center border-t border-gray-light">
   <div class="relative flex-shrink-0 mr-2 flex items-center">
     <div class="chat-form__append cursor-pointer duration-200 text-blue w-[32px] h-[32px]">
       <svg class="w-full h-full block">
@@ -42,6 +42,7 @@
     class="flex-grow border-0 rounded-10 bg-gray-light placeholder:text-gray text-black px-4 py-2 leading-none text-sm"
     placeholder="Сообщение"
     rows="1"
+    required
   ></textarea>
   <button class="cursor-pointer duration-200 flex-shrink-0 text-blue w-[32px] h-[32px] ml-2">
     <svg class="w-full h-full block">

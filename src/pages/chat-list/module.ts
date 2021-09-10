@@ -1,6 +1,8 @@
 import { Store } from '../../common/Store/Store';
 import { Renderer } from '../../common/Renderer/Renderer';
 import ChatPartial from '../../components/chat/chat.hbs';
+import { sendForm, validateFormOnSubmit } from '../../common/Form/helpers';
+import { METHODS } from '../../common/Fetch/constants';
 
 const searchInput: HTMLInputElement | null = document.querySelector('input[type=search]');
 let searchInputLabel: HTMLLabelElement | null | undefined = searchInput?.parentElement?.querySelector('label');
@@ -49,11 +51,11 @@ const handleChatDelete = (e: Event) => {
 };
 
 const addChatEvents = () => {
-  addChatFormEvents();
   addUserEvents();
+  addChatFormEvents().then();
 };
 
-const addChatFormEvents = () => {
+const addChatFormEvents = async () => {
   const chatForm: HTMLFormElement | null = document.querySelector('form#chat-form');
   if (chatForm) {
     const appendButtons: HTMLButtonElement[] = Array.from(chatForm.querySelectorAll('[data-chat-form-append]'));
@@ -61,6 +63,20 @@ const addChatFormEvents = () => {
     appendButtons.forEach(button => {
       button.addEventListener('click', handleAppendButtonClick);
     });
+
+    if (chatForm) {
+      const formData = await validateFormOnSubmit(chatForm).catch(() => {});
+      if (formData) {
+        const options = {
+          url: 'test/url',
+          options: {
+            method: METHODS.POST,
+          },
+        };
+        const response = await sendForm(chatForm, options).catch(() => {});
+        console.log(response);
+      }
+    }
   }
 };
 

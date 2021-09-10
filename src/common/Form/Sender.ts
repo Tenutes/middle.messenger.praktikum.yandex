@@ -3,19 +3,21 @@ import Fetcher from '../Fetch/Fetcher';
 export default class Sender implements ISender {
   readonly form: HTMLFormElement;
   readonly formData: Record<string, unknown>;
-  uri: string;
+  url: string;
   headers: Record<string, string> = {};
   type: string = 'text';
+  options: HTTPOptions;
 
-  constructor(form: HTMLFormElement, uri: string) {
+  constructor(form: HTMLFormElement, { url, options }: ISenderOptions) {
     this.form = form;
     this.formData = this._getDataFromForm();
-    this.uri = uri;
+    this.url = url;
+    this.options = { ...options, data: this._getDataFromForm() };
     return this;
   }
 
   send() {
-    return Fetcher.post(this.uri, { data: this.formData }).catch((e: PromiseRejectionEvent) => {
+    return Fetcher.post(this.url, this.options).catch((e: PromiseRejectionEvent) => {
       console.log(e);
     });
   }

@@ -3,7 +3,7 @@ import { METHODS } from './constants';
 
 const HTTPTransport: IHTTPTransport = {
   get(url, options) {
-    url = url + queryStringify(options.data);
+    url = url + queryStringify(options.data || {});
     const { httpOptions, timeout } = this.prepareOptions(options, METHODS.GET);
     return this.request(url, httpOptions, timeout);
   },
@@ -21,7 +21,7 @@ const HTTPTransport: IHTTPTransport = {
   },
 
   prepareOptions(options, method) {
-    const data = queryStringify(options.data);
+    const data = queryStringify(options.data || {});
     const httpOptions = { ...options, method, data };
     const timeout = options.timeout || undefined;
     return { httpOptions, timeout };
