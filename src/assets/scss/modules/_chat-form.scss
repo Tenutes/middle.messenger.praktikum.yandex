@@ -1,0 +1,20 @@
+.chat-form {
+  $root: &;
+  &__append {
+    &:hover {
+      + #{$root} {
+        &__append-list {
+          opacity: 1;
+          visibility: visible;
+        }
+      }
+    }
+  }
+
+  &__append-list {
+    &:hover {
+      opacity: 1;
+      visibility: visible;
+    }
+  }
+}
