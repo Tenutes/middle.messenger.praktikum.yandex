@@ -13,7 +13,7 @@ export default async () => {
           method: METHODS.POST,
         },
       };
-      const response = await sendForm(form, options).catch(() => {
+      await sendForm(form, options).catch(() => {
         // пока без API
         location.href = '/chat-list';
       });
