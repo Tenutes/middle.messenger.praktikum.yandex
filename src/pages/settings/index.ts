@@ -1,7 +1,7 @@
-import changePassword from './change-password.hbs';
-import template from './main.hbs';
+import ChangePassword from './change-password';
+import Settings from './settings';
 import state from './state';
-import update from './update.hbs';
+import Update from './update';
 
 const module = () => import('./module');
 
@@ -9,19 +9,19 @@ export default {
   routes: [
     {
       path: '/settings',
-      template,
+      component: Settings,
       state,
       module,
     },
     {
       path: '/settings/update',
-      template: update,
+      component: Update,
       state,
       module,
     },
     {
       path: '/settings/change-password',
-      template: changePassword,
+      component: ChangePassword,
       state,
       module,
     },

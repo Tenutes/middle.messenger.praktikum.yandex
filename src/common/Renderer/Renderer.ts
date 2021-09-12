@@ -3,14 +3,10 @@ import { Store } from '../Store/Store';
 import compile from './compile';
 
 export const Renderer: Renderer = {
-  _currentTemplate: null,
+  _component: null,
   _module: null,
   _id: null,
   _el: null,
-
-  get template() {
-    return this._currentTemplate;
-  },
 
   renderTo(id) {
     this._setEl(id);
@@ -32,15 +28,16 @@ export const Renderer: Renderer = {
   },
 
   _setTemplate() {
-    const { template, state, module } = Router.currentPage as ICurrentPage;
-    this._currentTemplate = template;
+    const { component, state, module } = Router.currentPage as ICurrentPage;
+    this._component = component;
     this._module = module;
     Store.setState(state);
   },
 
   _insertTemplate() {
-    if (this._el && this._currentTemplate) {
-      this._el.innerHTML = compile(this._currentTemplate, Store.state);
+    if (this._el && this._component) {
+      const componentInstance = new this._component(Store.state);
+      this._el.innerHTML = componentInstance.getContent();
       if (this._module && typeof this._module === 'function') {
         this._module().then(({ default: fn }: { default: () => void }) => {
           typeof fn === 'function' && fn();

@@ -18,7 +18,7 @@ interface IState {
 
 interface Route {
   path: string;
-  template: unknown;
+  component: IBlock;
   state?: { [key: string]: unknown };
   module?: unknown;
 }
@@ -56,7 +56,7 @@ type TemplateFn = (ctx: IState | null) => string;
 
 interface ICurrentPage {
   state: IState;
-  template: TemplateFn;
+  component: IBlock;
 
   module(ctx: Istate): string;
 }

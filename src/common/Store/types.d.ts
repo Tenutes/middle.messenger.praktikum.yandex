@@ -3,8 +3,7 @@ interface State {
 }
 
 interface StateManager {
-  _state: Record<string, unknown>;
-  readonly state: Record<string, unknown>;
+  state: Record<string, unknown>;
 
   install(): void;
 

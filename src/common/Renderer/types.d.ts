@@ -1,9 +1,8 @@
 interface Renderer {
-  _currentTemplate: TemplateFn | null;
+  _component: typeof IBlock | null;
   _module: unknown | null;
   _id: string | null;
   _el: HTMLElement | null;
-  template: unknown | null;
 
   renderTo(id: string): void;
 

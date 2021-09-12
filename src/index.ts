@@ -3,14 +3,8 @@ import './assets/scss/app.scss';
 import { Renderer } from './common/Renderer/Renderer';
 import { Router } from './common/Router/Router';
 import { Store } from './common/Store/Store';
-import loadHelpers from './helpers';
-import loadPartials from './partials';
 import routes from './routes';
-
-/** Регистрируем partial's */
-loadPartials();
-/** Регистрируем helper's */
-loadHelpers();
+import './helpers';
 
 /** Используется самописный роутер */
 Router.use(routes).install();

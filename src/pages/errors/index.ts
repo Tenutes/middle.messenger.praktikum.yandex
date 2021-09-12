@@ -1,16 +1,15 @@
-import page404 from './404.hbs';
-import page500 from './500.hbs';
+import Page404 from './404';
+import Page500 from './500';
 
 export default {
   routes: [
     {
-      /** Без '/' - для корректного определения в роутере */
       path: '404',
-      template: page404,
+      component: Page404,
     },
     {
       path: '/500',
-      template: page500,
+      component: Page500,
     },
   ],
 };
