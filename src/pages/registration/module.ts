@@ -16,13 +16,16 @@ export default async () => {
     const password = <FormElement>form.querySelector('input[name="password"]');
     const passwordRepeat = <FormElement>form.querySelector('input[name="password_repeat"]');
     const validations = {
-      email: emailMatch,
-      login: loginMatch,
-      first_name: nameMatch,
-      second_name: nameMatch,
-      phone: phoneMatch,
-      password_repeat: [() => equalsMatch(password, passwordRepeat), passwordMatch],
-      password: passwordMatch,
+      email: { fn: emailMatch, errorReplacer: 'Почта' },
+      login: { fn: loginMatch, errorReplacer: 'Логин' },
+      first_name: { fn: nameMatch, errorReplacer: 'Имя' },
+      second_name: { fn: nameMatch, errorReplacer: 'Фамилия' },
+      phone: { fn: phoneMatch, errorReplacer: 'Телефон' },
+      password_repeat: [
+        { fn: () => equalsMatch(password, passwordRepeat), errorReplacer: 'Пароли' },
+        { fn: passwordMatch, errorReplacer: 'Пароль' },
+      ],
+      password: { fn: passwordMatch, errorReplacer: 'Пароль' },
     };
     const formData = await validateFormOnSubmit(form, validations).catch(() => {});
     if (formData) {

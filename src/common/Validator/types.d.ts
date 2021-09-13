@@ -19,5 +19,10 @@ interface ValidatorValidation {
 }
 
 type ValidationFn = (ctx?: unknown) => ValidationResult;
-type ValidationRule = ValidationFn | ValidationFn[];
-type ValidatorRawRules = Record<string, ValidationRule>;
+
+interface ValidationRule {
+  fn: ValidationFn;
+  errorReplacer?: string;
+}
+
+type ValidatorRules = Record<string, ValidationRule | ValidationRule[]>;

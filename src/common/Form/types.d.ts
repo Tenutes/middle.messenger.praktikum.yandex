@@ -5,6 +5,7 @@ interface IForm {
   form: HTMLFormElement;
   values: Record<string, unknown>;
   errors: StringRecord;
+  errorMessages: StringRecord;
 
   getValues(): Record<string, unknown>;
 
@@ -12,9 +13,13 @@ interface IForm {
 
   getFormData(): FormData;
 
-  addValidation(field: FormElement, validation: () => ValidationResult): this;
+  addValidationRules(rules: ValidatorRawRules): void;
+
+  addValidation(field: FormElement, validation: ValidationRule): this;
 
   validateField(field: FormElement): void;
+
+  handleValidationResult(field: FormElement, result: ValidationResult): void;
 
   clear(): void;
 
@@ -22,13 +27,7 @@ interface IForm {
 
   hideError(name: string): void;
 
-  generateMessageFromTemplate(fieldName: string, messageTemplate: string): string;
-
-  getReplacerByFieldName(fieldName: string): string;
-
   showError(name: string, message: string): void;
-
-  generateErrorLabel(name: string, message: string): HTMLElement;
 }
 
 interface ISender {
@@ -47,4 +46,10 @@ interface ISender {
 interface ISenderOptions {
   url: string;
   options: HTTPRequestOptions;
+}
+
+interface IFormError {
+  classNames: string[];
+
+  render(fieldName: string, messageTemplate: string): Node;
 }
