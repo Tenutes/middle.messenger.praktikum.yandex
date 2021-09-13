@@ -1,12 +1,14 @@
 import Registry from '../Registry/Registry';
 import Validator from '../Validator/Validator';
+import FormError from './FormError';
 
 export default class Form implements IForm {
-  id;
-  form;
+  id: string;
+  form: HTMLFormElement;
   validator: Validator;
-  values: Record<string, unknown> = {};
-  errors: StringRecord = {};
+  values: Record<string, unknown>;
+  errors: StringRecord;
+  errorMessages: StringRecord;
 
   constructor(id: string) {
     this.id = id;
@@ -16,6 +18,9 @@ export default class Form implements IForm {
     }
     this.form = <HTMLFormElement>form;
     this.validator = new Validator();
+    this.errorMessages = {};
+    this.errors = {};
+    this.values = {};
 
     return this;
   }
@@ -47,29 +52,32 @@ export default class Form implements IForm {
     return this.values;
   }
 
-  addValidationRules(rules: ValidatorRawRules) {
+  addValidationRules(rules: ValidatorRules) {
     for (const [field, validation] of Object.entries(rules)) {
       const formField = <FormElement>this.form.querySelector(`[name='${field}']`);
       if (Array.isArray(validation)) {
         validation.forEach(validationRule => {
-          this.addValidation(formField, validationRule.bind(formField));
+          this.addValidation(formField, validationRule);
         });
       } else {
-        this.addValidation(formField, validation.bind(formField));
+        this.addValidation(formField, validation);
       }
     }
   }
 
-  addValidation(field: FormElement, validation: ValidationFn): this {
-    this.validator.setValidation(field, validation);
+  addValidation(field: FormElement, validation: ValidationRule): this {
+    this.validator.setValidation(field, validation.fn.bind(field));
+    if (validation.errorReplacer) {
+      this.errorMessages[field.name] = validation.errorReplacer;
+    }
     return this;
   }
 
   isValid() {
     this.errors = {};
+    this.hideErrors();
 
     const result = this.validator.validateAll();
-    console.log(result);
     result.forEach((validationResult: ValidationAllResult) => {
       this.handleValidationResult(<FormElement>validationResult.field, validationResult.result);
     });
@@ -84,9 +92,7 @@ export default class Form implements IForm {
 
   handleValidationResult(field: FormElement, validationResult: ValidationResult) {
     const { success, error }: ValidationResult = validationResult;
-    if (success) {
-      this.hideError(field.name);
-    } else {
+    if (!success) {
       this.showError(field.name, error.messageTemplate);
     }
   }
@@ -112,7 +118,9 @@ export default class Form implements IForm {
     if (element) {
       element.classList.remove('error', '!text-red');
       const label = this.form.querySelector(`label[for="${name}"].error`);
-      label && label.remove();
+      if (label) {
+        label.remove();
+      }
     }
   }
 
@@ -121,7 +129,8 @@ export default class Form implements IForm {
       return;
     }
     const element = this.form.querySelector(`[name="${name}"]`);
-    const message = this.generateMessageFromTemplate(name, messageTemplate);
+    const replacer = this.errorMessages[name] || 'Поле';
+    const message = messageTemplate.replace('{{field}}', replacer);
     if (element) {
       this.errors[name] = message;
       element.classList.add('!text-red', 'error');
@@ -130,63 +139,10 @@ export default class Form implements IForm {
         if (errorLabel) {
           errorLabel.innerText = message;
         } else {
-          const errorChild = this.generateErrorLabel(name, message);
+          const errorChild = FormError.render(name, message);
           element.parentElement.appendChild(errorChild);
         }
       }
     }
-  }
-
-  generateMessageFromTemplate(fieldName: string, messageTemplate: string) {
-    const replacer = this.getReplacerByFieldName(fieldName);
-
-    return messageTemplate.replace('{{field}}', replacer);
-  }
-
-  getReplacerByFieldName(fieldName: string) {
-    switch (fieldName) {
-      case 'login': {
-        return 'Логин';
-      }
-      case 'password':
-      case 'password_new':
-      case 'password_repeat':
-      case 'password_new_repeat': {
-        return 'Пароль';
-      }
-      case 'first_name': {
-        return 'Имя';
-      }
-      case 'second_name': {
-        return 'Фамилия';
-      }
-      case 'email': {
-        return 'Почта';
-      }
-      case 'phone': {
-        return 'Телефон';
-      }
-      default: {
-        return 'Поле';
-      }
-    }
-  }
-
-  generateErrorLabel(name: string, message: string) {
-    const label = document.createElement('label');
-    const labelClasses = [
-      'error',
-      'absolute',
-      'text-[9px]',
-      'top-[calc(100%+2px)]',
-      'left-0',
-      'text-red',
-      'leading-none',
-    ];
-    label.setAttribute('for', name);
-    label.setAttribute('generated', 'true');
-    label.classList.add(...labelClasses);
-    label.innerText = message;
-    return label;
   }
 }

@@ -8,8 +8,8 @@ export default async () => {
     validateFormOnFieldFocusBlur(form);
 
     const validations = {
-      login: loginMatch,
-      password: passwordMatch,
+      login: { fn: loginMatch, errorReplacer: 'Логин' },
+      password: { fn: passwordMatch, errorReplacer: 'Пароль' },
     };
 
     const formData = await validateFormOnSubmit(form, validations).catch(() => {});

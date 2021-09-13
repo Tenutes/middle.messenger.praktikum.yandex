@@ -4,6 +4,7 @@ import { METHODS } from '../../common/Fetch/constants';
 import Chat from '../../components/chat/chat';
 import ChatForm from '../../components/chat/ChatForm/chat-form';
 import ChatMessage from '../../components/chat/ChatMessage/chat-message';
+import { required } from '../../common/Validator/Validator';
 
 const searchInput: HTMLInputElement | null = document.querySelector('input[type=search]');
 let searchInputLabel: HTMLLabelElement | null | undefined = searchInput?.parentElement?.querySelector('label');
@@ -83,7 +84,12 @@ const addChatFormEvents = async () => {
     });
 
     if (chatForm) {
-      const formData = await validateFormOnSubmit(chatForm).catch(() => {});
+      const validations = {
+        message: {
+          fn: required,
+        },
+      };
+      const formData = await validateFormOnSubmit(chatForm, validations).catch(() => {});
       if (formData) {
         const options = {
           url: 'test/url',

@@ -17,12 +17,12 @@ export default async () => {
   if (updateForm) {
     validateFormOnFieldFocusBlur(updateForm);
     const validations = {
-      email: emailMatch,
-      login: loginMatch,
-      first_name: nameMatch,
-      second_name: nameMatch,
-      phone: phoneMatch,
-      nickname: required,
+      email: { fn: emailMatch, errorReplacer: 'Почта' },
+      login: { fn: loginMatch, errorReplacer: 'Логин' },
+      first_name: { fn: nameMatch, errorReplacer: 'Имя' },
+      second_name: { fn: nameMatch, errorReplacer: 'Фамилия' },
+      phone: { fn: phoneMatch, errorReplacer: 'Телефон' },
+      nickname: { fn: required, errorReplacer: 'Никнейм' },
     };
     const formData = await validateFormOnSubmit(updateForm, validations).catch(() => {});
 
@@ -42,9 +42,12 @@ export default async () => {
     const password = <FormElement>changePasswordForm.querySelector('input[name="password_new"]');
     const passwordRepeat = <FormElement>changePasswordForm.querySelector('input[name="password_new_repeat"]');
     const validations = {
-      password_new_repeat: [() => equalsMatch(password, passwordRepeat), passwordMatch],
-      password: passwordMatch,
-      password_new: passwordMatch,
+      password_new_repeat: [
+        { fn: () => equalsMatch(password, passwordRepeat), errorReplacer: 'Пароли' },
+        { fn: passwordMatch, errorReplacer: 'Пароль' },
+      ],
+      password: { fn: passwordMatch, errorReplacer: 'Пароль' },
+      password_new: { fn: passwordMatch, errorReplacer: 'Пароль' },
     };
     const formData = await validateFormOnSubmit(changePasswordForm, validations).catch(() => {});
     if (formData) {
