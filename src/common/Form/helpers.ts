@@ -16,7 +16,7 @@ export const validateFormOnFieldFocusBlur = (form: HTMLFormElement) => {
   });
 };
 
-export const validateFormOnSubmit = (form: HTMLFormElement, validationRules?: ValidatorRawRules) => {
+export const validateFormOnSubmit = (form: HTMLFormElement, validationRules?: ValidatorRules) => {
   return new Promise((res, rej) => {
     form.addEventListener('submit', e => {
       e.preventDefault();
