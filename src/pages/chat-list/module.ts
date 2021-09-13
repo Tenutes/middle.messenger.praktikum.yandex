@@ -1,8 +1,9 @@
 import { Store } from '../../common/Store/Store';
-import { Renderer } from '../../common/Renderer/Renderer';
-import ChatPartial from '../../components/chat/chat.hbs';
 import { sendForm, validateFormOnSubmit } from '../../common/Form/helpers';
 import { METHODS } from '../../common/Fetch/constants';
+import Chat from '../../components/chat/chat';
+import ChatForm from '../../components/chat/ChatForm/chat-form';
+import ChatMessage from '../../components/chat/ChatMessage/chat-message';
 
 const searchInput: HTMLInputElement | null = document.querySelector('input[type=search]');
 let searchInputLabel: HTMLLabelElement | null | undefined = searchInput?.parentElement?.querySelector('label');
@@ -25,17 +26,29 @@ const onSearchFocus = () => {
 const handleChatClick = (e: Event) => {
   const chatId = Number((<HTMLDivElement>e.currentTarget)?.dataset?.chat);
   if (chatId) {
-    const chat = (<ChatState>Store.state).chatList.find(({ id }) => id === chatId);
+    const chat = (<ChatProps>(<unknown>Store.state)).chatList.find(({ id }) => id === chatId);
     if (chat) {
-      Store.update({ currentChat: chat });
-      renderChat(chat);
+      const chatProps: CurrentChatProps = {
+        chat: {
+          ...chat,
+          messageGroups: chat.messageGroups.map(group => ({
+            ...group,
+            messages: group.messages.map(message => new ChatMessage(<Message>message).getContent()),
+          })),
+        },
+        chatForm: new ChatForm().getContent(),
+      };
+
+      console.log(chatProps);
+      Store.update({ currentChat: chatProps });
+      renderChat(chatProps);
       addChatEvents();
     }
   }
 };
 
-const renderChat = (chat: State) => {
-  const template = Renderer.prerender(ChatPartial, chat);
+const renderChat = (chatState: CurrentChatProps) => {
+  const template = new Chat(chatState).getContent();
   if (chatContainer) {
     chatContainer.innerHTML = template;
 

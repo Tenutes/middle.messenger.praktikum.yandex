@@ -1,10 +1,7 @@
 import { Router } from '../Router/Router';
 
 export const Store: StateManager = {
-  _state: {},
-  get state() {
-    return this._state;
-  },
+  state: {},
 
   install() {
     const currentPageState = Router.currentPage?.state;
@@ -22,9 +19,9 @@ export const Store: StateManager = {
   },
 
   _setState(state: State) {
-    this._state = state;
+    this.state = state;
   },
   _use(store: State) {
-    this._state = { ...store };
+    this.state = { ...store };
   },
 };

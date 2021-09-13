@@ -1,0 +1,29 @@
+<div class="w-full bg-white h-screen">
+  {{{ back }}}
+  <div class="h-full max-h-screen py-12">
+    <div class="w-full max-w-[530px] px-3 flex flex-col items-center mx-auto">
+      <div class="mb-8 w-full flex flex-col items-center">
+        {{{ settingsProfile }}}
+      </div>
+      <div class="w-full mb-10">
+        {{#each fields}}
+          <div class="flex justify-between border-b border-gray-lightest py-2 last:border-0">
+            <p class="text-sm text-black mr-2">{{this.label}}</p>
+            <p class="text-sm text-gray">{{this.value}}</p>
+          </div>
+        {{/each}}
+      </div>
+      <div class="w-full">
+        <div class="flex justify-between border-b border-gray-lightest py-2 last:border-0">
+          {{{ changeDataLink }}}
+        </div>
+        <div class="flex justify-between border-b border-gray-lightest py-2 last:border-0">
+          {{{ changePasswordLink }}}
+        </div>
+        <div class="flex justify-between border-b border-gray-lightest py-2 last:border-0">
+          {{{ exitLink }}}
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

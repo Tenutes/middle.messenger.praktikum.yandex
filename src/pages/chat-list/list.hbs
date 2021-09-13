@@ -2,18 +2,15 @@
   <div class="w-[310px] flex-shrink-0 bg-blue-light border-r border-gray-light pt-4 flex flex-col">
     <div class="mb-3">
       <div class="px-2 text-right mb-4">
-        {{> link href="/settings/" label="Профиль" classes="inline-block decoration-none text-base text-gray hover:text-blue duration-200 arrowed"}}
+        {{{ link }}}
       </div>
-      {{> search}}
+      {{{ search }}}
     </div>
     <div class="flex-1-1-auto overflow-hidden">
       <div class="w-full h-full overflow-y-auto no-scrollbar" data-chat-list>
         <div class="">
-          {{#each chatList}}
-            {{> chat-user}}
-          {{/each}}
-          {{#each chatList}}
-            {{> chat-user}}
+          {{#each chats}}
+            {{{ this }}}
           {{/each}}
         </div>
       </div>

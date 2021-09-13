@@ -1,6 +1,6 @@
 import Registry from '../Registry/Registry';
-import Validate from './Validate';
-import { VALIDATOR_ERROR_CODES, VALIDATOR_ERROR_CODES_NAMES } from './constants';
+import Validate from '../Validator/Validator';
+import { VALIDATOR_ERROR_CODES, VALIDATOR_ERROR_CODES_NAMES } from '../Validator/constants';
 
 export default class Form implements IForm {
   id;

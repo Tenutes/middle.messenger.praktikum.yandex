@@ -1,4 +1,4 @@
-import login from './login.hbs';
+import Login from './login';
 import state from './state';
 
 const module = () => import('./module');
@@ -7,7 +7,7 @@ export default {
   routes: [
     {
       path: '/',
-      template: login,
+      component: Login,
       state,
       module,
     },
