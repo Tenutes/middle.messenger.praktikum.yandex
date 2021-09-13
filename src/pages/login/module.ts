@@ -1,11 +1,18 @@
 import { sendForm, validateFormOnFieldFocusBlur, validateFormOnSubmit } from '../../common/Form/helpers';
 import { METHODS } from '../../common/Fetch/constants';
+import { loginMatch, passwordMatch } from '../../common/Validator/constants';
 
 export default async () => {
   const form: HTMLFormElement | null = document.querySelector('form#form-login');
   if (form) {
     validateFormOnFieldFocusBlur(form);
-    const formData = await validateFormOnSubmit(form).catch(() => {});
+
+    const validations = {
+      login: loginMatch,
+      password: passwordMatch,
+    };
+
+    const formData = await validateFormOnSubmit(form, validations).catch(() => {});
     if (formData) {
       const options = {
         url: 'test/url',

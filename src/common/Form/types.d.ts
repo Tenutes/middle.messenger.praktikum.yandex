@@ -12,9 +12,7 @@ interface IForm {
 
   getFormData(): FormData;
 
-  validatePasswords(passwords: HTMLInputElement[]): void;
-
-  validatePasswordMatch(password: HTMLInputElement, password_repeater: HTMLInputElement | undefined): void;
+  addValidation(field: FormElement, validation: () => ValidationResult): this;
 
   validateField(field: FormElement): void;
 

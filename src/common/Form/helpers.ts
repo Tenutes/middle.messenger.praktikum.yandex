@@ -16,11 +16,15 @@ export const validateFormOnFieldFocusBlur = (form: HTMLFormElement) => {
   });
 };
 
-export const validateFormOnSubmit = (form: HTMLFormElement) => {
+export const validateFormOnSubmit = (form: HTMLFormElement, validationRules?: ValidatorRawRules) => {
   return new Promise((res, rej) => {
     form.addEventListener('submit', e => {
       e.preventDefault();
       const formObject = new Form(form.id);
+      if (validationRules) {
+        formObject.addValidationRules(validationRules);
+      }
+
       if (formObject.isValid()) {
         console.log(formObject.getValues());
         return res(formObject.getValues());
