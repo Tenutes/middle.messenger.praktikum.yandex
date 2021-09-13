@@ -3,12 +3,14 @@ type FormElement = HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement;
 interface IForm {
   id: string;
   form: HTMLFormElement;
-  values: StringRecord;
+  values: Record<string, unknown>;
   errors: StringRecord;
 
-  getValues(id: string): Record<string, string>;
+  getValues(): Record<string, unknown>;
 
   isValid(): boolean;
+
+  getFormData(): FormData;
 
   validatePasswords(passwords: HTMLInputElement[]): void;
 

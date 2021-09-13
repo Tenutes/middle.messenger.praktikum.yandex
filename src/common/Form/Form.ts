@@ -5,7 +5,7 @@ import { VALIDATOR_ERROR_CODES, VALIDATOR_ERROR_CODES_NAMES } from '../Validator
 export default class Form implements IForm {
   id;
   form;
-  values: StringRecord = {};
+  values: Record<string, unknown> = {};
   errors: StringRecord = {};
 
   constructor(id: string) {
@@ -31,14 +31,17 @@ export default class Form implements IForm {
     return instance;
   }
 
-  getValues() {
-    this.values = {};
-    if (this.form) {
-      const inputs = <HTMLInputElement[]>Array.from(this.form.querySelectorAll('[name]'));
+  getFormData() {
+    return new FormData(this.form);
+  }
 
-      inputs.forEach((input: HTMLInputElement) => {
-        this.values[input.name] = input.value;
-      });
+  getValues() {
+    const formData = this.getFormData();
+    this.values = {};
+
+    for (const entry of formData.entries()) {
+      const key = <string>entry[0];
+      this.values[key] = entry[1];
     }
 
     return this.values;

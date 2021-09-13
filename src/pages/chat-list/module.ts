@@ -1,4 +1,4 @@
-import { Store } from '../../common/Store/Store';
+import Store from '../../common/Store/Store';
 import { sendForm, validateFormOnSubmit } from '../../common/Form/helpers';
 import { METHODS } from '../../common/Fetch/constants';
 import Chat from '../../components/chat/chat';
@@ -39,7 +39,6 @@ const handleChatClick = (e: Event) => {
         chatForm: new ChatForm().getContent(),
       };
 
-      console.log(chatProps);
       Store.update({ currentChat: chatProps });
       renderChat(chatProps);
       addChatEvents();
