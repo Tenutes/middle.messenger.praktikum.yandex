@@ -2,9 +2,9 @@ require('babel-polyfill');
 import './assets/scss/app.scss';
 import './helpers';
 
-import { Renderer } from './common/Renderer/Renderer';
-import { Router } from './common/Router/Router';
-import { Store } from './common/Store/Store';
+import Renderer from './common/Renderer/Renderer';
+import Router from './common/Router/Router';
+import Store from './common/Store/Store';
 import routes from './routes';
 
 /** Используется самописный роутер */

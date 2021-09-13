@@ -1,11 +1,11 @@
 import Registry from '../Registry/Registry';
-import Validate from '../Validator/Validator';
-import { VALIDATOR_ERROR_CODES, VALIDATOR_ERROR_CODES_NAMES } from '../Validator/constants';
+import Validator from '../Validator/Validator';
 
 export default class Form implements IForm {
   id;
   form;
-  values: StringRecord = {};
+  validator: Validator;
+  values: Record<string, unknown> = {};
   errors: StringRecord = {};
 
   constructor(id: string) {
@@ -15,12 +15,13 @@ export default class Form implements IForm {
       throw new Error('There is no Form with id:' + id);
     }
     this.form = <HTMLFormElement>form;
+    this.validator = new Validator();
 
     return this;
   }
 
-  static get(id: string): IForm {
-    let instance = <IForm>Registry.get('Form', id);
+  static get(id: string): Form {
+    let instance = <Form>Registry.get('Form', id);
     if (instance) {
       return instance;
     }
@@ -31,60 +32,62 @@ export default class Form implements IForm {
     return instance;
   }
 
-  getValues() {
-    this.values = {};
-    if (this.form) {
-      const inputs = <HTMLInputElement[]>Array.from(this.form.querySelectorAll('[name]'));
+  getFormData() {
+    return new FormData(this.form);
+  }
 
-      inputs.forEach((input: HTMLInputElement) => {
-        this.values[input.name] = input.value;
-      });
+  getValues() {
+    const formData = this.getFormData();
+    this.values = {};
+
+    for (const [key, value] of formData.entries()) {
+      this.values[key] = value;
     }
 
     return this.values;
   }
 
+  addValidationRules(rules: ValidatorRawRules) {
+    for (const [field, validation] of Object.entries(rules)) {
+      const formField = <FormElement>this.form.querySelector(`[name='${field}']`);
+      if (Array.isArray(validation)) {
+        validation.forEach(validationRule => {
+          this.addValidation(formField, validationRule.bind(formField));
+        });
+      } else {
+        this.addValidation(formField, validation.bind(formField));
+      }
+    }
+  }
+
+  addValidation(field: FormElement, validation: ValidationFn): this {
+    this.validator.setValidation(field, validation);
+    return this;
+  }
+
   isValid() {
     this.errors = {};
-    this.values = this.getValues();
 
-    const fields: FormElement[] = Array.from(this.form.querySelectorAll('input:not([type=hidden]), textarea, select'));
-    fields.forEach(this.validateField.bind(this));
+    const result = this.validator.validateAll();
+    console.log(result);
+    result.forEach((validationResult: ValidationAllResult) => {
+      this.handleValidationResult(<FormElement>validationResult.field, validationResult.result);
+    });
 
-    const passwords: FormElement[] = fields.filter(field => field.name.startsWith('password'));
-    if (passwords.length > 1) {
-      this.validatePasswords(<HTMLInputElement[]>passwords);
-    }
     return Object.keys(this.errors).length === 0;
   }
 
   validateField(field: FormElement) {
-    const { success, error }: ValidationResult = Validate.isFieldValid(field);
+    const validationResult: ValidationResult = this.validator.validate(field);
+    this.handleValidationResult(field, validationResult);
+  }
+
+  handleValidationResult(field: FormElement, validationResult: ValidationResult) {
+    const { success, error }: ValidationResult = validationResult;
     if (success) {
       this.hideError(field.name);
     } else {
       this.showError(field.name, error.messageTemplate);
-    }
-  }
-
-  validatePasswords(passwords: HTMLInputElement[]) {
-    const mainPasswordField = passwords.find(({ name }: HTMLInputElement) => name === 'password');
-    const mainNewPasswordField = passwords.find(({ name }: HTMLInputElement) => name === 'password_new');
-    if (mainNewPasswordField) {
-      const repeater = passwords.find(({ name }: HTMLInputElement) => name === 'password_new_repeat');
-      this.validatePasswordMatch(mainNewPasswordField, repeater);
-    }
-
-    if (mainPasswordField) {
-      const repeater = passwords.find(({ name }: HTMLInputElement) => name === 'password_repeat');
-      this.validatePasswordMatch(mainPasswordField, repeater);
-    }
-  }
-
-  validatePasswordMatch(password: HTMLInputElement, password_repeater: HTMLInputElement | undefined) {
-    if (password_repeater && password_repeater.value !== password.value) {
-      this.showError(password.name, VALIDATOR_ERROR_CODES_NAMES[VALIDATOR_ERROR_CODES.FIELDS_NO_MATCH]);
-      this.showError(password_repeater.name, VALIDATOR_ERROR_CODES_NAMES[VALIDATOR_ERROR_CODES.FIELDS_NO_MATCH]);
     }
   }
 
@@ -113,7 +116,10 @@ export default class Form implements IForm {
     }
   }
 
-  showError(name: string, messageTemplate: string) {
+  showError(name: string, messageTemplate?: string) {
+    if (!messageTemplate) {
+      return;
+    }
     const element = this.form.querySelector(`[name="${name}"]`);
     const message = this.generateMessageFromTemplate(name, messageTemplate);
     if (element) {

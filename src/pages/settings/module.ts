@@ -1,5 +1,14 @@
 import { sendForm, validateFormOnFieldFocusBlur, validateFormOnSubmit } from '../../common/Form/helpers';
 import { METHODS } from '../../common/Fetch/constants';
+import {
+  emailMatch,
+  equalsMatch,
+  loginMatch,
+  nameMatch,
+  passwordMatch,
+  phoneMatch,
+} from '../../common/Validator/constants';
+import { required } from '../../common/Validator/Validator';
 
 export default async () => {
   const updateForm: HTMLFormElement | null = document.querySelector('form#form-settings');
@@ -7,7 +16,16 @@ export default async () => {
 
   if (updateForm) {
     validateFormOnFieldFocusBlur(updateForm);
-    const formData = await validateFormOnSubmit(updateForm).catch(() => {});
+    const validations = {
+      email: emailMatch,
+      login: loginMatch,
+      first_name: nameMatch,
+      second_name: nameMatch,
+      phone: phoneMatch,
+      nickname: required,
+    };
+    const formData = await validateFormOnSubmit(updateForm, validations).catch(() => {});
+
     if (formData) {
       const options = {
         url: 'test/url',
@@ -21,7 +39,14 @@ export default async () => {
   }
   if (changePasswordForm) {
     validateFormOnFieldFocusBlur(changePasswordForm);
-    const formData = await validateFormOnSubmit(changePasswordForm).catch(() => {});
+    const password = <FormElement>changePasswordForm.querySelector('input[name="password_new"]');
+    const passwordRepeat = <FormElement>changePasswordForm.querySelector('input[name="password_new_repeat"]');
+    const validations = {
+      password_new_repeat: [() => equalsMatch(password, passwordRepeat), passwordMatch],
+      password: passwordMatch,
+      password_new: passwordMatch,
+    };
+    const formData = await validateFormOnSubmit(changePasswordForm, validations).catch(() => {});
     if (formData) {
       const options = {
         url: 'test/url',

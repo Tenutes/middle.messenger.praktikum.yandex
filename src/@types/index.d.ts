@@ -20,7 +20,7 @@ type TemplateFn = (ctx: IState | null) => string;
 
 interface ICurrentPage {
   state: IState;
-  component: IBlock;
+  component: typeof IBlock;
 
   module(ctx: Istate): string;
 }
