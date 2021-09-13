@@ -1,4 +1,4 @@
-interface Renderer {
+interface IRenderer {
   _component: typeof IBlock | null;
   _module: unknown | null;
   _id: string | null;

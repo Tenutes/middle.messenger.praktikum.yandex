@@ -1,21 +1,26 @@
-const Registry: IRegistry = {
-  instances: {},
-  get(slug, selector) {
-    return Registry.instances[selector] ? Registry.instances[selector][slug] : null;
-  },
+class Registry implements IRegistry {
+  instances: Record<string, Record<string, unknown>>;
 
-  set(slug, selector, instance) {
-    Registry.instances[selector] = Registry.instances[selector] || {};
-    Registry.instances[selector][slug] = instance;
-    return Registry;
-  },
+  constructor() {
+    this.instances = {};
+  }
 
-  forget(slug, selector) {
-    if (typeof Registry.instances[selector] !== 'undefined') {
-      delete Registry.instances[selector][slug];
+  get(slug: string, selector: string): unknown | null {
+    return this.instances[selector] ? this.instances[selector][slug] : null;
+  }
+
+  set(slug: string, selector: string, instance: unknown): IRegistry {
+    this.instances[selector] = this.instances[selector] || {};
+    this.instances[selector][slug] = instance;
+    return this;
+  }
+
+  forget(slug: string, selector: string): IRegistry {
+    if (typeof this.instances[selector] !== 'undefined') {
+      delete this.instances[selector][slug];
     }
-    return Registry;
-  },
-};
+    return this;
+  }
+}
 
-export default Registry;
+export default new Registry();
