@@ -6,8 +6,6 @@ interface Renderer {
 
   renderTo(id: string): void;
 
-  prerender(partial: TemplateFn, state: State): string;
-
   _setEl(id: string): void;
 
   _setTemplate(): void;

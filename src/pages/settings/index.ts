@@ -10,19 +10,19 @@ export default {
     {
       path: '/settings',
       component: Settings,
-      state,
+      state: state.settings,
       module,
     },
     {
       path: '/settings/update',
       component: Update,
-      state,
+      state: state.update,
       module,
     },
     {
       path: '/settings/change-password',
       component: ChangePassword,
-      state,
+      state: state.changePassword,
       module,
     },
   ],

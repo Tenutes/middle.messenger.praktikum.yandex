@@ -1,6 +1,5 @@
 import { Router } from '../Router/Router';
 import { Store } from '../Store/Store';
-import compile from './compile';
 
 export const Renderer: Renderer = {
   _component: null,
@@ -12,14 +11,6 @@ export const Renderer: Renderer = {
     this._setEl(id);
     this._setTemplate();
     this._insertTemplate();
-  },
-
-  prerender(partial, state) {
-    if (!partial) {
-      return '';
-    }
-
-    return compile(partial, state);
   },
 
   _setEl(id) {

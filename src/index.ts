@@ -1,10 +1,11 @@
 require('babel-polyfill');
 import './assets/scss/app.scss';
+import './helpers';
+
 import { Renderer } from './common/Renderer/Renderer';
 import { Router } from './common/Router/Router';
 import { Store } from './common/Store/Store';
 import routes from './routes';
-import './helpers';
 
 /** Используется самописный роутер */
 Router.use(routes).install();
