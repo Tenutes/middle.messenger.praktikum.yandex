@@ -4,6 +4,47 @@
   }
 }
 
+.invisible {
+  visibility: hidden;
+}
+
+.visible {
+  visibility: visible;
+}
+
 .overflow-hidden {
   overflow: hidden;
+}
+
+.overflow-y-auto {
+  overflow-y: auto;
+}
+
+.overflow-ellipsis {
+  text-overflow: ellipsis;
+}
+
+.no-scrollbar {
+  &::-webkit-scrollbar {
+    width: 0;
+    border-radius: 0;
+    background: transparent;
+    display: none;
+  }
+
+  &::-webkit-scrollbar-track {
+    width: 0;
+    border-radius: 0;
+    height: 0;
+    background: transparent;
+    display: none;
+  }
+
+  &::-webkit-scrollbar-thumb {
+    width: 0;
+    border-radius: 0;
+    height: 0;
+    background: transparent;
+    display: none;
+  }
 }

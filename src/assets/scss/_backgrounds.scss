@@ -2,8 +2,22 @@
   background-color: var(--ya-white);
 }
 
+.bg-white-80 {
+  background-color: rgba(var(--ya-white), .8);
+}
+
 .bg-blue {
   background-color: var(--ya-blue);
+}
+
+.hover\:bg-blue {
+  &:hover {
+    background-color: var(--ya-blue);
+  }
+}
+
+.bg-silver-light {
+  background-color: var(--ya-silver-light);
 }
 
 .focus\:bg-blue-dark {
@@ -20,6 +34,20 @@
 
 .bg-blue-light {
   background-color: var(--ya-blue-light);
+}
+
+.bg-blue-light-hover {
+  background-color: var(--ya-blue-light-hover);
+}
+
+.hover\:bg-blue-light-hover {
+  &:hover {
+    background-color: var(--ya-blue-light-hover);
+  }
+}
+
+.bg-gray-light {
+  background-color: var(--ya-gray-light);
 }
 
 .bg-gray-lighten {

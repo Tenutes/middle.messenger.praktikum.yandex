@@ -1,0 +1,40 @@
+.user-chat {
+  $root: &;
+
+  &__decoration-top {
+    &::after {
+      position: absolute;
+      content: "";
+      width: 100%;
+      height: 100%;
+      background-color: var(--ya-blue-light);
+      border-bottom-right-radius: 50%;
+    }
+  }
+
+  &__decoration-bottom {
+    &::after {
+      position: absolute;
+      content: "";
+      width: 100%;
+      height: 100%;
+      background-color: var(--ya-blue-light);
+      border-top-right-radius: 50%;
+    }
+  }
+
+  &__inner {
+    &:hover {
+      [data-chat-delete] {
+        opacity: 1;
+      }
+
+      #{$root} {
+        &__decoration-top,
+        &__decoration-bottom {
+          opacity: 1;
+        }
+      }
+    }
+  }
+}
