@@ -1,14 +1,17 @@
 import Registry from '../Registry/Registry';
 import Validator from '../Validator/Validator';
 import FormError from './FormError';
+import Block from '../Block/Block';
+import { InputProps } from '../../components/Input';
 
-export default class Form implements IForm {
+export default class Form {
   id: string;
   form: HTMLFormElement;
   validator: Validator;
   values: Record<string, unknown>;
   errors: StringRecord;
   errorMessages: StringRecord;
+  fieldsToValidate: Block[];
 
   constructor(id: string) {
     this.id = id;
@@ -21,6 +24,7 @@ export default class Form implements IForm {
     this.errorMessages = {};
     this.errors = {};
     this.values = {};
+    this.fieldsToValidate = [];
 
     return this;
   }
@@ -52,24 +56,16 @@ export default class Form implements IForm {
     return this.values;
   }
 
-  addValidationRules(rules: ValidatorRules) {
-    for (const [field, validation] of Object.entries(rules)) {
-      const formField = <FormElement>this.form.querySelector(`[name='${field}']`);
-      if (Array.isArray(validation)) {
-        validation.forEach(validationRule => {
-          this.addValidation(formField, validationRule);
-        });
-      } else {
-        this.addValidation(formField, validation);
+  addValidationField(field: Block): Form {
+    const validations = (field.props as InputProps).validations || [];
+    validations.forEach(validation => {
+      const name = (field.element as FormElement).name;
+      if (name) {
+        this.errorMessages[name] = validation.errorReplacer || '';
       }
-    }
-  }
+      this.validator.setValidation(field.element as FormElement, validation.fn);
+    });
 
-  addValidation(field: FormElement, validation: ValidationRule): this {
-    this.validator.setValidation(field, validation.fn.bind(field));
-    if (validation.errorReplacer) {
-      this.errorMessages[field.name] = validation.errorReplacer;
-    }
     return this;
   }
 
@@ -77,17 +73,13 @@ export default class Form implements IForm {
     this.errors = {};
     this.hideErrors();
 
-    const result = this.validator.validateAll();
-    result.forEach((validationResult: ValidationAllResult) => {
-      this.handleValidationResult(<FormElement>validationResult.field, validationResult.result);
+    const validationResults = this.validator.validateAll();
+
+    validationResults.forEach(({ field, result }) => {
+      this.handleValidationResult(field, result);
     });
 
     return Object.keys(this.errors).length === 0;
-  }
-
-  validateField(field: FormElement) {
-    const validationResult: ValidationResult = this.validator.validate(field);
-    this.handleValidationResult(field, validationResult);
   }
 
   handleValidationResult(field: FormElement, validationResult: ValidationResult) {

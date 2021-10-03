@@ -1,5 +1,4 @@
 import Form from './Form';
-import Sender from './Sender';
 
 export const validateFormOnFieldFocusBlur = (form: HTMLFormElement) => {
   const fields: HTMLInputElement[] = Array.from(form.querySelectorAll('input:not([type=hidden]), textarea'));
@@ -7,7 +6,7 @@ export const validateFormOnFieldFocusBlur = (form: HTMLFormElement) => {
   fields.forEach(field => {
     field.addEventListener('blur', () => {
       if (field.value) {
-        formObject.validateField(field);
+        // formObject.validateField(field);
       }
     });
     field.addEventListener('focus', () => {
@@ -22,28 +21,16 @@ export const validateFormOnSubmit = (form: HTMLFormElement, validationRules?: Va
       e.preventDefault();
       const formObject = new Form(form.id);
       if (validationRules) {
-        formObject.addValidationRules(validationRules);
+        // formObject.addValidationRules(validationRules);
       }
 
       if (formObject.isValid()) {
-        console.log(formObject.getValues());
         return res(formObject.getValues());
       }
 
       console.log('form invalid');
       return rej();
     });
-  });
-};
-
-export const sendForm = (form: HTMLFormElement, { url, options }: ISenderOptions) => {
-  const sender = new Sender(form, { url, options });
-
-  return new Promise((res, rej) => {
-    sender
-      .send()
-      .then(res)
-      .catch(rej);
   });
 };
 

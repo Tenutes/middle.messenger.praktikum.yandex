@@ -1,73 +1,73 @@
-import { identity } from '../helpers';
-import { DEFAULT_ROUTE_NAMES, SLASH_REMOVAL_REG } from './constants';
+import Block from '../Block/Block';
+import Route from './Route';
 
-class Router implements Routes {
-  _currentPage: Route | undefined;
-  _path: string;
-  _route: string[];
-  _routes: Route[];
+class Router {
+  private routes: Route[] = [];
+  private history = window.history;
+  private currentRoute: Route | null = null;
+  private readonly errorPageSymbol: string;
 
   constructor() {
-    this._path = '';
-    this._route = [];
-    this._routes = [];
+    this.errorPageSymbol = '@@error@@';
   }
 
-  get currentPage() {
-    return this._currentPage;
+  use(pathname: string, block: typeof Block) {
+    const route = new Route(pathname, block, { rootQuery: '#root' });
+
+    this.routes.push(route);
+
+    return this;
   }
 
-  get path() {
-    return this._path;
-  }
+  errorPage(block: typeof Block) {
+    const route = new Route(this.errorPageSymbol, block, { rootQuery: '#root' });
+    this.routes.push(route);
 
-  get route() {
-    return this._route;
-  }
-
-  get routes() {
-    return this._routes;
-  }
-
-  use(routes: Route[]) {
-    this._routes = routes;
     return this;
   }
 
   install() {
-    this._parseAndWritePathAndRoute();
-    this._setCurrentPage();
+    window.onpopstate = () => {
+      this._onRoute(window.location.pathname);
+    };
+
+    this._onRoute(window.location.pathname);
   }
 
-  _parseAndWritePathAndRoute() {
-    this._path = this._parseUrl();
-    this._route = this._parsePath();
+  _onRoute(pathname: string) {
+    const route = this.getRoute(pathname);
+
+    if (!route) {
+      if (pathname !== this.errorPageSymbol) {
+        this._onRoute(this.errorPageSymbol);
+      }
+      return;
+    }
+
+    if (this.currentRoute) {
+      this.currentRoute.leave();
+    }
+
+    this.currentRoute = route;
+
+    route.render();
   }
 
-  _parseUrl() {
-    return location.pathname;
+  go(pathname: string) {
+    this.history.pushState({}, '', pathname);
+    this._onRoute(pathname);
   }
 
-  _parsePath() {
-    return this.path.split('/').filter(identity);
+  getRoute(pathname: string) {
+    return this.routes.find(route => route.match(pathname));
   }
 
-  _setCurrentPage() {
-    const directRoute = this._removeTrailingSlashesFromRoute();
-    this._currentPage = this._getRouteByPath(directRoute) || this._getDefaultRoute();
+  back() {
+    this.history.back();
   }
 
-  _getRouteByPath(route: string) {
-    return this._routes.find(({ path }) => path.includes(route));
-  }
-
-  _getDefaultRoute() {
-    return this._routes.find(({ path }) => DEFAULT_ROUTE_NAMES.includes(path));
-  }
-
-  _removeTrailingSlashesFromRoute() {
-    const matches = this.path.match(SLASH_REMOVAL_REG);
-    return matches ? matches[1] : '';
+  forward() {
+    this.history.forward();
   }
 }
 

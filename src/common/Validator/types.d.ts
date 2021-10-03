@@ -9,16 +9,16 @@ interface ValidationResult {
 }
 
 interface ValidationAllResult {
-  field: FormElement | string;
+  field: FormElement;
   result: ValidationResult;
 }
 
 interface ValidatorValidation {
-  field: FormElement | string;
+  field: FormElement;
   validation: ValidationFn;
 }
 
-type ValidationFn = (ctx?: unknown) => ValidationResult;
+type ValidationFn = (value) => ValidationResult;
 
 interface ValidationRule {
   fn: ValidationFn;

@@ -13,36 +13,38 @@ export enum VALIDATOR_ERROR_CODES_NAMES {
   FIELDS_NOT_EQUAL = '"{{field}}" не совпадает',
 }
 
-export const loginRegExp = new RegExp(/^(?=[a-zA-Z\-_\d]+[a-zA-Z\-_]+|[a-zA-Z\-_]+[a-zA-Z\-_\d]+)[a-zA-Z\-_\d]{3,20}$/);
-export const passwordRegExp = new RegExp(/^(?=.*\d)(?=.*[A-Z]).{8,40}$/);
-export const nameRegExp = new RegExp(/^[А-ЯЁA-Z][А-ЯЁA-Zа-яёa-z-]+$/);
-export const emailRegExp = new RegExp(
+export const LOGIN_REG_EXP = new RegExp(
+  /^(?=[a-zA-Z\-_\d]+[a-zA-Z\-_]+|[a-zA-Z\-_]+[a-zA-Z\-_\d]+)[a-zA-Z\-_\d]{3,20}$/
+);
+export const PASSWORD_REG_EXP = new RegExp(/^(?=.*\d)(?=.*[A-Z]).{8,40}$/);
+export const NAME_REG_EXP = new RegExp(/^[А-ЯЁA-Z][А-ЯЁA-Zа-яёa-z-]+$/);
+export const EMAIL_REG_EXP = new RegExp(
   /[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?/i
 );
-export const phoneRegExp = new RegExp(
+export const PHONE_REG_EXP = new RegExp(
   /^(\+7|7|8)?[\s\-]?\(?[489][0-9]{2}\)?[\s\-]?[0-9]{3}[\s\-]?[0-9]{2}[\s\-]?[0-9]{2}$/i
 );
 
-export function loginMatch(this: FormElement): ValidationResult {
-  return match.bind(this)(loginRegExp);
+export function loginMatch(value: string): ValidationResult {
+  return match(value, LOGIN_REG_EXP);
 }
 
-export function passwordMatch(this: FormElement): ValidationResult {
-  return match.bind(this)(passwordRegExp);
+export function passwordMatch(value: string): ValidationResult {
+  return match(value, PASSWORD_REG_EXP);
 }
 
-export function nameMatch(this: FormElement): ValidationResult {
-  return match.bind(this)(nameRegExp);
+export function nameMatch(value: string): ValidationResult {
+  return match(value, NAME_REG_EXP);
 }
 
-export function emailMatch(this: FormElement): ValidationResult {
-  return match.bind(this)(emailRegExp);
+export function emailMatch(value: string): ValidationResult {
+  return match(value, EMAIL_REG_EXP);
 }
 
-export function phoneMatch(this: FormElement): ValidationResult {
-  return match.bind(this)(phoneRegExp);
+export function phoneMatch(value: string): ValidationResult {
+  return match(value, PHONE_REG_EXP);
 }
 
-export function equalsMatch(from: FormElement, to: FormElement): ValidationResult {
-  return equalsTo.bind(from)(to);
+export function equalsMatch(to: FormElement): (from: FormElement) => ValidationResult {
+  return (from: FormElement) => equalsTo(from, to);
 }

@@ -20,15 +20,12 @@ type TemplateFn = (ctx: IState | null) => string;
 
 interface ICurrentPage {
   state: IState;
-  component: typeof IBlock;
-
-  module(ctx: Istate): string;
+  module: {
+    component: typeof IBlock;
+  };
 }
+
+type Nullable<T> = T | null;
 
 declare module 'handlebars/dist/handlebars.runtime';
-
-declare function HbsTemplateFn(context: IState | null, options?: unknown): string;
-
-declare module '*.hbs' {
-  export default HbsTemplateFn;
-}
+declare module '*.hbs';
