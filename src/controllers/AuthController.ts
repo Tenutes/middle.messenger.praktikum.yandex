@@ -14,6 +14,7 @@ class AuthController {
     try {
       await this.api.signup(data);
       await this.fetchUser();
+      await Router.go('/messenger');
     } catch (e) {
       store.dispatch(setError(e as { reason: string }));
     }
@@ -23,7 +24,7 @@ class AuthController {
     try {
       await this.api.login(data);
       await this.fetchUser();
-      Router.go('/messenger');
+      await Router.go('/messenger');
     } catch (e) {
       store.dispatch(setError(e as { reason: string }));
     }

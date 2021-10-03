@@ -17,6 +17,7 @@ export default class Block {
   _meta;
   props;
   state;
+  cdmTimeout: NodeJS.Timeout | null;
   eventBus: EventBus;
   domParser: DOMParser;
   id = uid();
@@ -30,6 +31,7 @@ export default class Block {
       props,
     };
 
+    this.cdmTimeout = null;
     this.state = this.getStateFromProps();
     this.props = this._makePropsProxy(props);
     this.state = this._makePropsProxy(this.state);
@@ -136,11 +138,15 @@ export default class Block {
 
   getContent(): HTMLElement {
     if (this.element?.parentNode?.nodeType === Node.DOCUMENT_FRAGMENT_NODE) {
-      setTimeout(() => {
+      this.cdmTimeout = setTimeout(() => {
         if (this.element?.parentNode?.nodeType !== Node.DOCUMENT_FRAGMENT_NODE) {
           this.eventBus.emit(EVENTS.FLOW_CDM);
         }
       }, 100);
+    }
+
+    if (!this.element) {
+      this.eventBus.emit(EVENTS.FLOW_CDM);
     }
 
     return this.element!;
@@ -175,7 +181,11 @@ export default class Block {
   }
 
   _addCustomRefs() {
-    const refs = (Array.from(this.element!.querySelectorAll('[data-ref]')) as unknown) as RefElement[];
+    if (!this.element) {
+      return;
+    }
+
+    const refs = (Array.from(this.element.querySelectorAll('[data-ref]')) as unknown) as RefElement[];
     refs.forEach(el => {
       this.refs[el.dataset.ref] = el;
     });

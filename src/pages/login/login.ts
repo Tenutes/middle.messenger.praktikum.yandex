@@ -3,6 +3,8 @@ import AuthController from '../../controllers/AuthController';
 import { LoginProps } from './types';
 import Input from '../../components/Input';
 import Form from '../../common/Form/Form';
+import { SignInData } from '../../api/AuthAPI';
+import Router from '../../common/Router/Router';
 
 interface loginState {
   onLogin: () => void;
@@ -16,28 +18,26 @@ export class LoginPage extends Block {
 
         const loginField = (this.refs.login as Block).refs.login as Input;
         const passwordField = (this.refs.password as Block).refs.password as Input;
-        const LoginForm = new Form(this.refs.form.id);
-        LoginForm.addValidationField(loginField).addValidationField(passwordField);
+        const loginForm = new Form(this.refs.form.id);
+        loginForm.addValidationField(loginField).addValidationField(passwordField);
 
-        if (LoginForm.isValid()) {
-          const formData = {
-            login: (loginField.element! as HTMLInputElement).value,
-            password: (passwordField.element! as HTMLInputElement).value,
-          };
+        if (loginForm.isValid()) {
+          const formData = (loginForm.getValues() as unknown) as SignInData;
           await AuthController.login(formData);
         }
       },
     };
   }
 
-  componentDidMount() {
+  async componentDidMount() {
     (this.refs.form as HTMLFormElement).addEventListener('submit', (this.state as loginState).onLogin.bind(this));
     if ((this.props as LoginProps).user.profile) {
-      (this.props as LoginProps).router.go('/profile');
+      await Router.go('/messenger');
     }
   }
 
   render() {
+    console.log('wtf');
     // language=hbs
     return `
         <div class="flex flex-col items-center w-full bg-white h-screen justify-center">

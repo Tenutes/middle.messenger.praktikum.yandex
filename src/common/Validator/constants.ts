@@ -45,6 +45,6 @@ export function phoneMatch(value: string): ValidationResult {
   return match(value, PHONE_REG_EXP);
 }
 
-export function equalsMatch(to: FormElement): (from: FormElement) => ValidationResult {
-  return (from: FormElement) => equalsTo(from, to);
+export function equalsMatch(from: FormElement, to: FormElement): ValidationResult {
+  return equalsTo(from, to);
 }

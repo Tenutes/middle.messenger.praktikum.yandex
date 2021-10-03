@@ -3,6 +3,7 @@ import Validator from '../Validator/Validator';
 import FormError from './FormError';
 import Block from '../Block/Block';
 import { InputProps } from '../../components/Input';
+import { isArray } from '../../common/helpers';
 
 export default class Form {
   id: string;
@@ -56,21 +57,38 @@ export default class Form {
     return this.values;
   }
 
-  addValidationField(field: Block): Form {
+  addValidationFields(fields: Block[]) {
+    fields.forEach(field => this.addValidationField(field));
+  }
+
+  addValidationField(field: Block, validation?: ValidationRule | ValidationRule[]): Form {
+    if (validation) {
+      if (isArray(validation)) {
+        validation.forEach(v => {
+          this.addValidation(field, v);
+        });
+      } else {
+        this.addValidation(field, validation as ValidationRule);
+      }
+    }
+
     const validations = (field.props as InputProps).validations || [];
     validations.forEach(validation => {
-      const name = (field.element as FormElement).name;
-      if (name) {
-        this.errorMessages[name] = validation.errorReplacer || '';
-      }
-      this.validator.setValidation(field.element as FormElement, validation.fn);
+      this.addValidation(field, validation);
     });
 
     return this;
   }
 
+  addValidation(field: Block, validation: ValidationRule) {
+    const name = (field.element as FormElement).name;
+    if (name) {
+      this.errorMessages[name] = validation.errorReplacer || '';
+    }
+    this.validator.setValidation(field.element as FormElement, validation.fn);
+  }
+
   isValid() {
-    this.errors = {};
     this.hideErrors();
 
     const validationResults = this.validator.validateAll();
@@ -97,11 +115,11 @@ export default class Form {
   }
 
   hideErrors() {
-    for (const name in this.values) {
-      if (this.values.hasOwnProperty(name)) {
-        this.hideError(name);
-      }
+    for (const name in this.errors) {
+      this.hideError(name);
     }
+
+    this.errors = {};
   }
 
   hideError(name: string) {

@@ -13,11 +13,12 @@ export interface InputProps {
 }
 
 export default class Input extends Block {
-  constructor({ ...props }: InputProps) {
-    super({ ...props });
+  componentDidMount() {
+    if ((this.props as InputProps).value) {
+      (this.element! as FormElement).value = (this.props as InputProps).value as string;
+    }
   }
-
-  render(): string {
+  render() {
     // language=hbs
     return `
       <input
@@ -28,9 +29,6 @@ export default class Input extends Block {
         id="{{id}}"
         {{#if required}}
           required
-        {{/if}}
-        {{#if value}}
-          value="{{value}}"
         {{/if}}
         {{#if placeholder}}
           placeholder="{{placeholder}}"

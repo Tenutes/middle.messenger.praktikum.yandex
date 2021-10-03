@@ -28,7 +28,7 @@ export default (state = { profile: null, error: null }, action: Action) => {
       return { profile: null, error: null };
     case SET_ERROR:
       const error = parseError(action.payload);
-      return { error, profile: null };
+      return { ...state, error };
     default:
       return state;
   }

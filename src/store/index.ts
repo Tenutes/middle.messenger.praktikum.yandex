@@ -1,9 +1,11 @@
 import user from './user';
+import profile from './profile';
 import Store from '../common/Store/Store';
 import Block from '../common/Block/Block';
 
 export const store = new Store({
   user,
+  profile,
 });
 
 export function connect(stateToProps: (state: any) => any, Component: typeof Block) {

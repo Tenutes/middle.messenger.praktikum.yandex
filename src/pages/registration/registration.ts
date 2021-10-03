@@ -1,6 +1,9 @@
 import Block from '../../common/Block/Block';
 import Input from '../../components/Input';
 import Form from '../../common/Form/Form';
+import { equalsMatch } from '../../common/Validator/constants';
+import { SignupData } from '../../api/AuthAPI.js';
+import AuthController from '../../controllers/AuthController';
 
 export class RegistrationPage extends Block {
   protected getStateFromProps() {
@@ -15,24 +18,22 @@ export class RegistrationPage extends Block {
         const firstNameField = (this.refs.first_name as Block).refs.first_name as Input;
         const secondNameField = (this.refs.second_name as Block).refs.second_name as Input;
         const phoneField = (this.refs.phone as Block).refs.phone as Input;
+        const validationFields = [loginField, passwordField, emailField, firstNameField, secondNameField, phoneField];
 
-        const RegisterForm = new Form(this.refs.form.id);
-        RegisterForm.addValidationField(loginField)
-          .addValidationField(passwordField)
-          .addValidationField(passwordRepeatField)
-          .addValidationField(emailField)
-          .addValidationField(firstNameField)
-          .addValidationField(secondNameField)
-          .addValidationField(phoneField);
+        const registerForm = new Form(this.refs.form.id);
+        registerForm.addValidationFields(validationFields);
+        registerForm.addValidationField(passwordRepeatField, {
+          fn: () => equalsMatch(passwordRepeatField.element as FormElement, passwordField.element as FormElement),
+          errorReplacer: 'Пароли',
+        });
 
-        if (RegisterForm.isValid()) {
-          // const formData = new FormData(this.refs.form as HTMLFormElement);
+        if (registerForm.isValid()) {
+          const formData = (registerForm.getValues() as unknown) as SignupData;
+          await AuthController.signup(formData);
         }
       },
     };
   }
-
-  componentDidMount() {}
 
   render() {
     // language=hbs

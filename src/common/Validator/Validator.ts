@@ -1,23 +1,7 @@
 import { VALIDATOR_ERROR_CODES, VALIDATOR_ERROR_CODES_NAMES } from './constants';
 
-export function required(element: FormElement): ValidationResult {
-  let success = false;
-  switch (element.tagName) {
-    case 'INPUT': {
-      if (['checkbox', 'radio'].includes(element.type)) {
-        success = (<HTMLInputElement>element).checked;
-        break;
-      }
-      success = Boolean(element.value);
-      break;
-    }
-    case 'TEXTAREA':
-    case 'SELECT':
-      success = Array.isArray(element.value) ? Boolean(element.value.length) : Boolean(element.value);
-      break;
-    default:
-      break;
-  }
+export function required(value: unknown): ValidationResult {
+  let success = Boolean(value || (typeof value === 'number' && !Number.isNaN(value)));
 
   return {
     success,

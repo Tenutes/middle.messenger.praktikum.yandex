@@ -70,10 +70,7 @@ const inputFields: InputProps[] = [
     required: true,
     label: 'Пароль (еще раз)',
     classes: 'border-b border-blue w-full py-1 text-base text-black',
-    validations: [
-      // { fn: () => equalsMatch(password), errorReplacer: 'Пароли' },
-      { fn: passwordMatch, errorReplacer: 'Пароль' },
-    ],
+    validations: [{ fn: passwordMatch, errorReplacer: 'Пароль' }],
   },
 ];
 

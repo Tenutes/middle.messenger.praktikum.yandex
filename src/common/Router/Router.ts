@@ -1,11 +1,14 @@
 import Block from '../Block/Block';
 import Route from './Route';
 
+export type RouterBeforeEachFn = (next: () => void, pathname: string) => void;
+
 class Router {
   private routes: Route[] = [];
   private history = window.history;
   private currentRoute: Route | null = null;
   private readonly errorPageSymbol: string;
+  onBeforeEach: RouterBeforeEachFn | undefined;
 
   constructor() {
     this.errorPageSymbol = '@@error@@';
@@ -27,7 +30,7 @@ class Router {
   }
 
   install() {
-    window.onpopstate = () => {
+    window.onpopstate = async () => {
       this._onRoute(window.location.pathname);
     };
 
@@ -35,6 +38,14 @@ class Router {
   }
 
   _onRoute(pathname: string) {
+    if (this.onBeforeEach) {
+      return this.onBeforeEach(() => this._onRoutePass(pathname), pathname);
+    }
+
+    return this._onRoutePass(pathname);
+  }
+
+  _onRoutePass(pathname: string) {
     const route = this.getRoute(pathname);
 
     if (!route) {
@@ -53,9 +64,15 @@ class Router {
     route.render();
   }
 
-  go(pathname: string) {
+  beforeEach(func: RouterBeforeEachFn) {
+    this.onBeforeEach = func;
+
+    return this;
+  }
+
+  async go(pathname: string) {
     this.history.pushState({}, '', pathname);
-    this._onRoute(pathname);
+    await this._onRoute(pathname);
   }
 
   getRoute(pathname: string) {

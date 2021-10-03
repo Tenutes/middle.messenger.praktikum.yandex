@@ -101,3 +101,5 @@ export const debounce = (fn: (...args: unknown[]) => void | unknown, options: De
 
   return debouncedFunction;
 };
+
+export const isArray = (array: unknown): array is [] => Array.isArray(array);

@@ -22,7 +22,11 @@ export default class Route {
 
   leave() {
     if (this.block) {
-      this.block.getContent().remove();
+      if (this.block.cdmTimeout) {
+        clearTimeout(this.block.cdmTimeout);
+        this.block.cdmTimeout = null;
+      }
+      this.block.element?.remove();
     }
   }
 
@@ -40,8 +44,12 @@ export default class Route {
     if (!root) {
       throw new Error('Root not found');
     }
-
     root.innerHTML = '';
-    root.appendChild(this.block.getContent());
+    let content = this.block.getContent();
+
+    if (!content) {
+      content = document.createElement('div');
+    }
+    root.appendChild(content);
   }
 }

@@ -1,4 +1,5 @@
 import { InputProps } from '../../../components/Input';
+import { passwordMatch } from '../../../common/Validator/constants';
 
 const fields: InputProps[] = [
   {
@@ -9,6 +10,7 @@ const fields: InputProps[] = [
     placeholder: 'Введите',
     required: true,
     classes: 'text-sm text-gray border-0 w-1/2 text-right focus:text-blue-dark',
+    validations: [{ fn: passwordMatch, errorReplacer: 'Пароль' }],
   },
   {
     id: 'password_new',
@@ -18,6 +20,7 @@ const fields: InputProps[] = [
     placeholder: 'Введите',
     required: true,
     classes: 'text-sm text-gray border-0 w-1/2 text-right focus:text-blue-dark',
+    validations: [{ fn: passwordMatch, errorReplacer: 'Пароль' }],
   },
   {
     id: 'password_new_repeat',
@@ -27,6 +30,7 @@ const fields: InputProps[] = [
     placeholder: 'Введите',
     required: true,
     classes: 'text-sm text-gray border-0 w-1/2 text-right focus:text-blue-dark',
+    validations: [{ fn: passwordMatch, errorReplacer: 'Пароль' }],
   },
 ];
 

@@ -9,15 +9,33 @@ export class SettingsPage extends Block {
             <div class="h-full max-h-screen py-12">
                 <div class="w-full max-w-[530px] px-3 flex flex-col items-center mx-auto">
                     <div class="mb-8 w-full flex flex-col items-center">
-                        {{{ SettingsProfile name=name }}}
+                        {{{ SettingsProfile name=user.profile.first_name }}}
                     </div>
                     <div class="w-full mb-10">
-                        {{#each fields}}
-                            <div class="flex justify-between border-b border-gray-lightest py-2 last:border-0">
-                                <p class="text-sm text-black mr-2">{{this.label}}</p>
-                                <p class="text-sm text-gray">{{this.value}}</p>
-                            </div>
-                        {{/each}}
+                        <div class="flex justify-between border-b border-gray-lightest py-2 last:border-0">
+                            <p class="text-sm text-black mr-2">Почта</p>
+                            <p class="text-sm text-gray">{{user.profile.email}}</p>
+                        </div>
+                        <div class="flex justify-between border-b border-gray-lightest py-2 last:border-0">
+                            <p class="text-sm text-black mr-2">Логин</p>
+                            <p class="text-sm text-gray">{{user.profile.login}}</p>
+                        </div>
+                        <div class="flex justify-between border-b border-gray-lightest py-2 last:border-0">
+                            <p class="text-sm text-black mr-2">Имя</p>
+                            <p class="text-sm text-gray">{{user.profile.first_name}}</p>
+                        </div>
+                        <div class="flex justify-between border-b border-gray-lightest py-2 last:border-0">
+                            <p class="text-sm text-black mr-2">Фамилия</p>
+                            <p class="text-sm text-gray">{{user.profile.second_name}}</p>
+                        </div>
+                        <div class="flex justify-between border-b border-gray-lightest py-2 last:border-0">
+                            <p class="text-sm text-black mr-2">Имя в чате</p>
+                            <p class="text-sm text-gray">{{user.profile.display_name}}</p>
+                        </div>
+                        <div class="flex justify-between border-b border-gray-lightest py-2 last:border-0">
+                            <p class="text-sm text-black mr-2">Телефон</p>
+                            <p class="text-sm text-gray">{{user.profile.phone}}</p>
+                        </div>
                     </div>
                     <div class="w-full">
                         <div class="flex justify-between border-b border-gray-lightest py-2 last:border-0">
