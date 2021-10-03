@@ -20,7 +20,10 @@ export class LoginPage extends Block {
         LoginForm.addValidationField(loginField).addValidationField(passwordField);
 
         if (LoginForm.isValid()) {
-          const formData = new FormData(this.refs.form as HTMLFormElement);
+          const formData = {
+            login: (loginField.element! as HTMLInputElement).value,
+            password: (passwordField.element! as HTMLInputElement).value,
+          };
           await AuthController.login(formData);
         }
       },
@@ -51,6 +54,9 @@ export class LoginPage extends Block {
                             {{{ InputGroup ref=this.id input=this label=this.label classes='mb-3 last:mb-0 relative pt-3' }}}
                         {{/each}}
                     </div>
+                    {{#if user.error}}
+                        <p class="text-red">{{user.error.reason}}</p>
+                    {{/if}}
                     <div class="mt-auto text-center">
                         {{{ Button label='Войти' onClick=onLogin classes='w-full text-center bg-blue text-white text-sm font-medium rounded-4 px-4 py-2 mb-2 duration-200 hover:opacity-80 focus:bg-blue-dark active:bg-blue-dark' }}}
                         {{{ Link to='/signup' label='Ещё не зарегистрированы?' classes='text-blue decoration-none hover:underline duration-200' }}}

@@ -1,6 +1,7 @@
-import { AuthAPI, SignupData, UserData } from '../api/AuthAPI';
+import { AuthAPI, SignInData, SignupData, UserData } from '../api/AuthAPI';
 import { store } from '../store';
 import { deleteUser, setError, setUser } from '../store/user';
+import Router from '../common/Router/Router';
 
 class AuthController {
   private api: AuthAPI;
@@ -18,10 +19,11 @@ class AuthController {
     }
   }
 
-  async login(data: FormData) {
+  async login(data: SignInData) {
     try {
       await this.api.login(data);
       await this.fetchUser();
+      Router.go('/messenger');
     } catch (e) {
       store.dispatch(setError(e as { reason: string }));
     }

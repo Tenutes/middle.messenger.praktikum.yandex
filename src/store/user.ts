@@ -1,5 +1,6 @@
 import { Action } from '../common/Store/Store';
 import { UserData } from '../api/AuthAPI';
+import { parseError } from './helpers';
 
 const SET_USER = 'user/SET';
 const DELETE_USER = 'user/DELETE';
@@ -26,7 +27,8 @@ export default (state = { profile: null, error: null }, action: Action) => {
     case DELETE_USER:
       return { profile: null, error: null };
     case SET_ERROR:
-      return { error: action.payload, profile: null };
+      const error = parseError(action.payload);
+      return { error, profile: null };
     default:
       return state;
   }

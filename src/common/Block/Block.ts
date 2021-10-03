@@ -1,6 +1,6 @@
 import EventBus from '../EventBus/EventBus';
 import { EVENTS } from './constants';
-import { uid } from '../helpers';
+import { uid, debounce } from '../helpers';
 import Handlebars from 'handlebars';
 
 interface RefElement extends HTMLElement {
@@ -52,9 +52,11 @@ export default class Block {
   }
 
   _registerEvents() {
+    // Делаем дебаунс, чтобы за раз обновился лишь раз
+    const debouncedCDU = debounce(this._componentDidUpdate.bind(this), { wait: 1 });
     this.eventBus.on(EVENTS.FLOW_CREATE, this.init.bind(this));
     this.eventBus.on(EVENTS.FLOW_CDM, this._componentDidMount.bind(this));
-    this.eventBus.on(EVENTS.FLOW_CDU, this._componentDidUpdate.bind(this));
+    this.eventBus.on(EVENTS.FLOW_CDU, debouncedCDU);
     this.eventBus.on(EVENTS.FLOW_RENDER, this._render.bind(this));
   }
 
@@ -71,14 +73,14 @@ export default class Block {
   created() {}
 
   _componentDidUpdate(oldProps: unknown, newProps: unknown) {
-    const response = this.componentDidUpdate(oldProps, newProps);
+    const response = this.componentShouldUpdate(oldProps, newProps);
     if (!response) {
       return;
     }
     this._render();
   }
 
-  componentDidUpdate(oldProps: unknown, newProps: unknown) {
+  componentShouldUpdate(oldProps: unknown, newProps: unknown) {
     return Boolean(newProps) || Boolean(oldProps);
   }
 

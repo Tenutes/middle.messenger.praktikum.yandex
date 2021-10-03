@@ -9,6 +9,11 @@ export interface SignupData {
   phone: string;
 }
 
+export interface SignInData {
+  login: string;
+  password: string;
+}
+
 export type UserData = Omit<SignupData, 'password'> & { avatar: string; display_name: string };
 
 export class AuthAPI extends BaseAPI {
@@ -20,7 +25,7 @@ export class AuthAPI extends BaseAPI {
     return this.http.post('/signup', data);
   }
 
-  login(data: FormData): Promise<void> {
+  login(data: SignInData): Promise<void> {
     return this.http.post('/signin', data);
   }
 
