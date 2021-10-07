@@ -2,6 +2,7 @@ import EventBus from '../EventBus/EventBus';
 import { EVENTS } from './constants';
 import { uid, debounce } from '../helpers';
 import Handlebars from 'handlebars';
+import isEqual from '../../utils/isEqual';
 
 interface RefElement extends HTMLElement {
   dataset: {
@@ -55,9 +56,10 @@ export default class Block {
 
   _registerEvents() {
     // Делаем дебаунс, чтобы за раз обновился лишь раз
-    const debouncedCDU = debounce(this._componentDidUpdate.bind(this), { wait: 1 });
+    const debouncedCDU = debounce(this._componentDidUpdate.bind(this), { wait: 15 });
     this.eventBus.on(EVENTS.FLOW_CREATE, this.init.bind(this));
     this.eventBus.on(EVENTS.FLOW_CDM, this._componentDidMount.bind(this));
+    this.eventBus.on(EVENTS.FLOW_CWU, this.componentWillUpdate.bind(this));
     this.eventBus.on(EVENTS.FLOW_CDU, debouncedCDU);
     this.eventBus.on(EVENTS.FLOW_RENDER, this._render.bind(this));
   }
@@ -80,18 +82,25 @@ export default class Block {
       return;
     }
     this._render();
+    this.componentDidUpdate();
   }
+
+  componentWillUpdate(_oldProps: unknown, _newProps: unknown) {}
+
+  componentDidUpdate() {}
 
   componentShouldUpdate(oldProps: unknown, newProps: unknown) {
-    return Boolean(newProps) || Boolean(oldProps);
+    return !isEqual((oldProps as {}) || {}, (newProps as {}) || {});
   }
 
-  setProps(nextProps: StringRecord) {
+  setProps(nextProps: unknown) {
     if (!nextProps) {
       return;
     }
-
+    const oldProps = { ...this.props };
     Object.assign(this.props, nextProps);
+    this.eventBus.emit(EVENTS.FLOW_CWU, oldProps, this.props);
+    this.eventBus.emit(EVENTS.FLOW_CDU, oldProps, this.props);
   }
 
   _render() {
@@ -99,10 +108,10 @@ export default class Block {
 
     this._removeEvents();
     const newElement = fragment.firstElementChild!;
-
     this._element!.replaceWith(newElement);
 
     this._element = newElement as HTMLElement;
+
     this._addEvents();
     this._addCustomRefs();
   }
@@ -120,13 +129,14 @@ export default class Block {
   }
 
   _makePropsProxy(props: StringRecord): {} {
-    return new Proxy((props as unknown) as object, {
+    return new Proxy(props as unknown as object, {
       get(target: Record<string, unknown>, prop: string) {
         const value = target[prop];
         return typeof value === 'function' ? value.bind(target) : value;
       },
       set: (target: Record<string, unknown>, prop: string, value: unknown) => {
         target[prop] = value;
+        this.eventBus.emit(EVENTS.FLOW_CWU);
         this.eventBus.emit(EVENTS.FLOW_CDU, { ...target }, target);
         return true;
       },
@@ -136,17 +146,19 @@ export default class Block {
     });
   }
 
-  getContent(): HTMLElement {
+  getContent(): HTMLElement | '' {
     if (this.element?.parentNode?.nodeType === Node.DOCUMENT_FRAGMENT_NODE) {
       this.cdmTimeout = setTimeout(() => {
         if (this.element?.parentNode?.nodeType !== Node.DOCUMENT_FRAGMENT_NODE) {
           this.eventBus.emit(EVENTS.FLOW_CDM);
         }
-      }, 100);
+      }, 1);
     }
 
     if (!this.element) {
       this.eventBus.emit(EVENTS.FLOW_CDM);
+
+      return '';
     }
 
     return this.element!;
@@ -185,7 +197,7 @@ export default class Block {
       return;
     }
 
-    const refs = (Array.from(this.element.querySelectorAll('[data-ref]')) as unknown) as RefElement[];
+    const refs = Array.from(this.element!.querySelectorAll('[data-ref]')) as unknown as RefElement[];
     refs.forEach(el => {
       this.refs[el.dataset.ref] = el;
     });
@@ -194,34 +206,18 @@ export default class Block {
   _compile(): DocumentFragment {
     const fragment = document.createElement('template');
 
-    /**
-     * Рендерим шаблон
-     */
     const template = Handlebars.compile(this.render());
     fragment.innerHTML = template({ ...this.state, ...this.props, children: this.children, refs: this.refs });
 
-    /**
-     * Заменяем заглушки на компоненты
-     */
     Object.entries(this.children).forEach(([id, component]) => {
-      /**
-       * Ищем заглушку по id
-       */
       const stub = fragment.content.querySelector(`[data-id="${id}"]`);
 
       if (!stub) {
         return;
       }
-
-      /**
-       * Заменяем заглушку на component._element
-       */
       stub.replaceWith(component.getContent());
     });
 
-    /**
-     * Возвращаем фрагмент
-     */
     return fragment.content;
   }
 }

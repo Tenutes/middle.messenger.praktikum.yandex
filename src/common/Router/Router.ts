@@ -1,7 +1,13 @@
 import Block from '../Block/Block';
 import Route from './Route';
 
-export type RouterBeforeEachFn = (next: () => void, pathname: string) => void;
+export type RouterBeforeEachFn = (next: () => void, route: Route | undefined) => void;
+type RouteConfig = {
+  block: typeof Block;
+  meta?: {
+    requireAuth: boolean;
+  };
+};
 
 class Router {
   private routes: Route[] = [];
@@ -14,8 +20,8 @@ class Router {
     this.errorPageSymbol = '@@error@@';
   }
 
-  use(pathname: string, block: typeof Block) {
-    const route = new Route(pathname, block, { rootQuery: '#root' });
+  use(pathname: string, { block, meta }: RouteConfig) {
+    const route = new Route(pathname, block, { rootQuery: '#root', requireAuth: meta?.requireAuth || false });
 
     this.routes.push(route);
 
@@ -23,7 +29,7 @@ class Router {
   }
 
   errorPage(block: typeof Block) {
-    const route = new Route(this.errorPageSymbol, block, { rootQuery: '#root' });
+    const route = new Route(this.errorPageSymbol, block, { rootQuery: '#root', requireAuth: false });
     this.routes.push(route);
 
     return this;
@@ -38,16 +44,15 @@ class Router {
   }
 
   _onRoute(pathname: string) {
+    const route = this.getRoute(pathname);
     if (this.onBeforeEach) {
-      return this.onBeforeEach(() => this._onRoutePass(pathname), pathname);
+      return this.onBeforeEach(() => this._onRoutePass(route, pathname), route);
     }
 
-    return this._onRoutePass(pathname);
+    return this._onRoutePass(route, pathname);
   }
 
-  _onRoutePass(pathname: string) {
-    const route = this.getRoute(pathname);
-
+  _onRoutePass(route: Route | undefined, pathname: string) {
     if (!route) {
       if (pathname !== this.errorPageSymbol) {
         this._onRoute(this.errorPageSymbol);

@@ -26,7 +26,7 @@ type DebounceOptions = {
   after?: boolean;
 };
 
-export const debounce = (fn: (...args: unknown[]) => void | unknown, options: DebounceOptions = {}) => {
+export const debounce = (fn: (...args: any) => void | unknown, options: DebounceOptions = {}) => {
   if (typeof fn !== 'function') {
     throw new TypeError(`Ожидал функцию, получил \`${typeof fn}\``);
   }

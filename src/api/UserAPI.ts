@@ -19,7 +19,13 @@ export interface UpdateAvatarData {
   avatar: File;
 }
 
-export class ProfileAPI extends BaseAPI {
+export interface SearchData {
+  login: string;
+}
+
+export type SearchResponse = [];
+
+export class UserAPI extends BaseAPI {
   constructor() {
     super('/user');
   }
@@ -28,12 +34,16 @@ export class ProfileAPI extends BaseAPI {
     return this.http.put('/profile', data);
   }
 
-  updateAvatar(data: UpdateAvatarData): Promise<UserData> {
-    return this.http.put('/profile/avatar', data);
+  updateAvatar(data: FormData): Promise<UserData> {
+    return this.http.put('/profile/avatar', data, true);
   }
 
   changePassword(data: UpdatePasswordData): Promise<void> {
     return this.http.put('/password', data);
+  }
+
+  search(data: SearchData): Promise<SearchResponse> {
+    return this.http.post('/search', data);
   }
 
   read: undefined;

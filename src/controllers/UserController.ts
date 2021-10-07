@@ -1,13 +1,15 @@
-import { ProfileAPI, UpdateAvatarData, UpdateProfileData, UpdatePasswordData } from '../api/ProfileAPI';
+import { UserAPI, UpdateProfileData, UpdatePasswordData, SearchData } from '../api/UserAPI';
 import { store } from '../store';
 import { setUser } from '../store/user';
 import { setResponse } from '../store/profile';
+import { setSearch } from '../store/messenger';
+import { UserData } from 'api/AuthAPI.js';
 
-class ProfileController {
-  private api: ProfileAPI;
+class UserController {
+  private api: UserAPI;
 
   constructor() {
-    this.api = new ProfileAPI();
+    this.api = new UserAPI();
   }
 
   async update(data: UpdateProfileData) {
@@ -20,7 +22,7 @@ class ProfileController {
     }
   }
 
-  async updateAvatar(data: UpdateAvatarData) {
+  async updateAvatar(data: FormData) {
     try {
       const user = await this.api.updateAvatar(data);
       store.dispatch(setUser(user));
@@ -38,6 +40,24 @@ class ProfileController {
       store.dispatch(setResponse({ error: (e as { reason: string }).reason }));
     }
   }
+
+  async search(data: SearchData) {
+    const users = await this.searchUsers(data);
+    if (users) {
+      store.dispatch(setSearch(users));
+    }
+  }
+
+  async searchUsers(data: SearchData): Promise<UserData[] | undefined> {
+    if (!data.login) {
+      return [];
+    }
+    try {
+      return this.api.search(data);
+    } catch (e) {
+      store.dispatch(setResponse({ error: (e as { reason: string }).reason }));
+    }
+  }
 }
 
-export default new ProfileController();
+export default new UserController();

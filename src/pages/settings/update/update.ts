@@ -2,8 +2,8 @@ import Block from '../../../common/Block/Block';
 import Form from '../../../common/Form/Form';
 import { emailMatch, loginMatch, nameMatch, phoneMatch } from '../../../common/Validator/constants';
 import { required } from '../../../common/Validator/Validator';
-import { UpdateProfileData } from '../../../api/ProfileAPI';
-import ProfileController from '../../../controllers/ProfileController';
+import { UpdateProfileData } from '../../../api/UserAPI';
+import UserController from '../../../controllers/UserController';
 
 interface SettingsUpdateState {
   onUpdate: (e: Event) => void;
@@ -38,7 +38,7 @@ export class SettingsUpdatePage extends Block {
 
         if (updateForm.isValid()) {
           const updateData = (updateForm.getValues() as unknown) as UpdateProfileData;
-          await ProfileController.update(updateData);
+          await UserController.update(updateData);
         }
       },
     };

@@ -22,7 +22,7 @@ export class LoginPage extends Block {
         loginForm.addValidationField(loginField).addValidationField(passwordField);
 
         if (loginForm.isValid()) {
-          const formData = (loginForm.getValues() as unknown) as SignInData;
+          const formData = loginForm.getValues() as unknown as SignInData;
           await AuthController.login(formData);
         }
       },
@@ -37,7 +37,6 @@ export class LoginPage extends Block {
   }
 
   render() {
-    console.log('wtf');
     // language=hbs
     return `
         <div class="flex flex-col items-center w-full bg-white h-screen justify-center">

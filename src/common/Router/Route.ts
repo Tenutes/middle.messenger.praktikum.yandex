@@ -1,10 +1,10 @@
 import Block from '../Block/Block';
 
 export default class Route {
-  private pathname: string;
+  pathname: string;
   private readonly blockClass: typeof Block;
   private block: Block | null;
-  private props: any;
+  props: any;
 
   constructor(pathname: string, view: typeof Block, props: any) {
     this.pathname = pathname;

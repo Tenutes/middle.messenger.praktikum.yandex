@@ -1,6 +1,9 @@
 import Block from '../../common/Block/Block';
 
 export class SettingsPage extends Block {
+  componentShouldUpdate() {
+    return true;
+  }
   render() {
     // language=hbs
     return `
@@ -9,7 +12,7 @@ export class SettingsPage extends Block {
             <div class="h-full max-h-screen py-12">
                 <div class="w-full max-w-[530px] px-3 flex flex-col items-center mx-auto">
                     <div class="mb-8 w-full flex flex-col items-center">
-                        {{{ SettingsProfile name=user.profile.first_name }}}
+                        {{{ SettingsProfile name=user.profile.first_name avatar=user.profile.avatar}}}
                     </div>
                     <div class="w-full mb-10">
                         <div class="flex justify-between border-b border-gray-lightest py-2 last:border-0">

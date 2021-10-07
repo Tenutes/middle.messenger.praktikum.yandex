@@ -1,7 +1,7 @@
 import Block from '../../../common/Block/Block';
 import Form from '../../../common/Form/Form';
-import { UpdatePasswordData } from '../../../api/ProfileAPI';
-import ProfileController from '../../../controllers/ProfileController';
+import { UpdatePasswordData } from '../../../api/UserAPI';
+import UserController from '../../../controllers/UserController';
 import { equalsMatch } from '../../../common/Validator/constants';
 
 interface ChangePasswordState {
@@ -32,7 +32,7 @@ export class ChangePasswordPage extends Block {
             newPassword: password_new,
           };
 
-          await ProfileController.changePassword(updateData);
+          await UserController.changePassword(updateData);
         }
       },
     };

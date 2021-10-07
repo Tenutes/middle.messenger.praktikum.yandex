@@ -6,6 +6,8 @@ const SET_USER = 'user/SET';
 const DELETE_USER = 'user/DELETE';
 const SET_ERROR = 'user/SET_ERROR';
 
+const defaultState = { profile: null, error: null };
+
 export const setUser = (user: UserData) => ({
   type: SET_USER,
   payload: user,
@@ -20,7 +22,7 @@ export const setError = (error: { reason: string }) => ({
   payload: error,
 });
 
-export default (state = { profile: null, error: null }, action: Action) => {
+export default (state = defaultState, action: Action) => {
   switch (action.type) {
     case SET_USER:
       return { error: null, profile: action.payload };

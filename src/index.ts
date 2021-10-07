@@ -24,28 +24,30 @@ Object.values(components).forEach(component => {
 
 const beforeEach: RouterBeforeEachFn = async (next, currentRoute): Promise<void> => {
   const user = await AuthController.fetchUser();
-
-  if (currentRoute === '/') {
+  if (!currentRoute) {
+    return next();
+  }
+  if (currentRoute.pathname === '/') {
     if (user) {
       return Router.go('/messenger');
     }
     return next();
   } else {
-    if (user) {
+    if (user || !currentRoute.props.requireAuth) {
       return next();
     }
     return Router.go('/');
   }
 };
 
-Router.use('/', LoginPage)
-  .use('/logout', LogoutPage)
-  .use('/signup', RegistrationPage)
-  .use('/messenger', MessengerPage)
-  .use('/settings', SettingsPage)
-  .use('/settings/update', SettingsUpdatePage)
-  .use('/settings/change-password', ChangePasswordPage)
-  .use('/500', Page500)
+Router.use('/', { block: LoginPage })
+  .use('/signup', { block: RegistrationPage })
+  .use('/logout', { block: LogoutPage, meta: { requireAuth: true } })
+  .use('/messenger', { block: MessengerPage, meta: { requireAuth: true } })
+  .use('/settings', { block: SettingsPage, meta: { requireAuth: true } })
+  .use('/settings/update', { block: SettingsUpdatePage, meta: { requireAuth: true } })
+  .use('/settings/change-password', { block: ChangePasswordPage, meta: { requireAuth: true } })
+  .use('/500', { block: Page500 })
   .errorPage(Page404)
   .beforeEach(beforeEach)
   .install();

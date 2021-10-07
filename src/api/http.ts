@@ -8,6 +8,7 @@ export enum Method {
 
 type Options = {
   method: Method;
+  isRaw?: boolean;
   data?: any;
 };
 
@@ -30,10 +31,11 @@ export default class HTTPTransport {
     });
   }
 
-  public put<Response = void>(path: string, data: unknown): Promise<Response> {
+  public put<Response = void>(path: string, data: unknown, isRaw: boolean = false): Promise<Response> {
     return this.request<Response>(this.endpoint + path, {
       method: Method.Put,
       data,
+      isRaw,
     });
   }
 
@@ -44,14 +46,15 @@ export default class HTTPTransport {
     });
   }
 
-  public delete<Response>(path: string): Promise<Response> {
+  public delete<Response>(path: string, data: unknown): Promise<Response> {
     return this.request<Response>(this.endpoint + path, {
       method: Method.Delete,
+      data,
     });
   }
 
   private request<Response>(url: string, options: Options = { method: Method.Get }): Promise<Response> {
-    const { method, data } = options;
+    const { method, data, isRaw } = options;
 
     return new Promise((resolve, reject) => {
       const xhr = new XMLHttpRequest();
@@ -71,15 +74,20 @@ export default class HTTPTransport {
       xhr.onerror = () => reject({ reason: 'network error' });
       xhr.ontimeout = () => reject({ reason: 'timeout' });
 
-      xhr.setRequestHeader('Content-Type', 'application/json');
-
+      if (!isRaw) {
+        xhr.setRequestHeader('Content-Type', 'application/json');
+      }
       xhr.withCredentials = true;
       xhr.responseType = 'json';
 
       if (method === Method.Get || !data) {
         xhr.send();
       } else {
-        xhr.send(JSON.stringify(data));
+        if (isRaw) {
+          xhr.send(data);
+        } else {
+          xhr.send(JSON.stringify(data));
+        }
       }
     });
   }
