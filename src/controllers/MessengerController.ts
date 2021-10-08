@@ -88,7 +88,7 @@ class MessengerController {
 
   addMessage(message: ChatMessage | ChatMessage[]) {
     if (isArray(message)) {
-      for (let i = 0; i < message.length; i++) {
+      for (let i = message.length - 1; i >= 0; i--) {
         store.dispatch(addMessage(message[i]));
       }
     } else {
