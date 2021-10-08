@@ -38,6 +38,10 @@ export default class Chat extends Block {
     super(props);
   }
 
+  static getName() {
+    return 'Chat';
+  }
+
   getStateFromProps() {
     return {
       addPopupShow: false,

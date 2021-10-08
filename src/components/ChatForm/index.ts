@@ -10,6 +10,10 @@ export default class ChatForm extends Block {
     super(props);
   }
 
+  static getName() {
+    return 'ChatForm';
+  }
+
   getStateFromProps() {
     return {
       onSubmit: async (e: Event) => {

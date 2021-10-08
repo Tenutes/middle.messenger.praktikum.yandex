@@ -1,12 +1,13 @@
 import Block from './Block/Block';
-import Handlebars from 'handlebars';
+import Handlebars, { HelperOptions } from 'handlebars';
 
 export interface BlockConstructable<Props = unknown> {
   new (props: Props): Block;
+  getName: () => string;
 }
 
 export default function register(Component: BlockConstructable) {
-  Handlebars.registerHelper(Component.name, function ({ hash: { ref, ...opts }, data }) {
+  Handlebars.registerHelper(Component.getName(), function ({ hash: { ref, ...opts }, data }: HelperOptions) {
     if (!data.root.children) {
       data.root.children = {};
     }

@@ -12,6 +12,10 @@ export default class ChatUser extends Block {
     super({ ...props, events: { click: (e: Event) => onChatClick(e, props.chat) } });
   }
 
+  static getName() {
+    return 'ChatUser';
+  }
+
   getStateFromProps() {
     return {
       onDelete: (e: Event) => {

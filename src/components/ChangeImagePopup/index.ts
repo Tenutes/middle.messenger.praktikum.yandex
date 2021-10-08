@@ -22,6 +22,10 @@ export default class ChangeImagePopup extends Block {
     super(props);
   }
 
+  static getName() {
+    return 'ChangeImagePopup';
+  }
+
   componentShouldUpdate(o: PopupProps & PopupState, n: PopupProps & PopupState) {
     return o.show !== n.show || o.error !== n.error || Boolean(n.error) || Boolean(n.responseError);
   }

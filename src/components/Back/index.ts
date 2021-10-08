@@ -10,7 +10,11 @@ export default class Back extends Block {
     super({ to, events: { click: onClick } });
   }
 
-  render(): string {
+  static getName() {
+    return 'Button';
+  }
+
+  render() {
     // language=hbs
     return `
       <a

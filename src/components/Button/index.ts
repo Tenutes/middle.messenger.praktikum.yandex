@@ -14,7 +14,11 @@ export default class Button extends Block {
     super({ ...props, events: { click: onClick } });
   }
 
-  render(): string {
+  static getName() {
+    return 'Button';
+  }
+
+  render() {
     // language=hbs
     return `
         <button class="{{classes}}" {{{extra}}}>

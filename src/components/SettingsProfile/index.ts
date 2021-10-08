@@ -18,6 +18,10 @@ export default class SettingsProfile extends Block {
     super(props);
   }
 
+  static getName() {
+    return 'SettingsProfile';
+  }
+
   getStateFromProps() {
     return {
       popupActive: false,
