@@ -22,7 +22,7 @@ export default function register(Component: BlockConstructable) {
     if (ref) {
       refs[ref] = component;
     }
-    console.log(Component.name, children);
+
     return `<div data-id="${component.id}"></div>`;
   });
 }

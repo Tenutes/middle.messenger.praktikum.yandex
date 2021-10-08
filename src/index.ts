@@ -17,7 +17,7 @@ import Page500 from './pages/errors/500';
 import Page404 from './pages/errors/404';
 
 const components = require('./components/**/index.ts') as { [key: string]: { default: typeof Block } };
-
+console.log(components);
 Object.values(components).forEach(component => {
   registerComponent(component.default as BlockConstructable);
 });
