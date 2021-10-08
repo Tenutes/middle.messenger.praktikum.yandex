@@ -124,6 +124,10 @@
   }
 }
 
+.text-green {
+  color: var(--ya-green);
+}
+
 .text-blue {
   color: var(--ya-blue);
 }
@@ -154,6 +158,10 @@
 
 .decoration-none {
   text-decoration: none;
+}
+
+.underline {
+  text-decoration: underline;
 }
 
 .hover\:underline {

@@ -1,3 +1,0 @@
-interface BackProps {
-  link: string;
-}

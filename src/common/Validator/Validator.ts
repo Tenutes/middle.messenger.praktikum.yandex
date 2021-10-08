@@ -1,23 +1,7 @@
 import { VALIDATOR_ERROR_CODES, VALIDATOR_ERROR_CODES_NAMES } from './constants';
 
-export function required(this: FormElement): ValidationResult {
-  let success = false;
-  switch (this.tagName) {
-    case 'INPUT': {
-      if (['checkbox', 'radio'].includes(this.type)) {
-        success = (<HTMLInputElement>this).checked;
-        break;
-      }
-      success = Boolean(this.value);
-      break;
-    }
-    case 'TEXTAREA':
-    case 'SELECT':
-      success = Array.isArray(this.value) ? Boolean(this.value.length) : Boolean(this.value);
-      break;
-    default:
-      break;
-  }
+export function required(value: unknown): ValidationResult {
+  let success = Boolean(value || (typeof value === 'number' && !Number.isNaN(value)));
 
   return {
     success,
@@ -30,23 +14,22 @@ export function required(this: FormElement): ValidationResult {
   };
 }
 
-export function equalsTo(this: FormElement, to: FormElement): ValidationResult {
+export function equalsTo(from: FormElement, to: FormElement): ValidationResult {
   let success = false;
-  switch (this.tagName) {
+  switch (from.tagName) {
     case 'INPUT': {
-      if (['checkbox', 'radio'].includes(this.type)) {
-        success = (<HTMLInputElement>this).checked = (<HTMLInputElement>to).checked;
+      if (['checkbox', 'radio'].includes(from.type)) {
+        success = (<HTMLInputElement>from).checked = (<HTMLInputElement>to).checked;
         break;
       }
-      success = Boolean(this.value) && this.value === to.value;
+      success = Boolean(from.value) && from.value === to.value;
       break;
     }
     case 'TEXTAREA':
     case 'SELECT':
-      // Переписать json на isEqual (as in lodash)
-      success = Array.isArray(this.value)
-        ? JSON.stringify(this.value) === JSON.stringify(to.value)
-        : this.value === to.value;
+      success = Array.isArray(from.value)
+        ? JSON.stringify(from.value) === JSON.stringify(to.value)
+        : from.value === to.value;
       break;
     default:
       break;
@@ -62,8 +45,8 @@ export function equalsTo(this: FormElement, to: FormElement): ValidationResult {
   };
 }
 
-export function match(this: FormElement, pattern: RegExp): ValidationResult {
-  const success = pattern.test(this.value);
+export function match(value: string, pattern: RegExp): ValidationResult {
+  const success = pattern.test(value);
   return {
     success,
     error: success
@@ -87,10 +70,10 @@ export default class Validator {
   }
 
   validateAll(): ValidationAllResult[] {
-    return this.validations.map(validation => {
+    return this.validations.map(({ field, validation }) => {
       return {
-        field: validation.field,
-        result: this.validate(validation),
+        field: field,
+        result: this.validate(field, validation),
       };
     });
   }
@@ -104,20 +87,11 @@ export default class Validator {
     };
   }
 
-  validate(field: FormElement | ValidatorValidation | undefined): ValidationResult {
-    if (!field) {
+  validate(field?: FormElement, validation?: ValidationFn): ValidationResult {
+    if (!field || !validation) {
       return this.defaultValidationNotFound();
     }
 
-    let validationFn;
-    if ('validation' in field) {
-      validationFn = field.validation.bind(field.field);
-    } else {
-      const validation = this.validations.find(validation => validation.field === field);
-      if (validation) {
-        validationFn = validation.validation.bind(field);
-      }
-    }
-    return validationFn ? validationFn() : this.defaultValidationNotFound();
+    return validation(field.value);
   }
 }

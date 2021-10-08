@@ -1,34 +1,45 @@
-import Router from '../Router/Router';
+import EventBus from '../EventBus/EventBus';
 
-class Store implements StateManager {
-  state: Record<string, unknown>;
-
-  constructor() {
-    this.state = {};
-  }
-
-  install() {
-    const currentPageState = Router.currentPage?.state;
-    if (currentPageState) {
-      this._setState(currentPageState);
-    }
-  }
-
-  setState(state: State) {
-    this._setState(state);
-  }
-
-  update(partialState: State) {
-    this._setState({ ...this.state, ...partialState });
-  }
-
-  _setState(state: State) {
-    this.state = state;
-  }
-
-  _use(store: State) {
-    this.state = { ...store };
-  }
+export interface Action {
+  type: string;
+  payload?: any;
 }
 
-export default new Store();
+type Reducer<S = Indexed> = (state: S, action: Action) => S;
+
+type Indexed = { [key: string]: any };
+
+export default class Store extends EventBus {
+  private state: Indexed = {};
+  private readonly reducer: Reducer;
+
+  constructor(reducers: Indexed) {
+    super();
+
+    this.reducer = this.combineReducers(reducers);
+
+    this.dispatch({ type: '@@INIT' });
+  }
+
+  public dispatch(action: Action) {
+    this.state = this.reducer(this.state, action);
+
+    this.emit('changed');
+  }
+
+  public getState() {
+    return this.state;
+  }
+
+  private combineReducers(reducers: Indexed): Reducer {
+    return (_, action: Action) => {
+      const newState: Indexed = {};
+
+      Object.entries(reducers).forEach(([key, reducer]) => {
+        newState[key] = reducer(this.state[key], action);
+      });
+
+      return newState;
+    };
+  }
+}

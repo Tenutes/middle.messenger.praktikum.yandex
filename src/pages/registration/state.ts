@@ -1,18 +1,12 @@
-import Button from '../../components/Button/button';
-import Link from '../../components/Link/link';
-import Input from '../../components/Input/input';
-
-const buttonProps: ButtonProps = {
-  label: 'Зарегистрироваться',
-  classes:
-    'w-full text-center bg-blue text-white text-sm font-medium rounded-4 px-4 py-2 mb-2 duration-200 hover:opacity-80 focus:bg-blue-dark active:bg-blue-dark',
-};
-
-const linkProps: LinkProps = {
-  href: '/',
-  label: 'Уже есть аккаунт',
-  classes: 'text-blue decoration-none hover:underline duration-200',
-};
+import { InputProps } from '../../components/Input';
+import {
+  emailMatch,
+  // equalsMatch,
+  loginMatch,
+  nameMatch,
+  passwordMatch,
+  phoneMatch,
+} from '../../common/Validator/constants';
 
 const inputFields: InputProps[] = [
   {
@@ -22,6 +16,7 @@ const inputFields: InputProps[] = [
     required: true,
     label: 'Почта',
     classes: 'border-b border-blue w-full py-1 text-base text-black',
+    validations: [{ fn: emailMatch, errorReplacer: 'Почта' }],
   },
   {
     id: 'login',
@@ -30,6 +25,7 @@ const inputFields: InputProps[] = [
     required: true,
     label: 'Логин',
     classes: 'border-b border-blue w-full py-1 text-base text-black',
+    validations: [{ fn: loginMatch, errorReplacer: 'Логин' }],
   },
   {
     id: 'first_name',
@@ -38,6 +34,7 @@ const inputFields: InputProps[] = [
     required: true,
     label: 'Имя',
     classes: 'border-b border-blue w-full py-1 text-base text-black',
+    validations: [{ fn: nameMatch, errorReplacer: 'Имя' }],
   },
   {
     id: 'second_name',
@@ -46,6 +43,7 @@ const inputFields: InputProps[] = [
     required: true,
     label: 'Фамилия',
     classes: 'border-b border-blue w-full py-1 text-base text-black',
+    validations: [{ fn: nameMatch, errorReplacer: 'Фамилия' }],
   },
   {
     id: 'phone',
@@ -54,6 +52,7 @@ const inputFields: InputProps[] = [
     required: true,
     label: 'Телефон',
     classes: 'border-b border-blue w-full py-1 text-base text-black',
+    validations: [{ fn: phoneMatch, errorReplacer: 'Телефон' }],
   },
   {
     id: 'password',
@@ -62,6 +61,7 @@ const inputFields: InputProps[] = [
     required: true,
     label: 'Пароль',
     classes: 'border-b border-blue w-full py-1 text-base text-black',
+    validations: [{ fn: passwordMatch, errorReplacer: 'Пароль' }],
   },
   {
     id: 'password_repeat',
@@ -70,11 +70,10 @@ const inputFields: InputProps[] = [
     required: true,
     label: 'Пароль (еще раз)',
     classes: 'border-b border-blue w-full py-1 text-base text-black',
+    validations: [{ fn: passwordMatch, errorReplacer: 'Пароль' }],
   },
 ];
 
 export default {
-  button: new Button(buttonProps).getContent(),
-  link: new Link(linkProps).getContent(),
-  fields: inputFields.map(fieldProps => new Input(fieldProps).getContent()),
+  fields: inputFields,
 };
