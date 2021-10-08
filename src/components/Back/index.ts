@@ -11,7 +11,7 @@ export default class Back extends Block {
   }
 
   static getName() {
-    return 'Button';
+    return 'Back';
   }
 
   render() {

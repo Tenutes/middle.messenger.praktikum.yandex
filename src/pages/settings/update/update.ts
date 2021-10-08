@@ -37,7 +37,7 @@ export class SettingsUpdatePage extends Block {
         }
 
         if (updateForm.isValid()) {
-          const updateData = (updateForm.getValues() as unknown) as UpdateProfileData;
+          const updateData = updateForm.getValues() as unknown as UpdateProfileData;
           await UserController.update(updateData);
         }
       },
@@ -64,7 +64,7 @@ export class SettingsUpdatePage extends Block {
                         class="w-full max-w-[530px] px-3 flex flex-col items-center mx-auto"
                 >
                     <div class="mb-18 w-full flex flex-col items-center">
-                        {{{ SettingsProfile name=user.profile.first_name }}}
+                        {{{ SettingsProfile name=user.profile.first_name avatar=user.profile.avatar }}}
                     </div>
                     <div class="w-full mb-11">
                         <div class="flex justify-between border-b border-gray-lightest py-2 last:border-0 relative overflow-hidden">
