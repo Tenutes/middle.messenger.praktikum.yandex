@@ -19,6 +19,10 @@ export default class FileInput extends Block {
     super(props);
   }
 
+  static getName() {
+    return 'FileInput';
+  }
+
   componentDidMount() {
     const input = this.refs.field as HTMLInputElement;
     const props = this.props as FileInputProps;

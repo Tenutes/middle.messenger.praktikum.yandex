@@ -13,7 +13,11 @@ export default class InputGroup extends Block {
     super({ ...props });
   }
 
-  render(): string {
+  static getName() {
+    return 'InputGroup';
+  }
+
+  render() {
     // language=hbs
     return `
         <div class="{{classes}}">

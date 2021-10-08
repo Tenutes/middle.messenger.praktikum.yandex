@@ -12,6 +12,10 @@ export default class SearchResult extends Block {
     super(props);
   }
 
+  static getName() {
+    return 'SearchResult';
+  }
+
   render() {
     // language=hbs
     return `

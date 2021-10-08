@@ -12,6 +12,10 @@ export default class Search extends Block {
     super({ ...props });
   }
 
+  static getName() {
+    return 'Search';
+  }
+
   getStateFromProps() {
     return {
       onInput: debounce(

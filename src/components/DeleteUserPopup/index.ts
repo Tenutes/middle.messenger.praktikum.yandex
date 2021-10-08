@@ -21,6 +21,10 @@ export default class DeleteUserPopup extends Block {
     super(props);
   }
 
+  static getName() {
+    return 'DeleteUserPopup';
+  }
+
   componentShouldUpdate(o: PopupProps, n: PopupProps) {
     return o.show !== n.show;
   }

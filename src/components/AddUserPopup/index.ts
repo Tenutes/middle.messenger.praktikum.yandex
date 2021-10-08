@@ -15,6 +15,10 @@ export default class AddUserPopup extends Block {
     super(props);
   }
 
+  static getName() {
+    return 'AddUserPopup';
+  }
+
   componentShouldUpdate(o: PopupProps, n: PopupProps) {
     return o.show !== n.show;
   }

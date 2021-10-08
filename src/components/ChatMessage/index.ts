@@ -11,6 +11,10 @@ export default class ChatMessage extends Block {
     super(props);
   }
 
+  static getName() {
+    return 'ChatMessage';
+  }
+
   render() {
     // language=hbs
     return `

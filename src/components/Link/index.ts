@@ -20,6 +20,10 @@ export default class Link extends Block {
     super({ ...props, events: { click: onClick } });
   }
 
+  static getName() {
+    return 'Link';
+  }
+
   render(): string {
     // language=hbs
     return `<a href="{{to}}" class="{{classes}}" {{{extra}}}>{{label}}</a>`;

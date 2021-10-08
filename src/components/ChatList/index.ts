@@ -16,6 +16,10 @@ export default class ChatList extends Block {
     super(props);
   }
 
+  static getName() {
+    return 'ChatList';
+  }
+
   getStateFromProps() {
     return {
       onFoundChatCLick: async (event: Event, user: UserData) => {

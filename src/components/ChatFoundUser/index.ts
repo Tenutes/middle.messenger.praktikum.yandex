@@ -11,6 +11,10 @@ export default class ChatFoundUser extends Block {
     super({ ...props, events: { click: (e: Event) => onClick(e, props.user) } });
   }
 
+  static getName() {
+    return 'ChatFoundUser';
+  }
+
   render() {
     // language=hbs
     return `
