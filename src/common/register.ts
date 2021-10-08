@@ -6,7 +6,9 @@ export interface BlockConstructable<Props = unknown> {
 }
 
 export default function register(Component: BlockConstructable) {
+  console.log('inner');
   Handlebars.registerHelper(Component.name, function ({ hash: { ref, ...opts }, data }: HelperOptions) {
+    console.log('start to register');
     if (!data.root.children) {
       data.root.children = {};
     }
@@ -17,12 +19,14 @@ export default function register(Component: BlockConstructable) {
 
     const { children, refs } = data.root;
     const component = new Component(opts);
+    console.log('com', component);
 
     children[component.id] = component;
     if (ref) {
       refs[ref] = component;
     }
 
+    console.log('helper registered');
     return `<div data-id="${component.id}"></div>`;
   });
 }
