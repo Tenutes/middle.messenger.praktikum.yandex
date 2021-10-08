@@ -1,15 +1,12 @@
 import Block from './Block/Block';
-import Handlebars, { HelperOptions } from 'handlebars';
+import Handlebars from 'handlebars';
 
 export interface BlockConstructable<Props = unknown> {
   new (props: Props): Block;
 }
 
 export default function register(Component: BlockConstructable) {
-  console.log('inner');
-  console.log('registerType', Handlebars.registerHelper);
-  Handlebars.registerHelper(Component.name, function ({ hash: { ref, ...opts }, data }: HelperOptions) {
-    console.log('start to register');
+  Handlebars.registerHelper(Component.name, function ({ hash: { ref, ...opts }, data }) {
     if (!data.root.children) {
       data.root.children = {};
     }
@@ -26,7 +23,6 @@ export default function register(Component: BlockConstructable) {
       refs[ref] = component;
     }
 
-    console.log('helper registered');
     return `<div data-id="${component.id}"></div>`;
   });
 }
