@@ -20,7 +20,6 @@ export default class Block {
   state;
   cdmTimeout: NodeJS.Timeout | null;
   eventBus: EventBus;
-  domParser: DOMParser;
   id = uid();
   _element: Nullable<HTMLElement> = null;
   children: { [id: string]: Block } = {};
@@ -38,7 +37,6 @@ export default class Block {
     this.state = this._makePropsProxy(this.state);
 
     this.eventBus = eventBus;
-    this.domParser = new DOMParser();
 
     this._registerEvents();
 

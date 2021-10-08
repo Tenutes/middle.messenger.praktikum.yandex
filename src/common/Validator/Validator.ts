@@ -87,7 +87,7 @@ export default class Validator {
     };
   }
 
-  validate(field: FormElement, validation: ValidationFn): ValidationResult {
+  validate(field?: FormElement, validation?: ValidationFn): ValidationResult {
     if (!field || !validation) {
       return this.defaultValidationNotFound();
     }

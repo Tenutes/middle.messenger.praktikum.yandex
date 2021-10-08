@@ -1,13 +1,13 @@
-type Error = {
+export type Error = {
   reason: string;
 };
 
-const CREDENTIALS_MISMATCH = 'Login or password is incorrect';
-const USER_IN_SYSTEM = 'User already in system';
-const COOKIE_NOT_VALID = 'Cookie is not valid';
-const PASSWORD_IS_INVALID = 'Password is incorrect';
-const EMAIL_DUPLICATE = 'Email already exists';
-const LOGIN_DUPLICATE = 'Login already exists';
+export const CREDENTIALS_MISMATCH = 'Login or password is incorrect';
+export const USER_IN_SYSTEM = 'User already in system';
+export const COOKIE_NOT_VALID = 'Cookie is not valid';
+export const PASSWORD_IS_INVALID = 'Password is incorrect';
+export const EMAIL_DUPLICATE = 'Email already exists';
+export const LOGIN_DUPLICATE = 'Login already exists';
 
 const ERRORS_TRANSLATE: Record<string, string> = {
   [CREDENTIALS_MISMATCH]: 'Логин или пароль неверны',

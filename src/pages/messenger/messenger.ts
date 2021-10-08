@@ -4,6 +4,7 @@ import { MessengerState } from '../../store/messenger';
 import ChatList from '../../components/ChatList';
 import Chat, { IChat } from '../../components/Chat';
 import ChatWS, { MessageResponse } from '../../api/ChatWS';
+import { isArray } from '../../common/helpers';
 
 interface MessengerProps {
   user: {};
@@ -20,6 +21,8 @@ export class MessengerPage extends Block {
   getStateFromProps() {
     const onMessage = (response: MessageResponse) => {
       MessengerController.addMessage(response.content);
+      const totalMessages = isArray(response.content) ? response.content.length : 1;
+      this.ws?.increaseOffsetBy(totalMessages);
     };
 
     return {

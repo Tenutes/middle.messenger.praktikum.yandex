@@ -44,12 +44,14 @@ export default class Route {
     if (!root) {
       throw new Error('Root not found');
     }
+
     root.innerHTML = '';
     let content = this.block.getContent();
 
     if (!content) {
       content = document.createElement('div');
     }
+
     root.appendChild(content);
   }
 }

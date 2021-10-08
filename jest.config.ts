@@ -1,18 +1,16 @@
-/*
- * For a detailed explanation regarding each configuration property and type check, visit:
- * https://jestjs.io/docs/configuration
- */
+import type { Config } from '@jest/types';
 
-export default {
+// Sync object
+const config: Config.InitialOptions = {
   moduleFileExtensions: ['js', 'jsx', 'json', 'ts'],
   transform: {
-    '^.+\\.jsx?$': 'babel-jest',
+    '^.+\\.(tsx|config.js|setup.js)?$': 'babel-jest',
     '.+\\.(css|styl|less|sass|scss|svg|png|jpg|ttf|woff|woff2)$': 'jest-transform-stub',
   },
   moduleNameMapper: {
     '^@/(.*)$': '<rootDir>/src/$1',
   },
-  testMatch: ['**/tests/unit/**/*.spec.(js|jsx|ts|tsx)|**/__tests__/*.(js|jsx|ts|tsx)'],
+  testMatch: ['**/src/**/*.spec.(js|jsx|ts|tsx)'],
   testURL: 'http://localhost/',
   coverageThreshold: {
     global: {
@@ -21,7 +19,6 @@ export default {
   },
   silent: false,
   clearMocks: true,
-  collectCoverage: true,
-  coverageDirectory: "coverage",
-  coverageProvider: "v8",
 };
+
+export default config;

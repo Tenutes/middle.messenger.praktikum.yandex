@@ -20,6 +20,10 @@ class Router {
     this.errorPageSymbol = '@@error@@';
   }
 
+  get currentRoutes() {
+    return this.routes;
+  }
+
   use(pathname: string, { block, meta }: RouteConfig) {
     const route = new Route(pathname, block, { rootQuery: '#root', requireAuth: meta?.requireAuth || false });
 

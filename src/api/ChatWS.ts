@@ -17,12 +17,10 @@ export interface WSResponse {
 
 export default class ChatWS extends WS {
   private offset: number;
-  private readonly increaseOffsetBy: number;
 
   constructor() {
     super('/chats');
     this.offset = 0;
-    this.increaseOffsetBy = 20;
   }
 
   setup(path: string, onMessage: (d: MessageResponse) => void) {
@@ -53,6 +51,9 @@ export default class ChatWS extends WS {
 
   getOldMessages() {
     this.send({ type: 'get old', content: `${this.offset}` });
-    this.offset += this.increaseOffsetBy;
+  }
+
+  increaseOffsetBy(by: number) {
+    this.offset += by;
   }
 }
