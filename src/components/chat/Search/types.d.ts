@@ -1,0 +1,3 @@
+interface SearchProps {
+  input: string;
+}
