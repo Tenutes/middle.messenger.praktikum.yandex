@@ -42,7 +42,7 @@ export default class SettingsProfile extends Block {
     // language=hbs
     return `
         <div class="">
-            {{{ ChangeImagePopup ref='profilePopup' show=popupActive onUpdate=onUpdate }}}
+            {{{ ChangeImagePopup ref='profilePopup' show=popupActive onUpdate=onUpdate onClose=closePopup }}}
             <div class="rounded-full mb-4 w-[130px] h-[130px] bg-gray-lighten relative cursor-pointer hover:target:[data-target]:opacity-100 hover:shadow-sm">
                 <div
                         data-target
