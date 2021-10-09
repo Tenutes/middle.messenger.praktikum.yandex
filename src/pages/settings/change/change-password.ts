@@ -12,7 +12,7 @@ export interface ChangePasswordRefs {
   password: Input;
   password_new: Input;
   password_new_repeat: Input;
-  form: HTMLFormElement;
+  updateForm: HTMLFormElement;
 }
 
 export class ChangePasswordPage extends Block<ChangePasswordProps, ChangePasswordRefs> {
@@ -24,7 +24,7 @@ export class ChangePasswordPage extends Block<ChangePasswordProps, ChangePasswor
         const passwordNewField = this.refs.password_new;
         const passwordNewRepeatField = this.refs.password_new_repeat;
         const fields = [passwordField, passwordNewField, passwordNewRepeatField];
-        const updateForm = new Form(this.refs.form.id);
+        const updateForm = new Form(this.refs.updateForm.id);
 
         updateForm.addValidationFields(fields);
         updateForm.addValidationField(passwordNewRepeatField, {
@@ -45,7 +45,7 @@ export class ChangePasswordPage extends Block<ChangePasswordProps, ChangePasswor
   }
 
   componentDidMount() {
-    this.refs.form.addEventListener('submit', this.state.onUpdate!.bind(this));
+    this.refs.updateForm.addEventListener('submit', this.state.onUpdate!.bind(this));
   }
 
   render() {
@@ -55,13 +55,13 @@ export class ChangePasswordPage extends Block<ChangePasswordProps, ChangePasswor
             {{{ Back to='/settings' }}}
             <div class="h-full max-h-screen py-12">
                 <form
-                        ref="form"
+                        ref="updateForm"
                         id="form-change-password"
                         novalidate
                         class="w-full max-w-[530px] px-3 flex flex-col items-center mx-auto"
                 >
                     <div class="mb-18 w-full flex flex-col items-center">
-                        {{{ SettingsProfile name=user.profile.first_name }}}
+                        {{{ SettingsProfile name=user.profile.first_name avatar=user.profile.avatar }}}
                     </div>
                     <div class="w-full mb-11">
                         {{#each fields}}

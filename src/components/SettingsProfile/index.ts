@@ -6,7 +6,7 @@ interface SettingsProfileProps {
   name: string;
   popupActive: boolean;
   showPopup: (e: Event) => void;
-  closePopup: () => void;
+  closePopup: (e?: Event) => void;
   onUpdate: (formData: FormData) => Promise<void>;
 }
 
@@ -30,7 +30,8 @@ export default class SettingsProfile extends Block<SettingsProfileProps, Setting
         e.preventDefault();
         this.refs.profilePopup.setProps({ show: true });
       },
-      closePopup: () => {
+      closePopup: (e?: Event) => {
+        e?.preventDefault();
         this.refs.profilePopup.setProps({ show: false });
       },
       onUpdate: async (formData: FormData) => {
