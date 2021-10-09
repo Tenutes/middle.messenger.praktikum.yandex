@@ -1,6 +1,8 @@
 import Block from '../../../common/Block/Block';
 
-export class Page404 extends Block {
+interface PageProps {}
+
+export class Page404 extends Block<PageProps> {
   render() {
     // language=hbs
     return `

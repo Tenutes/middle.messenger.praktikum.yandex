@@ -4,6 +4,7 @@ import { withRouter } from '../../common/helpers';
 import messengerState from './state';
 import { MessengerState } from '../../store/messenger';
 import { UserData } from '../../api/AuthAPI';
+import Block from '../../common/Block/Block';
 
 export default withRouter(
   connect(
@@ -20,6 +21,6 @@ export default withRouter(
       chat: chat,
       ...messengerState,
     }),
-    MessengerPage
+    MessengerPage as typeof Block
   )
 );

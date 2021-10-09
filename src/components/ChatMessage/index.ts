@@ -6,7 +6,7 @@ interface ChatMessageProps {
   message: ChatMessage;
 }
 
-export default class ChatMessage extends Block {
+export default class ChatMessage extends Block<ChatMessageProps> {
   constructor(props: ChatMessageProps) {
     super(props);
   }

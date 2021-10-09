@@ -1,18 +1,18 @@
-import Block from './Block/Block';
 import Router from './Router/Route';
+import Block from './Block/Block';
 
 export const identity = <T>(item: T) => item;
 
 export const uid = (): string => {
-  return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
+  return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function (c) {
     const r = (Math.random() * 16) | 0,
       v = c === 'x' ? r : (r & 0x3) | 0x8;
     return v.toString(16);
   });
 };
 
-export function withRouter(Component: typeof Block) {
-  return class WithRouter extends Component {
+export function withRouter(Component: typeof Block): typeof Block {
+  return class WithRouter extends Component<any, any> {
     constructor(props: any) {
       super({ ...props, router: Router });
     }
@@ -41,7 +41,7 @@ export const debounce = (fn: (...args: any) => void | unknown, options: Debounce
   let maxTimeout: NodeJS.Timeout | undefined;
   let result: unknown;
 
-  const debouncedFunction = function(this: typeof fn, ...args: []) {
+  const debouncedFunction = function (this: typeof fn, ...args: []) {
     const context = this;
 
     const later = () => {

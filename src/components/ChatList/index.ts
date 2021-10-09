@@ -1,6 +1,5 @@
 import Block from '../../common/Block/Block';
 import { UserData } from '../../api/AuthAPI';
-import { CreateChatData } from '../../api/ChatAPI';
 import MessengerController from '../../controllers/MessengerController';
 import { IChat } from 'components/Chat';
 
@@ -8,10 +7,13 @@ interface ChatListProps {
   user: UserData;
   chats: [];
   search: [];
+  onFoundChatCLick: (e: Event, user: UserData) => void;
   onChatChoose: (userId: number, chat: IChat, token: string) => void;
+  onChatClick: (e: Event, chat: IChat) => void;
+  onChatDelete: (e: Event, chatId: number) => void;
 }
 
-export default class ChatList extends Block {
+export default class ChatList extends Block<ChatListProps> {
   constructor(props: ChatListProps) {
     super(props);
   }
@@ -24,7 +26,7 @@ export default class ChatList extends Block {
     return {
       onFoundChatCLick: async (event: Event, user: UserData) => {
         event.preventDefault();
-        const createChatData: CreateChatData = { title: `${user.first_name} ${user.second_name}` };
+        const createChatData = { title: `${user.first_name} ${user.second_name}` };
         const chatId = await MessengerController.createChat(createChatData);
         if (chatId) {
           const addUsersData = {
@@ -39,7 +41,7 @@ export default class ChatList extends Block {
 
         const response = await MessengerController.getToken({ chatId: chat.id });
         if (response?.token) {
-          (this.props as ChatListProps).onChatChoose((this.props as ChatListProps).user.id, chat, response.token);
+          this.props.onChatChoose(this.props.user.id, chat, response.token);
         }
       },
       onChatDelete: async (event: Event, chatId: number) => {

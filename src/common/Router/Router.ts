@@ -2,6 +2,7 @@ import Block from '../Block/Block';
 import Route from './Route';
 
 export type RouterBeforeEachFn = (next: () => void, route: Route | undefined) => void;
+
 type RouteConfig = {
   block: typeof Block;
   meta?: {

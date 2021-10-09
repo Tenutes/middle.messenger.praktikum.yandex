@@ -1,5 +1,5 @@
 import Block from '../../common/Block/Block';
-import { InputProps } from '../Input';
+import Input, { InputProps } from '../Input';
 
 interface InputGroupProps {
   input: InputProps;
@@ -8,9 +8,13 @@ interface InputGroupProps {
   ref: string;
 }
 
-export default class InputGroup extends Block {
-  constructor({ ...props }: InputGroupProps) {
-    super({ ...props });
+interface InputGroupRefs {
+  [key: InputProps['id']]: Input;
+}
+
+export default class InputGroup extends Block<InputGroupProps, InputGroupRefs> {
+  constructor(props: InputGroupProps) {
+    super(props);
   }
 
   static getName() {

@@ -1,14 +1,19 @@
 import Block from '../../common/Block/Block';
 import { UserData } from '../../api/AuthAPI';
 
+type onClick = (e: Event, user: UserData) => void;
+
 interface ChatFoundUserProps {
   user: UserData;
-  onClick: (e: Event, user: UserData) => void;
+  onClick?: onClick;
+  events?: {
+    click?: (e: Event) => void;
+  };
 }
 
-export default class ChatFoundUser extends Block {
+export default class ChatFoundUser extends Block<ChatFoundUserProps> {
   constructor({ onClick, ...props }: ChatFoundUserProps) {
-    super({ ...props, events: { click: (e: Event) => onClick(e, props.user) } });
+    super({ ...props, events: { click: (e: Event) => onClick?.(e, props.user) } });
   }
 
   static getName() {

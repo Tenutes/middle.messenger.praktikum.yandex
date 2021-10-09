@@ -1,6 +1,6 @@
 import { SettingsUpdatePage } from './update';
 import { connect } from '../../../store';
 import { withRouter } from '../../../common/helpers';
-import settingsUpdateState from './state';
+import Block from '../../../common/Block/Block';
 
-export default withRouter(connect((state: any) => ({ ...state, ...settingsUpdateState }), SettingsUpdatePage));
+export default withRouter(connect((state: any) => state, SettingsUpdatePage as typeof Block));

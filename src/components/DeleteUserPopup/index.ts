@@ -1,5 +1,5 @@
 import Block from '../../common/Block/Block';
-import SearchResult, { SearchResultProps } from 'components/SearchResult';
+import SearchResult from 'components/SearchResult';
 import { UserData } from '../../api/AuthAPI';
 import MessengerController from '../../controllers/MessengerController';
 
@@ -9,14 +9,15 @@ interface PopupProps {
   show: boolean;
   onClose?: () => void;
   onDeleteUsers: ([]) => void;
-}
-
-interface PopupState {
-  loadUsers: () => Promise<UserData[]>;
+  loadUsers: () => Promise<UserData[] | undefined>;
   setCurrentUsers: () => Promise<void>;
 }
 
-export default class DeleteUserPopup extends Block {
+interface PopupRefs {
+  searchResult: SearchResult;
+}
+
+export default class DeleteUserPopup extends Block<PopupProps, PopupRefs> {
   constructor(props: PopupProps) {
     super(props);
   }
@@ -30,23 +31,22 @@ export default class DeleteUserPopup extends Block {
   }
 
   async componentDidMount() {
-    await (this.state as PopupState).setCurrentUsers();
+    await this.state.setCurrentUsers?.();
   }
 
   async componentDidUpdate() {
-    await (this.state as PopupState).setCurrentUsers();
+    await this.state.setCurrentUsers?.();
   }
 
   getStateFromProps() {
     return {
       loadUsers: async () => {
-        const props = this.props as PopupProps;
-        const currentChatUsers = await MessengerController.getChatUsers({ chatId: props.chatId });
-        return currentChatUsers?.filter(({ id }) => id !== props.currentUserId);
+        const currentChatUsers = await MessengerController.getChatUsers({ chatId: this.props.chatId });
+        return currentChatUsers?.filter(({ id }) => id !== this.props.currentUserId);
       },
       setCurrentUsers: async () => {
-        const currentUsers = await (this.state as PopupState).loadUsers();
-        const searchResult = this.refs.searchResult as SearchResult;
+        const currentUsers = await this.state.loadUsers?.();
+        const searchResult = this.refs.searchResult;
         const newUsers = currentUsers?.map(user => ({
           ...user,
           active: false,
@@ -55,11 +55,10 @@ export default class DeleteUserPopup extends Block {
         searchResult.setProps({ result: newUsers });
       },
       onClick: (_e: Event, user: UserData & { active: boolean }) => {
-        const searchResult = this.refs.searchResult as SearchResult;
-        const currentUsers = (searchResult.props as SearchResultProps).result;
-        const newUsers = currentUsers.map(currentUser => {
+        const searchResult = this.refs.searchResult;
+        const newUsers = searchResult.props.result.map(currentUser => {
           const match = currentUser.id === user.id;
-          const active = (currentUser as UserData & { active: boolean }).active;
+          const active = currentUser.active;
           return {
             ...currentUser,
             active: active !== match,
@@ -69,17 +68,13 @@ export default class DeleteUserPopup extends Block {
       },
       onPopupClick: (e: Event) => {
         if (e.target === this.element) {
-          const props = this.props as PopupProps;
-          if (typeof props?.onClose === 'function') {
-            props.onClose();
-          }
+          this.props.onClose?.();
         }
       },
       onDeleteClick: async () => {
-        const searchResult = this.refs.searchResult as SearchResult;
-        const props = searchResult.props as SearchResultProps;
-        await (this.props as PopupProps).onDeleteUsers(props.result.filter(({ active }) => active).map(({ id }) => id));
-        await (this.state as PopupState).setCurrentUsers();
+        const searchResult = this.refs.searchResult;
+        await this.props.onDeleteUsers(searchResult.props.result.filter(({ active }) => active).map(({ id }) => id));
+        await this.state.setCurrentUsers?.();
       },
     };
   }

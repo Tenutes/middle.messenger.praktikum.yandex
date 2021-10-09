@@ -6,15 +6,16 @@ interface LinkProps {
   classes?: string;
   extra?: string;
   label: string;
-  onClick: () => void;
+  events?: {
+    click: (e: Event) => Promise<void>;
+  };
 }
 
-export default class Link extends Block {
+export default class Link extends Block<LinkProps> {
   constructor({ ...props }: LinkProps) {
-    const onClick = (e: MouseEvent) => {
-      Router.go((this.props as LinkProps).to);
-
+    const onClick = async (e: Event) => {
       e.preventDefault();
+      await Router.go(this.props.to);
     };
 
     super({ ...props, events: { click: onClick } });

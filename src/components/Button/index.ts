@@ -6,10 +6,11 @@ interface ButtonProps {
   after_icon?: string;
   classes?: string;
   extra?: string;
-  onClick: () => void;
+  onClick?: () => void;
+  events?: { click?: () => void };
 }
 
-export default class Button extends Block {
+export default class Button extends Block<ButtonProps> {
   constructor({ onClick, ...props }: ButtonProps) {
     super({ ...props, events: { click: onClick } });
   }

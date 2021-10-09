@@ -6,6 +6,11 @@ const SET_USER = 'user/SET';
 const DELETE_USER = 'user/DELETE';
 const SET_ERROR = 'user/SET_ERROR';
 
+export interface UserState {
+  profile?: UserData;
+  error?: { reason: string };
+}
+
 const defaultState = { profile: null, error: null };
 
 export const setUser = (user: UserData) => ({

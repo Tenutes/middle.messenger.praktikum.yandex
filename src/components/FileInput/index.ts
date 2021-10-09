@@ -14,7 +14,11 @@ export interface FileInputProps {
   onChange: (e: Event) => void;
 }
 
-export default class FileInput extends Block {
+interface FileInputRefs {
+  field: HTMLInputElement;
+}
+
+export default class FileInput extends Block<FileInputProps, FileInputRefs> {
   constructor(props: FileInputProps) {
     super(props);
   }
@@ -24,15 +28,14 @@ export default class FileInput extends Block {
   }
 
   componentDidMount() {
-    const input = this.refs.field as HTMLInputElement;
-    const props = this.props as FileInputProps;
-    input.files = props.value;
-    input.addEventListener('change', (e: Event) => props.onChange(e));
+    const input = this.refs.field;
+    input.files = this.props.value;
+    input.addEventListener('change', (e: Event) => this.props.onChange(e));
   }
 
   componentDidUpdate() {
     const input = this.refs.field as HTMLInputElement;
-    const props = this.props as FileInputProps;
+    const props = this.props;
     input.files = props.value;
     input.addEventListener('change', (e: Event) => props.onChange(e));
   }
@@ -48,7 +51,7 @@ export default class FileInput extends Block {
             {{/if}}
             <input
                     accept="{{accept}}"
-                    data-ref="field"
+                    ref="field"
                     class="{{classes}}"
                     type="file"
                     name="{{name}}"

@@ -3,7 +3,9 @@
  */
 import Block from './Block';
 
-class TestBlock extends Block {
+interface TestProps {}
+
+class TestBlock extends Block<TestProps> {
   constructor(props: {}) {
     super(props);
   }
@@ -36,7 +38,6 @@ describe('Block', () => {
     const instance = createInstance(props);
 
     expect(instance.props).toEqual(props);
-    expect(instance._meta.props).toEqual(props);
   });
 
   it('should set new props to props', () => {

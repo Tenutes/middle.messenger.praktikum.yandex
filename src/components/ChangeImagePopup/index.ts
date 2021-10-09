@@ -3,21 +3,24 @@ import FileInput from '../../components/FileInput';
 import { InputProps } from '../../components/Input';
 
 interface PopupProps {
+  responseError: string | null;
+  error: string | null;
+  uploadedName: string | null;
+  input: InputProps;
+  onChange: (e: Event) => void;
+  onSubmit: (e: Event) => Promise<void>;
+  onPopupClick?: (e: Event) => void;
   show: boolean;
   onUpdate: (formData: FormData) => Promise<void>;
   onClose?: () => void;
 }
 
-interface PopupState {
-  onSubmit: (e: Event) => Promise<void>;
-  onPopupClick?: () => void;
-  input: InputProps;
-  uploadedName: string | null;
-  error: string | null;
-  responseError: string | null;
+interface PopupRefs {
+  form?: HTMLFormElement;
+  file?: FileInput;
 }
 
-export default class ChangeImagePopup extends Block {
+export default class ChangeImagePopup extends Block<PopupProps, PopupRefs> {
   constructor(props: PopupProps) {
     super(props);
   }
@@ -26,12 +29,12 @@ export default class ChangeImagePopup extends Block {
     return 'ChangeImagePopup';
   }
 
-  componentShouldUpdate(o: PopupProps & PopupState, n: PopupProps & PopupState) {
+  componentShouldUpdate(o: PopupProps, n: PopupProps) {
     return o.show !== n.show || o.error !== n.error || Boolean(n.error) || Boolean(n.responseError);
   }
 
   componentDidMount() {
-    (this.refs.form as HTMLFormElement)?.addEventListener('submit', (this.state as PopupState).onSubmit);
+    this.refs.form?.addEventListener('submit', (e: Event) => this.state.onSubmit?.(e));
   }
 
   getStateFromProps() {
@@ -43,17 +46,17 @@ export default class ChangeImagePopup extends Block {
         id: 'file',
         name: 'file',
         type: 'file',
-        required: 'true',
+        required: true,
       },
       onChange: (e: Event) => {
-        const files = (e?.target as HTMLInputElement)?.files as FileList;
-        const fileInput = this.refs.file as FileInput;
+        const files = (e.target as HTMLInputElement)?.files as FileList;
+        const fileInput = this.refs.file;
         if (files[0]) {
           const { name } = files[0];
-          (this.state as PopupState).error = null;
-          fileInput.setProps({ value: files, uploadedName: name });
+          this.state.error = null;
+          fileInput?.setProps({ value: files, uploadedName: name });
         } else {
-          fileInput.setProps({ value: null, uploadedName: null });
+          fileInput?.setProps({ value: null, uploadedName: null });
         }
       },
       onSubmit: async (e: Event) => {
@@ -63,15 +66,12 @@ export default class ChangeImagePopup extends Block {
         if (file?.name && file?.size) {
           await (this.props as PopupProps).onUpdate(formData);
         } else {
-          (this.state as PopupState).error = 'нужно выбрать файл';
+          this.state.error = 'нужно выбрать файл';
         }
       },
       onPopupClick: (e: Event) => {
         if (e.target === this.element) {
-          const props = this.props as PopupProps;
-          if (typeof props?.onClose === 'function') {
-            props.onClose();
-          }
+          this.props.onClose?.();
         }
       },
     };
@@ -87,7 +87,7 @@ export default class ChangeImagePopup extends Block {
                     {{{ Button onClick=onClose pre_icon="cross" classes="absolute right-2 top-2 w-3 h-3 flex justify-center items-center rounded-full text-black hover:text-blue cursor-pointer" }}}
                     <div class="w-full">
                         <p class="text-center mb-5">Загрузить файл</p>
-                        <form novalidate data-ref="form" class="relative text-center"
+                        <form novalidate ref="form" class="relative text-center"
                         ">
                         {{{ FileInput ref='file' id='file' label='Выберите файл на компьютере' name='avatar'
                                       uploadedName=uploadedName

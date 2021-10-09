@@ -7,7 +7,7 @@ export interface SearchResultProps {
   result: (UserData & { active: boolean })[];
 }
 
-export default class SearchResult extends Block {
+export default class SearchResult extends Block<SearchResultProps> {
   constructor(props: SearchResultProps) {
     super(props);
   }

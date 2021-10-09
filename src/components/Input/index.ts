@@ -13,16 +13,21 @@ export interface InputProps {
   onInput?: () => void;
   onFocus?: () => void;
   onBlur?: () => void;
+  events?: { input?: () => void; focus?: () => void; blur?: () => void };
 }
 
-export default class Input extends Block {
+interface InputRefs {
+  field: HTMLInputElement;
+}
+
+export default class Input extends Block<InputProps, InputRefs> {
   constructor({ onInput, onFocus, onBlur, ...props }: InputProps) {
     super({ ...props, events: { input: onInput, focus: onFocus, blur: onBlur } });
   }
 
   componentDidMount() {
-    if ((this.props as InputProps).value) {
-      (this.element! as FormElement).value = (this.props as InputProps).value as string;
+    if (this.props.value && this.element) {
+      (this.element as HTMLInputElement).value = this.props.value;
     }
   }
 
@@ -34,7 +39,7 @@ export default class Input extends Block {
     // language=hbs
     return `
         <input
-                data-ref="field"
+                ref="field"
                 class="{{classes}}"
                 type="{{type}}"
                 name="{{name}}"

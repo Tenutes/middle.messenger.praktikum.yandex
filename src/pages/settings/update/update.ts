@@ -1,39 +1,50 @@
 import Block from '../../../common/Block/Block';
 import Form from '../../../common/Form/Form';
+import Input from '../../../components/Input';
 import { emailMatch, loginMatch, nameMatch, phoneMatch } from '../../../common/Validator/constants';
 import { required } from '../../../common/Validator/Validator';
 import { UpdateProfileData } from '../../../api/UserAPI';
 import UserController from '../../../controllers/UserController';
 
-interface SettingsUpdateState {
+export interface SettingsUpdateProps {
   onUpdate: (e: Event) => void;
 }
 
-export class SettingsUpdatePage extends Block {
+export interface SettingsUpdateRefs {
+  updateForm: HTMLFormElement;
+  email: Input;
+  login: Input;
+  first_name: Input;
+  second_name: Input;
+  display_name: Input;
+  phone: Input;
+}
+
+export class SettingsUpdatePage extends Block<SettingsUpdateProps, SettingsUpdateRefs> {
   protected getStateFromProps() {
     return {
       onUpdate: async (e: Event) => {
         e.preventDefault();
 
-        const updateForm = new Form(this.refs.form.id);
-        const emailInput = this.refs.email as Block;
-        const loginInput = this.refs.login as Block;
-        const firstNameInput = this.refs.first_name as Block;
-        const secondNameInput = this.refs.second_name as Block;
-        const displayNameInput = this.refs.display_name as Block;
-        const phoneInput = this.refs.phone as Block;
+        const updateForm = new Form(this.refs.updateForm.id);
+        const emailInput = this.refs.email;
+        const loginInput = this.refs.login;
+        const firstNameInput = this.refs.first_name;
+        const secondNameInput = this.refs.second_name;
+        const displayNameInput = this.refs.display_name;
+        const phoneInput = this.refs.phone;
 
         const validationFields = [
-          [emailInput, [{ fn: emailMatch }]],
-          [loginInput, [{ fn: loginMatch }]],
-          [firstNameInput, [{ fn: nameMatch }]],
-          [secondNameInput, [{ fn: nameMatch }]],
-          [phoneInput, [{ fn: phoneMatch }]],
-          [displayNameInput, [{ fn: required }]],
+          { field: emailInput, validations: [{ fn: emailMatch }] },
+          { field: loginInput, validations: [{ fn: loginMatch }] },
+          { field: firstNameInput, validations: [{ fn: nameMatch }] },
+          { field: secondNameInput, validations: [{ fn: nameMatch }] },
+          { field: phoneInput, validations: [{ fn: phoneMatch }] },
+          { field: displayNameInput, validations: [{ fn: required }] },
         ];
 
-        for (const [field, validations] of validationFields) {
-          updateForm.addValidationField(field as Block, validations as ValidationRule[]);
+        for (const { field, validations } of validationFields) {
+          updateForm.addValidationField(field, validations as ValidationRule[]);
         }
 
         if (updateForm.isValid()) {
@@ -45,10 +56,7 @@ export class SettingsUpdatePage extends Block {
   }
 
   componentDidMount() {
-    (this.refs.form as HTMLFormElement).addEventListener(
-      'submit',
-      (this.state as SettingsUpdateState).onUpdate.bind(this)
-    );
+    this.refs.updateForm.addEventListener('submit', this.state.onUpdate!.bind(this));
   }
 
   render() {
@@ -58,7 +66,7 @@ export class SettingsUpdatePage extends Block {
             {{{ Back to='/settings' }}}
             <div class="h-full max-h-screen py-12">
                 <form
-                        data-ref="form"
+                        ref="updateForm"
                         id="form-settings"
                         novalidate
                         class="w-full max-w-[530px] px-3 flex flex-col items-center mx-auto"

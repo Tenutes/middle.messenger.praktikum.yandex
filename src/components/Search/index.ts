@@ -5,11 +5,19 @@ import UserController from '../../controllers/UserController';
 
 interface SearchProps {
   input: InputProps;
+  onInput: () => void;
+  onFocus: () => void;
+  onBlur: () => void;
 }
 
-export default class Search extends Block {
-  constructor({ ...props }: SearchProps) {
-    super({ ...props });
+interface SearchRefs {
+  label: HTMLLabelElement;
+  search: Input;
+}
+
+export default class Search extends Block<SearchProps, SearchRefs> {
+  constructor(props: SearchProps) {
+    super(props);
   }
 
   static getName() {
@@ -26,11 +34,11 @@ export default class Search extends Block {
         { wait: 250 }
       ),
       onFocus: () => {
-        (this.refs.label as HTMLLabelElement).style.display = 'none';
+        this.refs.label.style.display = 'none';
       },
       onBlur: () => {
-        if (!((this.refs.search as Input).element! as HTMLInputElement).value) {
-          (this.refs.label as HTMLLabelElement).style.display = 'flex';
+        if (!(this.refs.search.element as HTMLInputElement)?.value) {
+          this.refs.label.style.display = 'flex';
         }
       },
     };
@@ -44,7 +52,7 @@ export default class Search extends Block {
                 {{{ Input onFocus=onFocus onBlur=onBlur onInput=onInput ref='search' id=input.id type=input.type
                           name=input.name required=input.required label=input.label classes=input.classes}}}
                 <label
-                        data-ref="label"
+                        ref="label"
                         for="search"
                         class="flex items-center absolute top-1/2 left-1/2 transform-top-left-center text-gray text-base duration-200"
                 >

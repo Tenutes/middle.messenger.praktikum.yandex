@@ -4,16 +4,17 @@ import UserController from '../../controllers/UserController';
 
 interface SettingsProfileProps {
   name: string;
-}
-
-interface SettingsProfileState {
   popupActive: boolean;
   showPopup: () => void;
   closePopup: () => void;
-  onUpdate: () => Promise<void>;
+  onUpdate: (formData: FormData) => Promise<void>;
 }
 
-export default class SettingsProfile extends Block {
+interface SettingsProfileRefs {
+  profilePopup: ChangeImagePopup;
+}
+
+export default class SettingsProfile extends Block<SettingsProfileProps, SettingsProfileRefs> {
   constructor(props: SettingsProfileProps) {
     super(props);
   }
@@ -26,14 +27,14 @@ export default class SettingsProfile extends Block {
     return {
       popupActive: false,
       showPopup: () => {
-        (this.refs.profilePopup as ChangeImagePopup).setProps({ show: true });
+        this.refs.profilePopup.setProps({ show: true });
       },
       closePopup: () => {
-        (this.refs.profilePopup as ChangeImagePopup).setProps({ show: false });
+        this.refs.profilePopup.setProps({ show: false });
       },
       onUpdate: async (formData: FormData) => {
         await UserController.updateAvatar(formData);
-        (this.state as SettingsProfileState).closePopup();
+        this.state.closePopup?.();
       },
     };
   }
@@ -51,7 +52,7 @@ export default class SettingsProfile extends Block {
                     {{{ Button onClick=showPopup label='Хочу другой' classes='text-base text-black w-full h-full rounded-full'}}}
                 </div>
                 <img
-                        class="w-full h-full absolute top-1/2 left-1/2 transform-top-left-center rounded-full"
+                        class="w-full h-full absolute top-1/2 left-1/2 transform-top-left-center rounded-full object-cover"
                     {{#if avatar}}
                         src="https://ya-praktikum.tech/api/v2/resources{{avatar}}"
                     {{else}}

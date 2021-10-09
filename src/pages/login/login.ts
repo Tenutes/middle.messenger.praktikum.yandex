@@ -1,23 +1,29 @@
 import Block from '../../common/Block/Block';
 import AuthController from '../../controllers/AuthController';
-import { LoginProps } from './types';
-import Input from '../../components/Input';
 import Form from '../../common/Form/Form';
 import { SignInData } from '../../api/AuthAPI';
 import Router from '../../common/Router/Router';
+import { UserState } from '../../store/user';
+import InputGroup from 'components/InputGroup';
 
-interface loginState {
-  onLogin: () => void;
+export interface LoginProps {
+  user: UserState;
+  onLogin: (e: Event) => void;
 }
 
-export class LoginPage extends Block {
+export interface LoginRefs {
+  login: InputGroup;
+  password: InputGroup;
+  form: HTMLFormElement;
+}
+
+export class LoginPage extends Block<LoginProps, LoginRefs> {
   protected getStateFromProps() {
     return {
       onLogin: async (e: Event) => {
         e.preventDefault();
-
-        const loginField = (this.refs.login as Block).refs.login as Input;
-        const passwordField = (this.refs.password as Block).refs.password as Input;
+        const loginField = this.refs.login.refs.login;
+        const passwordField = this.refs.password.refs.password;
         const loginForm = new Form(this.refs.form.id);
         loginForm.addValidationField(loginField).addValidationField(passwordField);
 
@@ -30,8 +36,8 @@ export class LoginPage extends Block {
   }
 
   async componentDidMount() {
-    (this.refs.form as HTMLFormElement).addEventListener('submit', (this.state as loginState).onLogin.bind(this));
-    if ((this.props as LoginProps).user.profile) {
+    (this.refs.form as HTMLFormElement).addEventListener('submit', this.state.onLogin!.bind(this));
+    if (this.props.user.profile) {
       await Router.go('/messenger');
     }
   }
@@ -42,7 +48,7 @@ export class LoginPage extends Block {
         <div class="flex flex-col items-center w-full bg-white h-screen justify-center">
             <div class="flex flex-col items-start justify-center max-h-screen">
                 <form
-                        data-ref="form"
+                        ref="form"
                         id="form-login"
                         novalidate
                         class="bg-blue-light px-6 pb-5 pt-10 rounded-6 shadow-sm w-[340px] flex flex-col min-h-[450px]"

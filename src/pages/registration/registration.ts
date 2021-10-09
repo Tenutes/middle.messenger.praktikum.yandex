@@ -1,23 +1,38 @@
 import Block from '../../common/Block/Block';
-import Input from '../../components/Input';
+import InputGroup from '../../components/InputGroup';
 import Form from '../../common/Form/Form';
 import { equalsMatch } from '../../common/Validator/constants';
 import { SignupData } from '../../api/AuthAPI.js';
 import AuthController from '../../controllers/AuthController';
 
-export class RegistrationPage extends Block {
+export interface RegistrationProps {
+  onRegister: (e: Event) => void;
+}
+
+export interface RegistrationRefs {
+  login: InputGroup;
+  password: InputGroup;
+  password_repeat: InputGroup;
+  email: InputGroup;
+  first_name: InputGroup;
+  second_name: InputGroup;
+  phone: InputGroup;
+  form: HTMLFormElement;
+}
+
+export class RegistrationPage extends Block<RegistrationProps, RegistrationRefs> {
   protected getStateFromProps() {
     return {
       onRegister: async (e: Event) => {
         e.preventDefault();
 
-        const loginField = (this.refs.login as Block).refs.login as Input;
-        const passwordField = (this.refs.password as Block).refs.password as Input;
-        const passwordRepeatField = (this.refs.password_repeat as Block).refs.password_repeat as Input;
-        const emailField = (this.refs.email as Block).refs.email as Input;
-        const firstNameField = (this.refs.first_name as Block).refs.first_name as Input;
-        const secondNameField = (this.refs.second_name as Block).refs.second_name as Input;
-        const phoneField = (this.refs.phone as Block).refs.phone as Input;
+        const loginField = this.refs.login.refs.login;
+        const passwordField = this.refs.password.refs.password;
+        const passwordRepeatField = this.refs.password_repeat.refs.password_repeat;
+        const emailField = this.refs.email.refs.email;
+        const firstNameField = this.refs.first_name.refs.first_name;
+        const secondNameField = this.refs.second_name.refs.second_name;
+        const phoneField = this.refs.phone.refs.phone;
         const validationFields = [loginField, passwordField, emailField, firstNameField, secondNameField, phoneField];
 
         const registerForm = new Form(this.refs.form.id);
@@ -28,7 +43,7 @@ export class RegistrationPage extends Block {
         });
 
         if (registerForm.isValid()) {
-          const formData = (registerForm.getValues() as unknown) as SignupData;
+          const formData = registerForm.getValues() as unknown as SignupData;
           await AuthController.signup(formData);
         }
       },
@@ -41,7 +56,7 @@ export class RegistrationPage extends Block {
         <div class="flex flex-col items-center w-full bg-white h-screen justify-center">
             <div class="flex flex-col items-start justify-center max-h-screen">
                 <form
-                        data-ref="form"
+                        ref="form"
                         id="form-register"
                         novalidate
                         class="bg-blue-light px-6 pb-5 pt-10 rounded-6 shadow-sm w-[340px] flex flex-col min-h-[450px]"

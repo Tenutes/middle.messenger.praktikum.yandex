@@ -5,7 +5,11 @@ interface ChatFormProps {
   onSubmit: (e: Event) => void;
 }
 
-export default class ChatForm extends Block {
+interface ChatFormRefs {
+  message: HTMLTextAreaElement;
+}
+
+export default class ChatForm extends Block<ChatFormProps, ChatFormRefs> {
   constructor(props: ChatFormProps) {
     super(props);
   }
@@ -18,17 +22,17 @@ export default class ChatForm extends Block {
     return {
       onSubmit: async (e: Event) => {
         e.preventDefault();
-        const message = (this.refs.message as HTMLTextAreaElement).value;
+        const message = this.refs.message.value;
         if (message) {
-          (this.props as ChatFormProps).onMessageSend(message);
-          (this.refs.message as HTMLTextAreaElement).value = '';
+          this.props.onMessageSend(message);
+          this.refs.message.value = '';
         }
       },
     };
   }
 
   componentDidMount() {
-    this.element!.addEventListener('submit', (this.props as ChatFormProps).onSubmit);
+    this.element?.addEventListener('submit', this.props.onSubmit);
   }
 
   componentShouldUpdate() {
@@ -84,7 +88,7 @@ export default class ChatForm extends Block {
                 </div>
             {{/if}}
             <textarea
-                    data-ref="message"
+                    ref="message"
                     name="message"
                     class="flex-grow border-0 rounded-10 bg-gray-light placeholder:text-gray text-black px-4 py-2 leading-none text-sm"
                     placeholder="Сообщение"

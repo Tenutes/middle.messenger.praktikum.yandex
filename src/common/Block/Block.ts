@@ -4,37 +4,24 @@ import { uid, debounce } from '../helpers';
 import Handlebars from 'handlebars';
 import isEqual from '../../utils/isEqual';
 
-interface RefElement extends HTMLElement {
-  dataset: {
-    ref: string;
-  };
-}
-
-type RefsIndexed = {
-  [key: string]: HTMLElement | Block;
-};
-
-export default class Block {
-  _meta;
-  props;
-  state;
-  cdmTimeout: NodeJS.Timeout | null;
+export default class Block<Props, Refs = null> {
+  props: Props;
+  state: Partial<Props>;
+  refs: Refs;
+  cdmTimeout: number | null;
   eventBus: EventBus;
   id = uid();
   _element: Nullable<HTMLElement> = null;
-  children: { [id: string]: Block } = {};
-  refs: RefsIndexed = {};
+  children: { [id: string]: Block<Props> } = {};
 
-  constructor(props = {}) {
+  constructor(props: Props = {} as Props) {
     const eventBus = new EventBus();
-    this._meta = {
-      props,
-    };
 
+    this.refs = {} as Refs;
     this.cdmTimeout = null;
     this.state = this.getStateFromProps();
     this.props = this._makePropsProxy(props);
-    this.state = this._makePropsProxy(this.state);
+    this.state = this._makePropsProxy(this.state as Props);
 
     this.eventBus = eventBus;
 
@@ -48,7 +35,7 @@ export default class Block {
     return this._element;
   }
 
-  protected getStateFromProps(props?: {}): {} {
+  protected getStateFromProps(props?: Props): Partial<Props> {
     return props || {};
   }
 
@@ -126,7 +113,7 @@ export default class Block {
     return props;
   }
 
-  _makePropsProxy(props: StringRecord): {} {
+  _makePropsProxy(props: Props): Props {
     return new Proxy(props as unknown as object, {
       get(target: Record<string, unknown>, prop: string) {
         const value = target[prop];
@@ -141,12 +128,12 @@ export default class Block {
       deleteProperty() {
         throw new Error('Нет доступа');
       },
-    });
+    }) as unknown as Props;
   }
 
   getContent(): HTMLElement | '' {
     if (this.element?.parentNode?.nodeType === Node.DOCUMENT_FRAGMENT_NODE) {
-      this.cdmTimeout = setTimeout(() => {
+      this.cdmTimeout = window.setTimeout(() => {
         if (this.element?.parentNode?.nodeType !== Node.DOCUMENT_FRAGMENT_NODE) {
           this.eventBus.emit(EVENTS.FLOW_CDM);
         }
@@ -195,9 +182,13 @@ export default class Block {
       return;
     }
 
-    const refs = Array.from(this.element!.querySelectorAll('[data-ref]')) as unknown as RefElement[];
+    const refs = Array.from(this.element?.querySelectorAll('[ref]'));
     refs.forEach(el => {
-      this.refs[el.dataset.ref] = el;
+      const ref = el.getAttribute('ref');
+      if (ref) {
+        // @ts-ignore
+        this.refs[ref] = el;
+      }
     });
   }
 

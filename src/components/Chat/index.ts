@@ -3,11 +3,9 @@ import { UserData } from '../../api/AuthAPI';
 import { ChatMessage } from '../../api/ChatAPI';
 import isEqual from '../../utils/isEqual';
 import MessengerController from '../../controllers/MessengerController';
-
-interface ChatProps {
-  chat: IChat;
-  toggleMenu: (e: Event) => void;
-}
+import AddUserPopup from 'components/AddUserPopup';
+import DeleteUserPopup from 'components/DeleteUserPopup';
+import Button from 'components/Button';
 
 export interface IChat {
   id: number;
@@ -24,7 +22,9 @@ interface LastMessage {
   content: string;
 }
 
-interface ChatState {
+interface ChatProps {
+  chat: IChat;
+  toggleMenu: (e: Event) => void;
   addPopupShow: boolean;
   deletePopupShow: boolean;
   onAddPopupClose: () => void;
@@ -33,7 +33,14 @@ interface ChatState {
   showDeleteUserPopup: () => void;
 }
 
-export default class Chat extends Block {
+interface ChatRefs {
+  add_popup: AddUserPopup;
+  delete_popup: DeleteUserPopup;
+  menuButton: Button;
+  menu?: HTMLElement;
+}
+
+export default class Chat extends Block<ChatProps, ChatRefs> {
   constructor(props: ChatProps) {
     super(props);
   }
@@ -47,42 +54,42 @@ export default class Chat extends Block {
       addPopupShow: false,
       deletePopupShow: false,
       onAddPopupClose: () => {
-        (this.refs.add_popup as Block).setProps({ show: false });
+        this.refs.add_popup.setProps({ show: false });
       },
       onDeletePopupClose: () => {
-        (this.refs.delete_popup as Block).setProps({ show: false });
+        this.refs.delete_popup.setProps({ show: false });
       },
       showAddUserPopup: () => {
-        (this.refs.add_popup as Block).setProps({ show: true });
+        this.refs.add_popup.setProps({ show: true });
       },
       showDeleteUserPopup: () => {
-        (this.refs.delete_popup as Block).setProps({ show: true });
+        this.refs.delete_popup.setProps({ show: true });
       },
       addUsers: async (usersIds: number[]) => {
         if (usersIds.length) {
           await MessengerController.addUsersToChat({
             users: usersIds,
-            chatId: (this.props as ChatProps).chat.id,
+            chatId: this.props.chat.id,
           });
 
-          (this.state as ChatState).onAddPopupClose();
+          this.state.onAddPopupClose?.();
         }
       },
       deleteUsers: async (usersIds: number[]) => {
         if (usersIds.length) {
           await MessengerController.deleteUsersFromChat({
             users: usersIds,
-            chatId: (this.props as ChatProps).chat.id,
+            chatId: this.props.chat.id,
           });
 
-          (this.state as ChatState).onDeletePopupClose();
+          this.state.onDeletePopupClose?.();
         }
       },
       toggleMenu: (e: Event) => {
         e.preventDefault();
         e.stopPropagation();
-        ((this.refs.menuButton as Block).element as HTMLElement)?.classList.toggle('active');
-        const menu = this.refs.menu as HTMLElement;
+        this.refs.menuButton.element?.classList.toggle('active');
+        const menu = this.refs.menu;
         menu?.classList.toggle('opacity-0');
         menu?.classList.toggle('invisible');
       },
@@ -99,7 +106,8 @@ export default class Chat extends Block {
         <div class="flex flex-col h-full">
             {{#if chat}}
                 {{{ AddUserPopup ref='add_popup' show=addPopupShow onClose=onAddPopupClose onAddUsers=addUsers }}}
-                {{{ DeleteUserPopup ref='delete_popup' chatId=chat.id currentUserId=user.id show=deletePopupShow onClose=onDeletePopupClose onDeleteUsers=deleteUsers }}}
+                {{{ DeleteUserPopup ref='delete_popup' chatId=chat.id currentUserId=user.id show=deletePopupShow
+                                    onClose=onDeletePopupClose onDeleteUsers=deleteUsers }}}
                 <div class="px-4 py-2 flex justify-between items-center border-b border-gray-light">
                     <div class="flex items-center mr-2">
                         <div class="w-[34px] h-[34px] flex-shrink-0 mr-2 rounded-full overflow-hidden">
@@ -120,7 +128,7 @@ export default class Chat extends Block {
                                    pre_icon='dots'}}}
                         <div
                                 class="absolute w-[210px] top-[calc(100%+25px)] -right-2 rounded-12 shadow-sm bg-white py-2 px-1 opacity-0 invisible duration-200"
-                                data-ref="menu"
+                                ref="menu"
                                 data-chat-user-settings
                         >
                             {{{ Button onClick=showAddUserPopup label='Добавить пользователя' onClick=showAddUserPopup
