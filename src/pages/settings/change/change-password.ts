@@ -1,21 +1,28 @@
 import Block from '../../../common/Block/Block';
 import Form from '../../../common/Form/Form';
-import { UpdatePasswordData } from '../../../api/UserAPI';
 import UserController from '../../../controllers/UserController';
 import { equalsMatch } from '../../../common/Validator/constants';
+import Input from '../../../components/Input';
 
-interface ChangePasswordState {
+export interface ChangePasswordProps {
   onUpdate: (e: Event) => void;
 }
 
-export class ChangePasswordPage extends Block {
+export interface ChangePasswordRefs {
+  password: Input;
+  password_new: Input;
+  password_new_repeat: Input;
+  form: HTMLFormElement;
+}
+
+export class ChangePasswordPage extends Block<ChangePasswordProps, ChangePasswordRefs> {
   protected getStateFromProps() {
     return {
       onUpdate: async (e: Event) => {
         e.preventDefault();
-        const passwordField = this.refs.password as Block;
-        const passwordNewField = this.refs.password_new as Block;
-        const passwordNewRepeatField = this.refs.password_new_repeat as Block;
+        const passwordField = this.refs.password;
+        const passwordNewField = this.refs.password_new;
+        const passwordNewRepeatField = this.refs.password_new_repeat;
         const fields = [passwordField, passwordNewField, passwordNewRepeatField];
         const updateForm = new Form(this.refs.form.id);
 
@@ -26,10 +33,9 @@ export class ChangePasswordPage extends Block {
         });
 
         if (updateForm.isValid()) {
-          const { password, password_new } = updateForm.getValues() as { password: string; password_new: string };
-          const updateData: UpdatePasswordData = {
-            oldPassword: password,
-            newPassword: password_new,
+          const updateData = {
+            oldPassword: (passwordField.element as HTMLInputElement).value,
+            newPassword: (passwordNewField.element as HTMLInputElement).value,
           };
 
           await UserController.changePassword(updateData);
@@ -39,10 +45,7 @@ export class ChangePasswordPage extends Block {
   }
 
   componentDidMount() {
-    (this.refs.form as HTMLFormElement).addEventListener(
-      'submit',
-      (this.state as ChangePasswordState).onUpdate.bind(this)
-    );
+    this.refs.form.addEventListener('submit', this.state.onUpdate!.bind(this));
   }
 
   render() {
@@ -52,7 +55,7 @@ export class ChangePasswordPage extends Block {
             {{{ Back to='/settings' }}}
             <div class="h-full max-h-screen py-12">
                 <form
-                        data-ref="form"
+                        ref="form"
                         id="form-change-password"
                         novalidate
                         class="w-full max-w-[530px] px-3 flex flex-col items-center mx-auto"

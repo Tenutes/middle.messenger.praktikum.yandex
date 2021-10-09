@@ -1,6 +1,8 @@
 import Block from '../../common/Block/Block';
 
-export class SettingsPage extends Block {
+export interface SettingsPageProps {}
+
+export class SettingsPage extends Block<SettingsPageProps> {
   componentShouldUpdate() {
     return true;
   }

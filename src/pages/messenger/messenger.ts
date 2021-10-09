@@ -8,9 +8,16 @@ import { isArray } from '../../common/helpers';
 
 interface MessengerProps {
   user: {};
+  onChatChoose: (userId: number, chat: IChat, toke: string) => void;
+  onMessageSend: (message: string) => void;
 }
 
-export class MessengerPage extends Block {
+interface MessengerRefs {
+  chat: Chat;
+  chatList: ChatList;
+}
+
+export class MessengerPage extends Block<MessengerProps, MessengerRefs> {
   private ws: ChatWS | null;
 
   constructor(props: MessengerProps) {
@@ -44,9 +51,9 @@ export class MessengerPage extends Block {
 
   componentShouldUpdate(_: MessengerState & MessengerProps, { chats, search, chat }: MessengerState & MessengerProps) {
     if (chat) {
-      (this.refs.chat as Chat).setProps({ chat });
+      this.refs.chat.setProps({ chat });
     }
-    (this.refs.chatList as ChatList).setProps({ chats, search });
+    this.refs.chatList.setProps({ chats, search });
     return false;
   }
 

@@ -45,8 +45,4 @@ export class UserAPI extends BaseAPI {
   search(data: SearchData): Promise<SearchResponse> {
     return this.http.post('/search', data);
   }
-
-  read: undefined;
-  delete: undefined;
-  create: undefined;
 }

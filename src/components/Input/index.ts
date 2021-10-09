@@ -1,4 +1,5 @@
 import Block from '../../common/Block/Block';
+import { onFocus, onBlur } from '../../common/Form/helpers';
 
 export interface InputProps {
   type: string;
@@ -11,18 +12,21 @@ export interface InputProps {
   required?: boolean;
   validations?: ValidationRule[];
   onInput?: () => void;
-  onFocus?: () => void;
-  onBlur?: () => void;
+  events?: { input?: () => void; focus: (e: Event) => void; blur: (e: Event) => void };
 }
 
-export default class Input extends Block {
-  constructor({ onInput, onFocus, onBlur, ...props }: InputProps) {
+interface InputRefs {
+  field: HTMLInputElement;
+}
+
+export default class Input extends Block<InputProps, InputRefs> {
+  constructor({ onInput, ...props }: InputProps) {
     super({ ...props, events: { input: onInput, focus: onFocus, blur: onBlur } });
   }
 
   componentDidMount() {
-    if ((this.props as InputProps).value) {
-      (this.element! as FormElement).value = (this.props as InputProps).value as string;
+    if (this.props.value && this.element) {
+      (this.element as HTMLInputElement).value = this.props.value;
     }
   }
 
@@ -34,7 +38,7 @@ export default class Input extends Block {
     // language=hbs
     return `
         <input
-                data-ref="field"
+                ref="field"
                 class="{{classes}}"
                 type="{{type}}"
                 name="{{name}}"

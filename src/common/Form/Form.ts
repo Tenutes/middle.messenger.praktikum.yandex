@@ -2,7 +2,7 @@ import Registry from '../Registry/Registry';
 import Validator from '../Validator/Validator';
 import FormError from './FormError';
 import Block from '../Block/Block';
-import { InputProps } from '../../components/Input';
+import Input, { InputProps } from '../../components/Input';
 import { isArray } from '../../common/helpers';
 
 export default class Form {
@@ -12,7 +12,7 @@ export default class Form {
   values: Record<string, unknown>;
   errors: StringRecord;
   errorMessages: StringRecord;
-  fieldsToValidate: Block[];
+  fieldsToValidate: Block<InputProps>[];
 
   constructor(id: string) {
     this.id = id;
@@ -47,6 +47,7 @@ export default class Form {
   }
 
   getValues() {
+    // Переписать, в связи с ререндером - связь с формой пропадает
     const formData = this.getFormData();
     this.values = {};
 
@@ -57,11 +58,11 @@ export default class Form {
     return this.values;
   }
 
-  addValidationFields(fields: Block[]) {
+  addValidationFields(fields: Input[]) {
     fields.forEach(field => this.addValidationField(field));
   }
 
-  addValidationField(field: Block, validation?: ValidationRule | ValidationRule[]): Form {
+  addValidationField(field: Input, validation?: ValidationRule | ValidationRule[]): Form {
     if (validation) {
       if (isArray(validation)) {
         validation.forEach(v => {
@@ -72,7 +73,7 @@ export default class Form {
       }
     }
 
-    const validations = (field.props as InputProps).validations || [];
+    const validations = field.props.validations || [];
     validations.forEach(validation => {
       this.addValidation(field, validation);
     });
@@ -80,12 +81,17 @@ export default class Form {
     return this;
   }
 
-  addValidation(field: Block, validation: ValidationRule) {
+  addValidation(field: Input, validation: ValidationRule) {
     const name = (field.element as FormElement).name;
     if (name) {
       this.errorMessages[name] = validation.errorReplacer || '';
     }
     this.validator.setValidation(field.element as FormElement, validation.fn);
+  }
+
+  validateField(field: FormElement) {
+    const decision = this.validator.validateField(field);
+    this.handleValidationResult(decision.field, decision.result);
   }
 
   isValid() {

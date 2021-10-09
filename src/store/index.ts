@@ -10,13 +10,13 @@ export const store = new Store({
   messenger,
 });
 
-export function connect(stateToProps: (state: any) => any, Component: typeof Block) {
-  return class WithStore extends Component {
+export function connect(stateToProps: (state: any) => any, Component: typeof Block): typeof Block {
+  return class WithStore extends Component<any, any> {
     constructor(props: any) {
       super({ ...props, ...stateToProps(store.getState()) });
     }
 
-    componentDidMount(props: unknown) {
+    componentDidMount(props: any) {
       super.componentDidMount(props);
 
       store.on('changed', () => {

@@ -2,7 +2,7 @@ import Block from './Block/Block';
 import Handlebars, { HelperOptions } from 'handlebars';
 
 export interface BlockConstructable<Props = unknown> {
-  new (props: Props): Block;
+  new (props: Props): Block<Props>;
   getName: () => string;
 }
 

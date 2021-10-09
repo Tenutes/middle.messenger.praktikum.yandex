@@ -1,16 +1,24 @@
 import Block from '../../common/Block/Block';
-import SearchResult, { SearchResultProps } from '../../components/SearchResult';
+import SearchResult from '../../components/SearchResult';
 import { debounce } from '../../common/helpers';
 import UserController from '../../controllers/UserController';
 import { UserData } from '../../api/AuthAPI';
+import { InputProps } from '../../components/Input';
 
 interface PopupProps {
   show: boolean;
+  input: InputProps;
+  onClick: (e: Event, user: UserData & { active: boolean }) => void;
   onAddUsers: ([]) => void;
+  onPopupClick: (e: Event) => void;
   onClose?: () => void;
 }
 
-export default class AddUserPopup extends Block {
+interface PopupRefs {
+  searchResult: SearchResult;
+}
+
+export default class AddUserPopup extends Block<PopupProps, PopupRefs> {
   constructor(props: PopupProps) {
     super(props);
   }
@@ -35,7 +43,7 @@ export default class AddUserPopup extends Block {
           async (e: Event) => {
             const searchString = (e.target as HTMLInputElement).value;
             const users = await UserController.searchUsers({ login: searchString });
-            (this.refs.searchResult as SearchResult).setProps({
+            this.refs.searchResult.setProps({
               result: users?.map(user => ({
                 ...user,
                 active: false,
@@ -46,11 +54,11 @@ export default class AddUserPopup extends Block {
         ),
       },
       onClick: (_e: Event, user: UserData & { active: boolean }) => {
-        const searchResult = this.refs.searchResult as SearchResult;
-        const currentUsers = (searchResult.props as SearchResultProps).result;
+        const searchResult = this.refs.searchResult;
+        const currentUsers = searchResult.props.result;
         const newUsers = currentUsers.map(currentUser => {
           const match = currentUser.id === user.id;
-          const active = (currentUser as UserData & { active: boolean }).active;
+          const active = currentUser.active;
           return {
             ...currentUser,
             active: active !== match,
@@ -61,16 +69,13 @@ export default class AddUserPopup extends Block {
       },
       onPopupClick: (e: Event) => {
         if (e.target === this.element) {
-          const props = this.props as PopupProps;
-          if (typeof props?.onClose === 'function') {
-            props.onClose();
-          }
+          const props = this.props;
+          props.onClose?.();
         }
       },
       onAddClick: () => {
-        const searchResult = this.refs.searchResult as SearchResult;
-        const props = searchResult.props as SearchResultProps;
-        (this.props as PopupProps).onAddUsers(props.result.filter(({ active }) => active).map(({ id }) => id));
+        const props = this.refs.searchResult.props;
+        this.props.onAddUsers(props.result.filter(({ active }) => active).map(({ id }) => id));
       },
     };
   }

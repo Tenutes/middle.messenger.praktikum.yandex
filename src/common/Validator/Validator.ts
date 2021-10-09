@@ -71,11 +71,26 @@ export default class Validator {
 
   validateAll(): ValidationAllResult[] {
     return this.validations.map(({ field, validation }) => {
-      return {
-        field: field,
-        result: this.validate(field, validation),
-      };
+      return this.validateField(field, validation);
     });
+  }
+
+  validateField(field: FormElement, validation?: ValidationFn) {
+    if (!validation) {
+      validation = this.validations.find(({ field: vField }) => vField.name === field.name)?.validation;
+
+      if (!validation) {
+        return {
+          field,
+          result: this.defaultValidationNotFound(),
+        };
+      }
+    }
+
+    return {
+      field,
+      result: this.validate(field, validation),
+    };
   }
 
   defaultValidationNotFound(): ValidationResult {

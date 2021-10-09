@@ -1,15 +1,19 @@
 import Block from '../../common/Block/Block';
 import { IChat } from '../../components/Chat';
 
+type onChatClick = (e: Event, chat: IChat) => void;
+
 interface ChatUserProps {
   chat: IChat;
   onChatDelete: (e: Event, id: number) => void;
-  onChatClick: (e: Event, chat: IChat) => void;
+  onChatClick?: onChatClick;
+  onDelete: (e: Event) => void;
+  events?: { click: (e: Event) => void };
 }
 
-export default class ChatUser extends Block {
+export default class ChatUser extends Block<ChatUserProps> {
   constructor({ onChatClick, ...props }: ChatUserProps) {
-    super({ ...props, events: { click: (e: Event) => onChatClick(e, props.chat) } });
+    super({ ...props, events: { click: (e: Event) => onChatClick?.(e, props.chat) } });
   }
 
   static getName() {
@@ -20,7 +24,7 @@ export default class ChatUser extends Block {
     return {
       onDelete: (e: Event) => {
         e.stopPropagation();
-        (this.props as ChatUserProps).onChatDelete(e, (this.props as ChatUserProps).chat.id);
+        this.props.onChatDelete(e, this.props.chat.id);
       },
     };
   }
