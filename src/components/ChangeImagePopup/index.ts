@@ -87,18 +87,17 @@ export default class ChangeImagePopup extends Block<PopupProps, PopupRefs> {
                     {{{ Button onClick=onClose pre_icon="cross" classes="absolute right-2 top-2 w-3 h-3 flex justify-center items-center rounded-full text-black hover:text-blue cursor-pointer" }}}
                     <div class="w-full">
                         <p class="text-center mb-5">Загрузить файл</p>
-                        <form novalidate ref="form" class="relative text-center"
-                        ">
-                        {{{ FileInput ref='file' id='file' label='Выберите файл на компьютере' name='avatar'
-                                      uploadedName=uploadedName
-                                      accept='image/*' onChange=onChange
-                                      uploadedClasses='cursor-pointer inline-block mb-5 text-center text-gray text-sm mx-auto'
-                                      labelClasses='cursor-pointer inline-block mb-5 text-center text-blue text-sm underline mx-auto'
-                                      classes='absolute opacity-0 w-0 h-0' }}}
-                        {{{ Button label='Поменять' onClick=onSubmit classes='w-full text-center bg-blue text-white text-sm font-medium rounded-4 px-4 py-2 duration-200 hover:opacity-80 focus:bg-blue-dark active:bg-blue-dark' }}}
-                        {{#if error}}
-                            <p class="text-red text-sm mt-2">{{error}}</p>
-                        {{/if}}
+                        <form novalidate ref="form" class="relative text-center">
+                            {{{ FileInput ref='file' id='file' label='Выберите файл на компьютере' name='avatar'
+                                          uploadedName=uploadedName
+                                          accept='image/*' onChange=onChange
+                                          uploadedClasses='cursor-pointer inline-block mb-5 text-center text-gray text-sm mx-auto'
+                                          labelClasses='cursor-pointer inline-block mb-5 text-center text-blue text-sm underline mx-auto'
+                                          classes='absolute opacity-0 w-0 h-0' }}}
+                            {{{ Button label='Поменять' onClick=onSubmit classes='w-full text-center bg-blue text-white text-sm font-medium rounded-4 px-4 py-2 duration-200 hover:opacity-80 focus:bg-blue-dark active:bg-blue-dark' }}}
+                            {{#if error}}
+                                <p class="text-red text-sm mt-2">{{error}}</p>
+                            {{/if}}
                         </form>
                     </div>
                 </div>

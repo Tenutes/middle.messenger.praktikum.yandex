@@ -40,20 +40,20 @@ export default class ChatWS extends WS {
     });
   }
 
-  sendMessage(message: string) {
+  sendMessage(message: string): void {
     this.send({ type: 'message', content: message });
   }
 
-  shutdown() {
+  shutdown(): void {
     super.shutdown();
     this.offset = 0;
   }
 
-  getOldMessages() {
+  getOldMessages(): void {
     this.send({ type: 'get old', content: `${this.offset}` });
   }
 
-  increaseOffsetBy(by: number) {
+  increaseOffsetBy(by: number): void {
     this.offset += by;
   }
 }

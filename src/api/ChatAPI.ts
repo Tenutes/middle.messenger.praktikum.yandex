@@ -74,7 +74,7 @@ export class ChatAPI extends BaseAPI {
     return this.http.get(`/${chatId}/users`);
   }
 
-  deleteUsers(data: AddUsersData) {
+  deleteUsers(data: AddUsersData): Promise<void> {
     return this.http.delete('/users', data);
   }
 }

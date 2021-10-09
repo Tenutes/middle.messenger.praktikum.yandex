@@ -44,7 +44,6 @@ export class LoginPage extends Block<LoginProps, LoginRefs> {
   }
 
   render() {
-    console.log('rerendered');
     // language=hbs
     return `
         <div class="flex flex-col items-center w-full bg-white h-screen justify-center">

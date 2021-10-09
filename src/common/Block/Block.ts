@@ -132,21 +132,11 @@ export default class Block<Props, Refs = null> {
   }
 
   getContent(): HTMLElement | '' {
-    if (this.element?.parentNode?.nodeType === Node.DOCUMENT_FRAGMENT_NODE) {
-      this.cdmTimeout = window.setTimeout(() => {
-        if (this.element?.parentNode?.nodeType !== Node.DOCUMENT_FRAGMENT_NODE) {
-          this.eventBus.emit(EVENTS.FLOW_CDM);
-        }
-      }, 1);
-    }
-
-    if (!this.element) {
+    this.cdmTimeout = window.setTimeout(() => {
       this.eventBus.emit(EVENTS.FLOW_CDM);
+    }, 1);
 
-      return '';
-    }
-
-    return this.element!;
+    return this.element || '';
   }
 
   _createDocumentElement(tagName: string) {
