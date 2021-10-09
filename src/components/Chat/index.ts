@@ -127,7 +127,7 @@ export default class Chat extends Block<ChatProps, ChatRefs> {
                         {{{ Button ref='menuButton' onClick=toggleMenu classes="flex w-4 h-4 items-center justify-center text-black hover:text-blue duration-200"
                                    pre_icon='dots'}}}
                         <div
-                                class="absolute w-[210px] top-[calc(100%+25px)] -right-2 rounded-12 shadow-sm bg-white py-2 px-1 opacity-0 invisible duration-200"
+                                class="absolute w-[210px] top-[calc(100%+25px)] -right-2 rounded-12 shadow-sm bg-white py-2 px-1 opacity-0 invisible duration-200 z-20"
                                 ref="menu"
                                 data-chat-user-settings
                         >
