@@ -12,6 +12,8 @@ export interface InputProps {
   required?: boolean;
   validations?: ValidationRule[];
   onInput?: () => void;
+  onFocus?: (e: Event) => void;
+  onBlur?: (e: Event) => void;
   events?: { input?: () => void; focus: (e: Event) => void; blur: (e: Event) => void };
 }
 
@@ -20,8 +22,11 @@ interface InputRefs {
 }
 
 export default class Input extends Block<InputProps, InputRefs> {
-  constructor({ onInput, ...props }: InputProps) {
-    super({ ...props, events: { input: onInput, focus: onFocus, blur: onBlur } });
+  constructor({ onInput, onFocus: onNativeFocus, onBlur: onNativeBlur, ...props }: InputProps) {
+    super({
+      ...props,
+      events: { input: onInput, focus: onNativeFocus || onFocus, blur: onNativeBlur || onBlur },
+    });
   }
 
   componentDidMount() {
