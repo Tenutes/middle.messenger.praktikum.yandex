@@ -83,7 +83,7 @@ export default class AddUserPopup extends Block<PopupProps, PopupRefs> {
   render() {
     // language=hbs
     return `
-        <div class="fixed z-20 w-full inset-0 flex justify-center items-center duration-200{{#unless show }} invisible opacity-0{{/unless}}">
+        <div class="fixed z-30 w-full inset-0 flex justify-center items-center duration-200{{#unless show }} invisible opacity-0{{/unless}}">
             <div class="absolute inset-0 bg-blue-light opacity-80 pointer-events-none"></div>
             <div class="w-full overflow-y-auto px-3 py-7 relative flex justify-center items-start relative max-h-full">
                 <div class="w-[340px] h-full px-6 py-7 rounded-12 shadow-sm bg-white relative">
