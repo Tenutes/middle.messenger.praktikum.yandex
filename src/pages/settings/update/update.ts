@@ -3,7 +3,6 @@ import Form from '../../../common/Form/Form';
 import Input from '../../../components/Input';
 import { emailMatch, loginMatch, nameMatch, phoneMatch } from '../../../common/Validator/constants';
 import { required } from '../../../common/Validator/Validator';
-import { UpdateProfileData } from '../../../api/UserAPI';
 import UserController from '../../../controllers/UserController';
 
 export interface SettingsUpdateProps {
@@ -48,7 +47,14 @@ export class SettingsUpdatePage extends Block<SettingsUpdateProps, SettingsUpdat
         }
 
         if (updateForm.isValid()) {
-          const updateData = updateForm.getValues() as unknown as UpdateProfileData;
+          const updateData = {
+            first_name: (firstNameInput.element as HTMLInputElement).value,
+            second_name: (secondNameInput.element as HTMLInputElement).value,
+            login: (loginInput.element as HTMLInputElement).value,
+            email: (emailInput.element as HTMLInputElement).value,
+            display_name: (displayNameInput.element as HTMLInputElement).value,
+            phone: (phoneInput.element as HTMLInputElement).value,
+          };
           await UserController.update(updateData);
         }
       },

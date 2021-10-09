@@ -1,7 +1,6 @@
 import Block from '../../common/Block/Block';
 import AuthController from '../../controllers/AuthController';
 import Form from '../../common/Form/Form';
-import { SignInData } from '../../api/AuthAPI';
 import Router from '../../common/Router/Router';
 import { UserState } from '../../store/user';
 import InputGroup from 'components/InputGroup';
@@ -26,9 +25,11 @@ export class LoginPage extends Block<LoginProps, LoginRefs> {
         const passwordField = this.refs.password.refs.password;
         const loginForm = new Form(this.refs.form.id);
         loginForm.addValidationField(loginField).addValidationField(passwordField);
-
         if (loginForm.isValid()) {
-          const formData = loginForm.getValues() as unknown as SignInData;
+          const formData = {
+            login: (loginField.element as HTMLInputElement).value,
+            password: (passwordField.element as HTMLInputElement).value,
+          };
           await AuthController.login(formData);
         }
       },
@@ -43,6 +44,7 @@ export class LoginPage extends Block<LoginProps, LoginRefs> {
   }
 
   render() {
+    console.log('rerendered');
     // language=hbs
     return `
         <div class="flex flex-col items-center w-full bg-white h-screen justify-center">

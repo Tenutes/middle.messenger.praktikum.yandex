@@ -5,7 +5,7 @@ import UserController from '../../controllers/UserController';
 interface SettingsProfileProps {
   name: string;
   popupActive: boolean;
-  showPopup: () => void;
+  showPopup: (e: Event) => void;
   closePopup: () => void;
   onUpdate: (formData: FormData) => Promise<void>;
 }
@@ -26,7 +26,8 @@ export default class SettingsProfile extends Block<SettingsProfileProps, Setting
   getStateFromProps() {
     return {
       popupActive: false,
-      showPopup: () => {
+      showPopup: (e: Event) => {
+        e.preventDefault();
         this.refs.profilePopup.setProps({ show: true });
       },
       closePopup: () => {

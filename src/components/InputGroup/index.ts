@@ -6,6 +6,8 @@ interface InputGroupProps {
   label: string;
   classes: string;
   ref: string;
+  onFocus: (e: Event) => void;
+  onBlur: (e: Event) => void;
 }
 
 interface InputGroupRefs {
@@ -17,6 +19,8 @@ export default class InputGroup extends Block<InputGroupProps, InputGroupRefs> {
     super(props);
   }
 
+  componentDidMount() {}
+
   static getName() {
     return 'InputGroup';
   }
@@ -26,7 +30,8 @@ export default class InputGroup extends Block<InputGroupProps, InputGroupRefs> {
     return `
         <div class="{{classes}}">
             {{{ Input ref=input.id id=input.id type=input.type name=input.name required=input.required label=input.label
-                      validations=input.validations classes=input.classes onInput=input.onInput }}}
+                      validations=input.validations classes=input.classes onInput=input.onInput
+                      onBlur=onBlur }}}
             {{#if label}}
                 <label for="{{input.id}}" class="absolute top-0 left-0 text-gray text-sm">{{label}}</label>
             {{/if}}

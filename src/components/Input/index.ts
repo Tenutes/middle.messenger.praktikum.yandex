@@ -1,4 +1,5 @@
 import Block from '../../common/Block/Block';
+import { onFocus, onBlur } from '../../common/Form/helpers';
 
 export interface InputProps {
   type: string;
@@ -11,9 +12,7 @@ export interface InputProps {
   required?: boolean;
   validations?: ValidationRule[];
   onInput?: () => void;
-  onFocus?: () => void;
-  onBlur?: () => void;
-  events?: { input?: () => void; focus?: () => void; blur?: () => void };
+  events?: { input?: () => void; focus: (e: Event) => void; blur: (e: Event) => void };
 }
 
 interface InputRefs {
@@ -21,7 +20,7 @@ interface InputRefs {
 }
 
 export default class Input extends Block<InputProps, InputRefs> {
-  constructor({ onInput, onFocus, onBlur, ...props }: InputProps) {
+  constructor({ onInput, ...props }: InputProps) {
     super({ ...props, events: { input: onInput, focus: onFocus, blur: onBlur } });
   }
 

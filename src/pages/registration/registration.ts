@@ -2,7 +2,6 @@ import Block from '../../common/Block/Block';
 import InputGroup from '../../components/InputGroup';
 import Form from '../../common/Form/Form';
 import { equalsMatch } from '../../common/Validator/constants';
-import { SignupData } from '../../api/AuthAPI.js';
 import AuthController from '../../controllers/AuthController';
 
 export interface RegistrationProps {
@@ -43,7 +42,14 @@ export class RegistrationPage extends Block<RegistrationProps, RegistrationRefs>
         });
 
         if (registerForm.isValid()) {
-          const formData = registerForm.getValues() as unknown as SignupData;
+          const formData = {
+            first_name: (firstNameField.element as HTMLInputElement).value,
+            second_name: (secondNameField.element as HTMLInputElement).value,
+            login: (loginField.element as HTMLInputElement).value,
+            email: (emailField.element as HTMLInputElement).value,
+            password: (passwordField.element as HTMLInputElement).value,
+            phone: (phoneField.element as HTMLInputElement).value,
+          };
           await AuthController.signup(formData);
         }
       },

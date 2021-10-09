@@ -1,6 +1,5 @@
 import Block from '../../../common/Block/Block';
 import Form from '../../../common/Form/Form';
-import { UpdatePasswordData } from '../../../api/UserAPI';
 import UserController from '../../../controllers/UserController';
 import { equalsMatch } from '../../../common/Validator/constants';
 import Input from '../../../components/Input';
@@ -34,10 +33,9 @@ export class ChangePasswordPage extends Block<ChangePasswordProps, ChangePasswor
         });
 
         if (updateForm.isValid()) {
-          const { password, password_new } = updateForm.getValues() as { password: string; password_new: string };
-          const updateData: UpdatePasswordData = {
-            oldPassword: password,
-            newPassword: password_new,
+          const updateData = {
+            oldPassword: (passwordField.element as HTMLInputElement).value,
+            newPassword: (passwordNewField.element as HTMLInputElement).value,
           };
 
           await UserController.changePassword(updateData);

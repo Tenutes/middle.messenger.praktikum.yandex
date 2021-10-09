@@ -47,6 +47,7 @@ export default class Form {
   }
 
   getValues() {
+    // Переписать, в связи с ререндером - связь с формой пропадает
     const formData = this.getFormData();
     this.values = {};
 
@@ -86,6 +87,11 @@ export default class Form {
       this.errorMessages[name] = validation.errorReplacer || '';
     }
     this.validator.setValidation(field.element as FormElement, validation.fn);
+  }
+
+  validateField(field: FormElement) {
+    const decision = this.validator.validateField(field);
+    this.handleValidationResult(decision.field, decision.result);
   }
 
   isValid() {
