@@ -1,50 +1,21 @@
 import Form from './Form';
-import Sender from './Sender';
 
-export const validateFormOnFieldFocusBlur = (form: HTMLFormElement) => {
-  const fields: HTMLInputElement[] = Array.from(form.querySelectorAll('input:not([type=hidden]), textarea'));
-  const formObject = Form.get(form.id);
-  fields.forEach(field => {
-    field.addEventListener('blur', () => {
-      if (field.value) {
-        formObject.validateField(field);
-      }
-    });
-    field.addEventListener('focus', () => {
-      formObject.hideError(field.name);
-    });
-  });
+export const onBlur = (e: Event) => {
+  const form = (e.target as HTMLInputElement).closest('form');
+
+  if (form) {
+    const FormClass = Form.get(form.id);
+    // Пока form.id - не уникально, в связи с ререндером, то Registry будет возвращать старое значение,
+    // которого нет в DOM (возможно), надо переписать .get у Form, чтоб он еще проверил наличие Form в DOM
+    FormClass.validateField(e.target as FormElement);
+  }
 };
 
-export const validateFormOnSubmit = (form: HTMLFormElement, validationRules?: ValidatorRules) => {
-  return new Promise((res, rej) => {
-    form.addEventListener('submit', e => {
-      e.preventDefault();
-      const formObject = new Form(form.id);
-      if (validationRules) {
-        formObject.addValidationRules(validationRules);
-      }
+export const onFocus = (e: Event) => {
+  const form = (e.target as HTMLInputElement).closest('form');
 
-      if (formObject.isValid()) {
-        console.log(formObject.getValues());
-        return res(formObject.getValues());
-      }
-
-      console.log('form invalid');
-      return rej();
-    });
-  });
+  if (form) {
+    const FormClass = Form.get(form.id);
+    FormClass.hideError((e.target as HTMLInputElement).name);
+  }
 };
-
-export const sendForm = (form: HTMLFormElement, { url, options }: ISenderOptions) => {
-  const sender = new Sender(form, { url, options });
-
-  return new Promise((res, rej) => {
-    sender
-      .send()
-      .then(res)
-      .catch(rej);
-  });
-};
-
-export const capitalizeFirstLetter = (string: string): string => string.charAt(0).toUpperCase() + string.slice(1);

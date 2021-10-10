@@ -1,14 +1,18 @@
 import Registry from '../Registry/Registry';
 import Validator from '../Validator/Validator';
 import FormError from './FormError';
+import Block from '../Block/Block';
+import Input, { InputProps } from '../../components/Input';
+import { isArray } from '../../common/helpers';
 
-export default class Form implements IForm {
+export default class Form {
   id: string;
   form: HTMLFormElement;
   validator: Validator;
   values: Record<string, unknown>;
   errors: StringRecord;
   errorMessages: StringRecord;
+  fieldsToValidate: Block<InputProps>[];
 
   constructor(id: string) {
     this.id = id;
@@ -21,6 +25,7 @@ export default class Form implements IForm {
     this.errorMessages = {};
     this.errors = {};
     this.values = {};
+    this.fieldsToValidate = [];
 
     return this;
   }
@@ -42,6 +47,7 @@ export default class Form implements IForm {
   }
 
   getValues() {
+    // Переписать, в связи с ререндером - связь с формой пропадает
     const formData = this.getFormData();
     this.values = {};
 
@@ -52,42 +58,52 @@ export default class Form implements IForm {
     return this.values;
   }
 
-  addValidationRules(rules: ValidatorRules) {
-    for (const [field, validation] of Object.entries(rules)) {
-      const formField = <FormElement>this.form.querySelector(`[name='${field}']`);
-      if (Array.isArray(validation)) {
-        validation.forEach(validationRule => {
-          this.addValidation(formField, validationRule);
-        });
-      } else {
-        this.addValidation(formField, validation);
-      }
-    }
+  addValidationFields(fields: Input[]) {
+    fields.forEach(field => this.addValidationField(field));
   }
 
-  addValidation(field: FormElement, validation: ValidationRule): this {
-    this.validator.setValidation(field, validation.fn.bind(field));
-    if (validation.errorReplacer) {
-      this.errorMessages[field.name] = validation.errorReplacer;
+  addValidationField(field: Input, validation?: ValidationRule | ValidationRule[]): Form {
+    if (validation) {
+      if (isArray(validation)) {
+        validation.forEach(v => {
+          this.addValidation(field, v);
+        });
+      } else {
+        this.addValidation(field, validation as ValidationRule);
+      }
     }
+
+    const validations = field.props.validations || [];
+    validations.forEach(validation => {
+      this.addValidation(field, validation);
+    });
+
     return this;
   }
 
-  isValid() {
-    this.errors = {};
-    this.hideErrors();
-
-    const result = this.validator.validateAll();
-    result.forEach((validationResult: ValidationAllResult) => {
-      this.handleValidationResult(<FormElement>validationResult.field, validationResult.result);
-    });
-
-    return Object.keys(this.errors).length === 0;
+  addValidation(field: Input, validation: ValidationRule) {
+    const name = (field.element as FormElement).name;
+    if (name) {
+      this.errorMessages[name] = validation.errorReplacer || '';
+    }
+    this.validator.setValidation(field.element as FormElement, validation.fn);
   }
 
   validateField(field: FormElement) {
-    const validationResult: ValidationResult = this.validator.validate(field);
-    this.handleValidationResult(field, validationResult);
+    const decision = this.validator.validateField(field);
+    this.handleValidationResult(decision.field, decision.result);
+  }
+
+  isValid() {
+    this.hideErrors();
+
+    const validationResults = this.validator.validateAll();
+
+    validationResults.forEach(({ field, result }) => {
+      this.handleValidationResult(field, result);
+    });
+
+    return Object.keys(this.errors).length === 0;
   }
 
   handleValidationResult(field: FormElement, validationResult: ValidationResult) {
@@ -105,11 +121,11 @@ export default class Form implements IForm {
   }
 
   hideErrors() {
-    for (const name in this.values) {
-      if (this.values.hasOwnProperty(name)) {
-        this.hideError(name);
-      }
+    for (const name in this.errors) {
+      this.hideError(name);
     }
+
+    this.errors = {};
   }
 
   hideError(name: string) {

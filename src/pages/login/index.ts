@@ -1,15 +1,9 @@
-import Login from './login';
-import state from './state';
+import { LoginPage } from './login';
+import { connect } from '../../store';
+import { withRouter } from '../../common/helpers';
+import loginState from './state';
+import Block from '../../common/Block/Block';
 
-const module = () => import('./module');
-
-export default {
-  routes: [
-    {
-      path: '/',
-      component: Login,
-      state,
-      module,
-    },
-  ],
-};
+export default withRouter(
+  connect((state: any) => ({ user: state.user || {}, ...loginState }), LoginPage as typeof Block)
+);

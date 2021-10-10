@@ -1,3 +1,0 @@
-interface LoginProps {
-  button: ButtonProps;
-}

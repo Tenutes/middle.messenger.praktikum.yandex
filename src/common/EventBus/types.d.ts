@@ -8,4 +8,4 @@ interface IEventBus {
   emit(event: string, ...args: unknown[]): void;
 }
 
-type EventBusListener = (...args: unknown) => unknown;
+type EventBusListener = (...args: unknown[]) => unknown | void;

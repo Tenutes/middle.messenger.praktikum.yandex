@@ -16,8 +16,8 @@ class Registry implements IRegistry {
   }
 
   forget(slug: string, selector: string): IRegistry {
-    if (typeof this.instances[selector] !== 'undefined') {
-      delete this.instances[selector][slug];
+    if (typeof this.instances[selector] !== null) {
+      this.instances[selector][slug] = null;
     }
     return this;
   }

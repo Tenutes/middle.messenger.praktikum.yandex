@@ -1,29 +1,6 @@
-import ChangePassword from './change-password';
-import Settings from './settings';
-import state from './state';
-import Update from './update';
+import { SettingsPage } from './settings';
+import Block from '../../common/Block/Block';
+import { connect } from '../../store';
+import { withRouter } from '../../common/helpers';
 
-const module = () => import('./module');
-
-export default {
-  routes: [
-    {
-      path: '/settings',
-      component: Settings,
-      state: state.settings,
-      module,
-    },
-    {
-      path: '/settings/update',
-      component: Update,
-      state: state.update,
-      module,
-    },
-    {
-      path: '/settings/change-password',
-      component: ChangePassword,
-      state: state.changePassword,
-      module,
-    },
-  ],
-};
+export default withRouter(connect((state: any) => ({ user: state.user || {} }), SettingsPage as typeof Block));

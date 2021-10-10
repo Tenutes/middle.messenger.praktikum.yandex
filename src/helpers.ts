@@ -1,6 +1,6 @@
-import Handlebars from 'handlebars/dist/handlebars.runtime';
+import Handlebars from 'handlebars';
 
-Handlebars.registerHelper('times', function(n: number, block: { fn: (arg0: number) => string }) {
+Handlebars.registerHelper('times', function (n: number, block: { fn: (arg0: number) => string }) {
   let accum = '';
   for (let i = 0; i < n; ++i) {
     accum += block.fn(i);
@@ -8,22 +8,22 @@ Handlebars.registerHelper('times', function(n: number, block: { fn: (arg0: numbe
   return accum;
 });
 
-Handlebars.registerHelper('ismorezero', function(value: number) {
-  return value > 0;
+Handlebars.registerHelper('ismorezero', (value: number) => value > 0);
+
+Handlebars.registerHelper('convert_message_date', (dateString: string) => {
+  const date = new Date(dateString);
+  return date.toLocaleDateString('ru-RU');
 });
 
-Handlebars.registerHelper('self_message', function(value: string) {
-  return value === 'self';
-});
+Handlebars.registerHelper('non_zero_length', (value: []) => value && value.length > 0);
 
-Handlebars.registerHelper('message_sended', function(value: string) {
-  return value === 'sended';
-});
+Handlebars.registerHelper(
+  'self_message',
+  (userId: string | number, messageUserId: string | number) => userId === messageUserId
+);
 
-Handlebars.registerHelper('message_recieved', function(value: string) {
-  return value === 'recieved';
-});
+Handlebars.registerHelper('message_sended', (value: string) => value === 'sended');
 
-Handlebars.registerHelper('message_readed', function(value: string) {
-  return value === 'readed';
-});
+Handlebars.registerHelper('message_recieved', (value: string) => value === 'recieved');
+
+Handlebars.registerHelper('message_readed', (value: string) => value === 'readed');
