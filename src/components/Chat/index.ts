@@ -37,7 +37,9 @@ interface ChatRefs {
   add_popup: AddUserPopup;
   delete_popup: DeleteUserPopup;
   menuButton: Button;
-  menu?: HTMLElement;
+  menu: HTMLElement;
+  chatContainer: HTMLElement;
+  chatContainerInner: HTMLElement;
 }
 
 export default class Chat extends Block<ChatProps, ChatRefs> {
@@ -90,14 +92,21 @@ export default class Chat extends Block<ChatProps, ChatRefs> {
         e.stopPropagation();
         this.refs.menuButton.element?.classList.toggle('active');
         const menu = this.refs.menu;
-        menu?.classList.toggle('opacity-0');
-        menu?.classList.toggle('invisible');
+        menu.classList.toggle('opacity-0');
+        menu.classList.toggle('invisible');
       },
     };
   }
 
   componentShouldUpdate(o: ChatProps, n: ChatProps) {
     return !isEqual(o, n);
+  }
+
+  componentDidUpdate() {
+    const diff = this.refs.chatContainerInner.offsetHeight - this.refs.chatContainer.offsetHeight;
+    if (diff > 0) {
+      this.refs.chatContainer.scrollTop = diff;
+    }
   }
 
   render() {
@@ -141,8 +150,8 @@ export default class Chat extends Block<ChatProps, ChatRefs> {
                     </div>
                 </div>
                 <div data-chat-inner class="flex-1-1-auto overflow-hidden">
-                    <div class="w-full h-full overflow-y-auto no-scrollbar" data-chat-inner-list>
-                        <div class="flex flex-col justify-end min-h-full" data-chat-inner-list-container>
+                    <div class="w-full h-full overflow-y-auto no-scrollbar" ref="chatContainer">
+                        <div class="flex flex-col justify-end min-h-full" ref="chatContainerInner">
                             <div class="flex-1-1-auto min-h-[50px]"></div>
                             <div class="px-4 flex flex-col items-start">
                                 {{#each chat.messages}}
