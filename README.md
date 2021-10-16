@@ -35,9 +35,15 @@ yarn prepare // Инициализируем precommit-hook на eslint
 
 Так же код проходит транспиляцию через babel для поддержки различных технологий `es18`, `es16`
 
-
 ### Тесты
 Используется Jest, Файлы с тестами `*.spec.js` лежат рядом с тестируемыми модулями.
+
+### Docker
+Для пуша и деплоя используется докер-контейнер с конфигурацией в [Dockerfile](./Dockerfile).
+Основан на `image alpine` для облегчения веса контейнера.
+
+### Heroku
+Для выкладывания в прод используется пуш готового контейнера `Docker` в сервис `Heroku`. Адрес укажен ниже в ссылках.
 
 ### Ссылки
 [figma](https://www.figma.com/file/mkZSo0ewVa2xP0tSr0Z0YL/YaChat?node-id=0%3A1)
@@ -54,4 +60,4 @@ ____
 
 [pull request sprint_4](https://github.com/Tenutes/middle.messenger.praktikum.yandex/pull/4)
 ____
-[сайт в netlify](https://kind-saha-49adaf.netlify.app/)
+[сайт в heroku](https://tenutes-chat.herokuapp.com/)
