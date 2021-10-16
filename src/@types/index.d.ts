@@ -12,19 +12,6 @@ interface IRegistry {
   forget(slug: string, selector: string): Registry;
 }
 
-interface IState {
-  [key: string]: unknown;
-}
-
-type TemplateFn = (ctx: IState | null) => string;
-
-interface ICurrentPage {
-  state: IState;
-  module: {
-    component: typeof IBlock;
-  };
-}
-
 type Nullable<T> = T | null;
 
 declare module 'handlebars/dist/handlebars.runtime';
