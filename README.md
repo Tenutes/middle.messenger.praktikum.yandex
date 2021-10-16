@@ -13,7 +13,7 @@ yarn types // Проверяем через Typesript
 yarn jest // Запускаем тесты
 yarn prepare // Инициализируем precommit-hook на eslint
 ```
-Нужен npm? No problem - изайте вместо `yarn` => `npm install`. `yarn ...` => `npm run ...`
+Нужен npm? No problem - используйте вместо `yarn` => `npm install`. `yarn ...` => `npm run ...`
 
 ### Страницы
 
@@ -38,12 +38,22 @@ yarn prepare // Инициализируем precommit-hook на eslint
 ### Тесты
 Используется Jest, Файлы с тестами `*.spec.js` лежат рядом с тестируемыми модулями.
 
+### Webpack
+Для сборки проекта используется `Webpack`, а так же плагины для копирования статики и сборки html.
+
 ### Docker
 Для пуша и деплоя используется докер-контейнер с конфигурацией в [Dockerfile](./Dockerfile).
 Основан на `image alpine` для облегчения веса контейнера.
 
 ### Heroku
 Для выкладывания в прод используется пуш готового контейнера `Docker` в сервис `Heroku`. Адрес укажен ниже в ссылках.
+
+### Hooks
+Настроены `git hooks`, использующие `husky`:
+```
+pre-commit: yarn lint && yarn types // проверяет стили, eslint, typescript
+pre-push: yarn jest // запускает тесты
+```
 
 ### Ссылки
 [figma](https://www.figma.com/file/mkZSo0ewVa2xP0tSr0Z0YL/YaChat?node-id=0%3A1)
