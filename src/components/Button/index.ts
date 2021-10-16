@@ -25,13 +25,13 @@ export default class Button extends Block<ButtonProps> {
         <button class="{{classes}}" {{{extra}}}>
             {{#if pre_icon}}
                 <svg class="w-full h-full block{{#if icon_classes}} {{icon_classes}}{{/if}}">
-                    <use href="/img/svg/sprite.svg#{{pre_icon}}"></use>
+                    <use href="/static/img/svg/sprite.svg#{{pre_icon}}"></use>
                 </svg>
             {{/if}}
             {{label}}
             {{#if after_icon}}
                 <svg class="w-full h-full block{{#if icon_classes}} {{icon_classes}}{{/if}}">
-                    <use href="/img/svg/sprite.svg#{{after_icon}}"></use>
+                    <use href="/static/img/svg/sprite.svg#{{after_icon}}"></use>
                 </svg>
             {{/if}}
         </button>`;

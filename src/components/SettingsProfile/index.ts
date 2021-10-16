@@ -58,7 +58,7 @@ export default class SettingsProfile extends Block<SettingsProfileProps, Setting
                     {{#if avatar}}
                         src="https://ya-praktikum.tech/api/v2/resources{{avatar}}"
                     {{else}}
-                        src="/img/empty-image.svg"
+                        src="/static/img/empty-image.svg"
                     {{/if}}
                 />
             </div>

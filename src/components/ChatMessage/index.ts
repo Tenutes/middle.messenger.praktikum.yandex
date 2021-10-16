@@ -26,19 +26,19 @@ export default class ChatMessage extends Block<ChatMessageProps> {
                     {{#if (message_sended status)}}
                         <span class="inline-block text-gray w-[11px] h-1">
                         <svg class="w-full h-full block">
-                          <use href="/img/svg/sprite.svg#message-one-mark"></use>
+                          <use href="/static/img/svg/sprite.svg#message-one-mark"></use>
                         </svg>
                       </span>
                     {{else if (message_recieved status) }}
                         <span class="inline-block text-gray w-[11px] h-1">
                           <svg class="w-full h-full block">
-                            <use href="/img/svg/sprite.svg#message-two-marks"></use>
+                            <use href="/static/img/svg/sprite.svg#message-two-marks"></use>
                           </svg>
                         </span>
                     {{else if (message_readed status) }}
                         <span class="inline-block text-blue w-[11px] h-1">
                           <svg class="w-full h-full block">
-                            <use href="/img/svg/sprite.svg#message-two-marks"></use>
+                            <use href="/static/img/svg/sprite.svg#message-two-marks"></use>
                           </svg>
                         </span>
                     {{/if}}
