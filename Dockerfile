@@ -1,6 +1,14 @@
-FROM ubuntu:20.04
-RUN apt update && apt install -y nodejs && apt install -y npm
+FROM alpine:latest
+
+RUN apk add --no-cache --update bash nodejs npm
+ADD ./ /var/www/
+
 WORKDIR /var/www
-COPY ./ .
+RUN npm install && npm run build
+
+RUN adduser -D myuser
+USER myuser
+
 EXPOSE 3000
-CMD npm install && npm run build && node server
+
+CMD node server.js port=$PORT
