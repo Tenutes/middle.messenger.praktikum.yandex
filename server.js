@@ -9,7 +9,6 @@ const PORT = portArg && portArg[1] ? portArg[1] : DEFAULT_PORT;
 const HOST = PORT === DEFAULT_PORT ? 'localhost' : '0.0.0.0';
 
 app.use(express.static(path.join(__dirname, '/dist/')));
-
 app.get('/*', function (req, res) {
   res.sendFile(path.join(__dirname, '/dist/index.html'));
 });
