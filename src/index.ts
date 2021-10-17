@@ -5,7 +5,6 @@ import './helpers';
 import AuthController from './controllers/AuthController';
 import registerComponent, { BlockConstructable } from './common/register';
 import Router, { RouterBeforeEachFn } from './common/Router/Router';
-import Block from './common/Block/Block';
 import LoginPage from './pages/login';
 import LogoutPage from './pages/logout';
 import RegistrationPage from './pages/registration';
@@ -16,11 +15,13 @@ import ChangePasswordPage from './pages/settings/change';
 import Page500 from './pages/errors/500';
 import Page404 from './pages/errors/404';
 
-const components = require('./components/**/index.ts') as { [key: string]: { default: typeof Block } };
+function importAll(r: __WebpackModuleApi.RequireContext) {
+  r.keys().forEach(k => {
+    registerComponent(r(k).default as BlockConstructable);
+  });
+}
 
-Object.values(components).forEach(component => {
-  registerComponent(component.default as BlockConstructable);
-});
+importAll(require.context('./components/', true, /index\.ts$/));
 
 const beforeEach: RouterBeforeEachFn = async (next, currentRoute): Promise<void> => {
   const user = await AuthController.fetchUser();

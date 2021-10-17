@@ -51,7 +51,7 @@ export default class ChatForm extends Block<ChatFormProps, ChatFormRefs> {
                 <div class="relative flex-shrink-0 mr-2 flex items-center">
                     <div class="chat-form__append cursor-pointer duration-200 text-blue w-[32px] h-[32px]">
                         <svg class="w-full h-full block">
-                            <use href="/img/svg/sprite.svg#append"></use>
+                            <use href="/static/img/svg/sprite.svg#append"></use>
                         </svg>
                     </div>
                     <div class="chat-form__append-list absolute bottom-full left-0 pb-[4px] w-[160px] opacity-0 invisible">
@@ -61,7 +61,7 @@ export default class ChatForm extends Block<ChatFormProps, ChatFormRefs> {
                                     class="p-1 rounded-6 duration-200 flex items-center text-blue font-medium text-xs cursor-pointer w-full hover:bg-blue-light-hover"
                             >
                                 <svg class="w-[22px] h-[22px] block mr-3">
-                                    <use href="/img/svg/sprite.svg#append-photo"></use>
+                                    <use href="/static/img/svg/sprite.svg#append-photo"></use>
                                 </svg>
                                 <span>Фото или Видео</span>
                             </button>
@@ -70,7 +70,7 @@ export default class ChatForm extends Block<ChatFormProps, ChatFormRefs> {
                                     class="p-1 rounded-6 duration-200 flex items-center text-blue font-medium text-xs cursor-pointer w-full hover:bg-blue-light-hover"
                             >
                                 <svg class="w-[22px] h-[22px] block mr-3">
-                                    <use href="/img/svg/sprite.svg#append-file"></use>
+                                    <use href="/static/img/svg/sprite.svg#append-file"></use>
                                 </svg>
                                 <span>Файл</span>
                             </button>
@@ -79,7 +79,7 @@ export default class ChatForm extends Block<ChatFormProps, ChatFormRefs> {
                                     class="p-1 rounded-6 duration-200 flex items-center text-blue font-medium text-xs cursor-pointer w-full hover:bg-blue-light-hover"
                             >
                                 <svg class="w-[22px] h-[22px] block mr-3">
-                                    <use href="/img/svg/sprite.svg#append-location"></use>
+                                    <use href="/static/img/svg/sprite.svg#append-location"></use>
                                 </svg>
                                 <span>Локацию</span>
                             </button>

@@ -46,7 +46,7 @@ export default class ChatUser extends Block<ChatUserProps> {
                                 {{#if chat.avatar}}
                                     src="https://ya-praktikum.tech/api/v2/resources{{chat.avatar}}"
                                 {{else}}
-                                    src="/img/empty-image.svg"
+                                    src="/static/img/empty-image.svg"
                                 {{/if}}
                                     alt="{{chat.title}}"
                             >

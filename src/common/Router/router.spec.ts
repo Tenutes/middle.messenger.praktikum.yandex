@@ -4,7 +4,7 @@
 import Block from '../Block/Block';
 import Router from './Router';
 
-class TestPage extends Block {
+class TestPage extends Block<any, any> {
   constructor() {
     super();
   }
